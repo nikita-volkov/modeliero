@@ -1,0 +1,17 @@
+packages: .
+
+with-compiler: ghc-9.10
+
+source-repository-package
+  type: git
+  location: https://github.com/nikita-volkov/structure-kit
+  tag: 33229b4e548300fd858096e9835b8eceee999b16
+
+source-repository-package
+  type: git
+  location: https://github.com/nikita-volkov/coalmine
+  tag: ee87870adcd4285fcb42fc5316030e1e34520870
+  subdir:
+    coalmine
+    qq-extras
+    lift-instances
