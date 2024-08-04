@@ -90,6 +90,7 @@ library
   hs-source-dirs: library
   exposed-modules:
     Modeliero.Dsls.Code
+    Modeliero.Dsls.InModule
     Modeliero.Dsls.Namespace
     Modeliero.Dsls.Package
     Modeliero.Templates.ModelPackage

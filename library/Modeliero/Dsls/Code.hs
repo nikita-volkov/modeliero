@@ -39,9 +39,10 @@ compileCodeContent namespace importAliases code =
       }
     code.legacy
 
-data Code = Code
+newtype Code = Code
   { legacy :: Legacy.Code
   }
+  deriving newtype (Semigroup, Monoid)
 
 data Import = Import
   { -- | Possible external dependency.
