@@ -2,30 +2,45 @@
 
 module Modeliero.Dsls.Code where
 
+import Coalmine.NumericVersion qualified as NumericVersion
 import Coalmine.Prelude hiding (writeFile)
+import CodegenKit.HaskellPackage.Contexts.Code qualified as Legacy
 import Data.Text qualified as Text
 import Modeliero.Dsls.Package
 
-compileCodeModule :: [Text] -> Code -> Module
-compileCodeModule name code =
+compileCodeModule ::
+  [Text] ->
+  [(Text, Text)] ->
+  Code ->
+  Module
+compileCodeModule name importAliases code =
   Module
     { name,
       dependencies = compileCodeDependencies code,
-      content = compileCodeContent (Text.intercalate "." name) code
+      content = compileCodeContent name importAliases code
     }
 
 compileCodeDependencies :: Code -> [Dependency]
 compileCodeDependencies =
   error "TODO"
 
-compileCodeContent :: Text -> Code -> Text
-compileCodeContent =
-  error "TODO"
+compileCodeContent :: [Text] -> [(Text, Text)] -> Code -> Text
+compileCodeContent namespace importAliases code =
+  Legacy.toModuleText
+    Legacy.ModuleConfig
+      { namespace,
+        importAliases,
+        importRemappings = []
+      }
+    Legacy.Preferences
+      { strictData = False,
+        overloadedRecordDot = True,
+        importQualifiedPost = True
+      }
+    code.legacy
 
 data Code = Code
-  { importRequests :: HashMap Import Text,
-    -- | Function on prefix namespace and import resolver.
-    printer :: [Text] -> (Import -> Text) -> TextBlock
+  { legacy :: Legacy.Code
   }
 
 data Import = Import
@@ -38,21 +53,38 @@ data Import = Import
   }
   deriving (Eq, Ord, Show, Generic, Hashable)
 
-import_ ::
-  Import ->
-  -- | Code with the import request registered and
-  -- either an empty splice or a qualification prefix ending with dot.
-  Code
-import_ =
-  error "TODO"
-
 importing :: Import -> (Text -> Code) -> Code
-importing =
-  error "TODO"
+importing import_ cont =
+  Code
+    { legacy
+    }
+  where
+    legacy =
+      registerDependency <> importing
+      where
+        registerDependency =
+          flip foldMap import_.dependency \dependency ->
+            Legacy.dependency
+              dependency.name
+              dependency.minVersion.head
+              dependency.minVersion.tail
+              dependency.maxVersion.head
+              dependency.maxVersion.tail
+        importing =
+          Legacy.importingModule import_.name ((.legacy) . cont . qualifier)
+          where
+            qualifier moduleName =
+              if Text.null moduleName
+                then mempty
+                else (moduleName <> ".")
 
 textBlock :: TextBlock -> Code
 textBlock block =
   Code
-    { importRequests = mempty,
-      printer = \_ _ -> block
+    { legacy = Legacy.splice block
     }
+
+-- | Register export.
+export :: Text -> Code
+export name =
+  error "TODO"

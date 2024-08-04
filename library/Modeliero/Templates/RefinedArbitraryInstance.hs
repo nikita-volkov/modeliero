@@ -7,7 +7,6 @@ import Modeliero.Dsls.Code qualified as Code
 import Modeliero.Dsls.Namespace qualified as Namespace
 import Modeliero.Dsls.Package qualified as Package
 import Modeliero.Imports qualified as Imports
-import StructureKit.Charset qualified as Charset
 
 data Params = Params
   { name :: Text,

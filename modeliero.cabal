@@ -72,6 +72,19 @@ common base
     UndecidableInstances
     ViewPatterns
 
+common executable
+  import: base
+  ghc-options:
+    -O2
+    -threaded
+    "-with-rtsopts=-N -I0 -qg"
+
+common test
+  import: base
+  ghc-options:
+    -threaded
+    "-with-rtsopts=-N -I0 -qg"
+
 library
   import: base
   hs-source-dirs: library
@@ -92,5 +105,21 @@ library
 
   build-depends:
     coalmine,
-    structure-kit,
+    codegen-kit-haskell-package,
     text,
+
+test-suite hspec
+  import: test
+  type: exitcode-stdio-1.0
+  hs-source-dirs: hspec
+  main-is: Main.hs
+  other-modules:
+    Modeliero.Templates.RefinedArbitraryInstanceSpec
+
+  build-tool-depends:
+    hspec-discover:hspec-discover >=2 && <3
+
+  build-depends:
+    coalmine,
+    hspec,
+    modeliero,
