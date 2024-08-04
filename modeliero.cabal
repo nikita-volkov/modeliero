@@ -115,6 +115,7 @@ test-suite hspec
   hs-source-dirs: hspec
   main-is: Main.hs
   other-modules:
+    Modeliero.ExtrasFor.Hspec
     Modeliero.Templates.RefinedArbitraryInstanceSpec
 
   build-tool-depends:

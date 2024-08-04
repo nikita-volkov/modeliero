@@ -1,7 +1,7 @@
 module Modeliero.Templates.RefinedArbitraryInstanceSpec where
 
 import Coalmine.Prelude
-import Modeliero.Dsls.InModule qualified as InModule
+import Modeliero.ExtrasFor.Hspec
 import Modeliero.Templates.RefinedArbitraryInstance qualified as Subject
 import Test.Hspec
 
@@ -15,7 +15,7 @@ spec = do
                 type_ = Subject.IntType 1 12
               }
 
-      producesExpectedContent params
+      compilingProducesExpectedContent Subject.compile params
         $ [i|
             module Z.V where
             
@@ -34,7 +34,7 @@ spec = do
                 type_ = Subject.TextType 5 12
               }
 
-      producesExpectedContent params
+      compilingProducesExpectedContent Subject.compile params
         $ [i|
             module Z.V where
             
@@ -51,17 +51,3 @@ spec = do
                 toTake <- enumFromTo 5 (Text.length text)
                 pure (Phone (Text.take toTake text))
           |]
-
-producesExpectedContent :: Subject.Params -> Text -> Spec
-producesExpectedContent params expectedResult = do
-  it "Produces expected content" do
-    let code = Subject.compile params
-        codeText =
-          InModule.compileContent
-            ["Z", "V"]
-            [ ("Test.QuickCheck.Gen", "QuickCheck.Gen"),
-              ("Test.QuickCheck.Arbitrary", "QuickCheck.Arbitrary"),
-              ("Data.Text", "Text")
-            ]
-            code
-    shouldBe codeText expectedResult
