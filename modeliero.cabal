@@ -98,6 +98,7 @@ library
     Modeliero.Templates.ProductArbitraryInstance
     Modeliero.Templates.ReexportsModule
     Modeliero.Templates.RefinedArbitraryInstance
+    Modeliero.Templates.ToJsonInstance
 
   other-modules:
     Modeliero.Dependencies
@@ -117,6 +118,7 @@ test-suite hspec
     Modeliero.ExtrasFor.Hspec
     Modeliero.Templates.ProductArbitraryInstanceSpec
     Modeliero.Templates.RefinedArbitraryInstanceSpec
+    Modeliero.Templates.ToJsonInstanceSpec
 
   build-tool-depends:
     hspec-discover:hspec-discover >=2 && <3

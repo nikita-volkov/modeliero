@@ -17,7 +17,10 @@ compilingProducesExpectedContent compile params expectedResult = do
             ["Z", "V"]
             [ ("Test.QuickCheck.Gen", "QuickCheck.Gen"),
               ("Test.QuickCheck.Arbitrary", "QuickCheck.Arbitrary"),
-              ("Data.Text", "Text")
+              ("Data.Text", "Text"),
+              ("Data.Aeson", "Aeson"),
+              ("Data.Aeson.Key", "Aeson.Key"),
+              ("Data.Aeson.KeyMap", "Aeson.KeyMap")
             ]
             code
     shouldBe codeText expectedResult
