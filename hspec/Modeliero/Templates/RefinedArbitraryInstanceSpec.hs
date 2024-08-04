@@ -11,7 +11,7 @@ spec = do
     describe "Month" do
       let params =
             Subject.Params
-              { name = "month",
+              { name = "Month",
                 type_ = Subject.IntType 1 12
               }
       producesExpectedContent params
@@ -32,6 +32,8 @@ producesExpectedContent params expectedResult = do
         codeText =
           Code.compileCodeContent
             ["Z", "V"]
-            []
+            [ ("Test.QuickCheck.Gen", "QuickCheck.Gen"),
+              ("Test.QuickCheck.Arbitrary", "QuickCheck.Arbitrary")
+            ]
             code
     shouldBe codeText expectedResult
