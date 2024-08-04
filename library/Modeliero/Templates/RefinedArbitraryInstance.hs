@@ -1,20 +1,20 @@
 {-# OPTIONS_GHC -Wno-unused-binds -Wno-unused-imports -Wno-name-shadowing #-}
 
-module Modeliero.Templates.ProductArbitraryInstance where
+module Modeliero.Templates.RefinedArbitraryInstance where
 
 import Coalmine.Prelude
 import Modeliero.Dsls.Code qualified as Code
 import Modeliero.Dsls.Namespace qualified as Namespace
 import Modeliero.Dsls.Package qualified as Package
-import Modeliero.Templates.ProductArbitraryInstance.Params qualified as Params
 
-data Params = Params
-  { fields :: [Params.Field]
-  }
+type Params = Type
 
-data Result = Result
-  { package :: Package.Package
-  }
+type Result = Code.Code
+
+data Type
+  = IntType
+      (Maybe Int)
+      (Maybe Int)
 
 compile :: Params -> Result
 compile =
