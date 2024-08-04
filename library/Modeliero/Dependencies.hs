@@ -18,3 +18,11 @@ text =
       minVersion = $$(l "2"),
       maxVersion = $$(l "3")
     }
+
+aeson :: Package.Dependency
+aeson =
+  Package.Dependency
+    { name = "aeson",
+      minVersion = $$(l "2"),
+      maxVersion = $$(l "3")
+    }

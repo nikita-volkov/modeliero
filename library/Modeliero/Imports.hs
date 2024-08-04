@@ -31,3 +31,24 @@ textLazy =
     { dependency = Just Dependencies.text,
       name = "Data.Text.Lazy"
     }
+
+aeson :: Code.Import
+aeson =
+  Code.Import
+    { dependency = Just Dependencies.aeson,
+      name = "Data.Aeson"
+    }
+
+aesonKeyMap :: Code.Import
+aesonKeyMap =
+  Code.Import
+    { dependency = Just Dependencies.aeson,
+      name = "Data.Aeson.KeyMap"
+    }
+
+aesonKey :: Code.Import
+aesonKey =
+  Code.Import
+    { dependency = Just Dependencies.aeson,
+      name = "Data.Aeson.Key"
+    }
