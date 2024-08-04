@@ -26,6 +26,7 @@ common base
     ConstraintKinds
     DataKinds
     DefaultSignatures
+    DeriveAnyClass
     DeriveDataTypeable
     DeriveFoldable
     DeriveFunctor
@@ -84,6 +85,10 @@ library
     Modeliero.Templates.ProductArbitraryInstance.Params
     Modeliero.Templates.ReexportsModule
     Modeliero.Templates.RefinedArbitraryInstance
+
+  other-modules:
+    Modeliero.Dependencies
+    Modeliero.Imports
 
   build-depends:
     coalmine,

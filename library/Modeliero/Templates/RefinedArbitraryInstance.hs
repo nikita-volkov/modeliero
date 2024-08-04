@@ -17,5 +17,5 @@ data Type
       (Maybe Int)
 
 compile :: Params -> Result
-compile =
+compile params =
   error "TODO"

@@ -25,7 +25,7 @@ compileCodeContent =
 data Code = Code
   { importRequests :: HashMap Import Text,
     -- | Function on prefix namespace and import resolver.
-    printer :: [Text] -> (Import -> Text) -> TextBuilder
+    printer :: [Text] -> (Import -> Text) -> TextBlock
   }
 
 data Import = Import
@@ -36,6 +36,7 @@ data Import = Import
     dependency :: Maybe Dependency,
     name :: Text
   }
+  deriving (Eq, Ord, Show, Generic, Hashable)
 
 import_ ::
   Import ->
@@ -44,3 +45,14 @@ import_ ::
   Code
 import_ =
   error "TODO"
+
+importing :: Import -> (Text -> TextBlock) -> Code
+importing =
+  error "TODO"
+
+textBlock :: TextBlock -> Code
+textBlock block =
+  Code
+    { importRequests = mempty,
+      printer = \_ _ -> block
+    }
