@@ -96,7 +96,6 @@ library
     Modeliero.Templates.ModelPackage
     Modeliero.Templates.ModelPackage.Params
     Modeliero.Templates.ProductArbitraryInstance
-    Modeliero.Templates.ProductArbitraryInstance.Params
     Modeliero.Templates.ReexportsModule
     Modeliero.Templates.RefinedArbitraryInstance
 
@@ -116,6 +115,7 @@ test-suite hspec
   main-is: Main.hs
   other-modules:
     Modeliero.ExtrasFor.Hspec
+    Modeliero.Templates.ProductArbitraryInstanceSpec
     Modeliero.Templates.RefinedArbitraryInstanceSpec
 
   build-tool-depends:

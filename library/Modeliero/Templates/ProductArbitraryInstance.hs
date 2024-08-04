@@ -1,21 +1,42 @@
-{-# OPTIONS_GHC -Wno-unused-binds -Wno-unused-imports -Wno-name-shadowing #-}
-
 module Modeliero.Templates.ProductArbitraryInstance where
 
 import Coalmine.Prelude
-import Modeliero.Dsls.Code qualified as Code
-import Modeliero.Dsls.Namespace qualified as Namespace
-import Modeliero.Dsls.Package qualified as Package
-import Modeliero.Templates.ProductArbitraryInstance.Params qualified as Params
+import Modeliero.Dsls.InModule
+import Modeliero.Imports qualified as Imports
 
 data Params = Params
-  { fields :: [Params.Field]
+  { name :: Text,
+    fields :: [Text]
   }
 
-data Result = Result
-  { package :: Package.Package
-  }
+type Result = InModule TextBlock
 
 compile :: Params -> Result
-compile =
-  error "TODO"
+compile params = do
+  arbitraryQualifier <- import_ Imports.quickCheckArbitrary
+  let arbitraryAssignments =
+        params.fields
+          & foldMap
+            ( \fieldName ->
+                [j|
+                  $fieldName <- ${arbitraryQualifier}arbitrary
+                
+                |]
+            )
+      shrinkAssignments =
+        params.fields
+          & foldMap
+            ( \fieldName ->
+                [j|
+                  $fieldName <- ${arbitraryQualifier}shrink value.$fieldName
+                
+                |]
+            )
+  pure
+    [j|
+      instance ${arbitraryQualifier}Arbitrary ${params.name} where
+        arbitrary ${params.name}{..} = do
+          ${arbitraryAssignments}pure ${params.name}{..}
+        shrink value = do
+          ${shrinkAssignments}pure ${params.name}{..}
+    |]
