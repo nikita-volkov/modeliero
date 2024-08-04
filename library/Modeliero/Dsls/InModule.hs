@@ -8,10 +8,13 @@ module Modeliero.Dsls.InModule
     import_,
     export,
     code,
+    groupedLegacyExp,
+    ungroupedLegacyExp,
   )
 where
 
 import Coalmine.Prelude
+import CodegenKit.HaskellPackage.Contexts.Exp qualified as LegacyExp
 import Modeliero.Dsls.Code qualified as Code
 import Modeliero.Dsls.Package qualified as Package
 
@@ -54,3 +57,11 @@ export export =
 code :: Code.Code -> InModule TextBlock
 code code =
   InModule (Code.splicing code)
+
+groupedLegacyExp :: LegacyExp.Exp -> InModule TextBlock
+groupedLegacyExp =
+  code . Code.groupedLegacyExp
+
+ungroupedLegacyExp :: LegacyExp.Exp -> InModule TextBlock
+ungroupedLegacyExp =
+  code . Code.ungroupedLegacyExp

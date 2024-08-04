@@ -5,6 +5,7 @@ module Modeliero.Dsls.Code where
 import Coalmine.NumericVersion qualified as NumericVersion
 import Coalmine.Prelude hiding (writeFile)
 import CodegenKit.HaskellPackage.Contexts.Code qualified as Legacy
+import CodegenKit.HaskellPackage.Contexts.Exp qualified as LegacyExp
 import Data.Text qualified as Text
 import Modeliero.Dsls.Package
 
@@ -95,3 +96,17 @@ textBlock block =
 export :: Text -> Code
 export name =
   error "TODO"
+
+groupedLegacyExp :: LegacyExp.Exp -> Code
+groupedLegacyExp exp =
+  Code
+    { legacy =
+        LegacyExp.toGroupedCode exp
+    }
+
+ungroupedLegacyExp :: LegacyExp.Exp -> Code
+ungroupedLegacyExp exp =
+  Code
+    { legacy =
+        LegacyExp.toUngroupedCode exp
+    }
