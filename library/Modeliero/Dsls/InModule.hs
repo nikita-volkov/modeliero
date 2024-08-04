@@ -7,6 +7,7 @@ module Modeliero.Dsls.InModule
     InModule,
     import_,
     export,
+    code,
   )
 where
 
@@ -49,3 +50,7 @@ import_ import_ =
 export :: Text -> InModule ()
 export export =
   InModule (\cont -> cont () <> Code.export export)
+
+code :: Code.Code -> InModule TextBlock
+code code =
+  InModule (Code.splicing code)
