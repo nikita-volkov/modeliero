@@ -1,6 +1,6 @@
 module Modeliero.Dsls.Package where
 
-import Coalmine.Prelude hiding (Version, writeFile)
+import Coalmine.Prelude hiding (writeFile)
 
 -- * Writes
 
@@ -61,14 +61,7 @@ data Module = Module
 
 data Dependency = Dependency
   { name :: Text,
-    minVersion :: Version,
-    maxVersion :: Version
+    minVersion :: NumericVersion,
+    maxVersion :: NumericVersion
   }
   deriving (Eq, Ord, Show, Generic, Hashable)
-
-data Version = Version
-  { head :: Word,
-    tail :: [Word]
-  }
-  deriving stock (Eq, Ord, Show, Generic)
-  deriving anyclass (Hashable)

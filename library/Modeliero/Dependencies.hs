@@ -1,11 +1,12 @@
 module Modeliero.Dependencies where
 
+import Coalmine.Prelude
 import Modeliero.Dsls.Package qualified as Package
 
 quickCheck :: Package.Dependency
 quickCheck =
   Package.Dependency
     { name = "QuickCheck",
-      minVersion = Package.Version 2 [15],
-      maxVersion = Package.Version 3 []
+      minVersion = $$(l "2.15"),
+      maxVersion = $$(l "3")
     }

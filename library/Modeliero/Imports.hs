@@ -10,3 +10,10 @@ quickCheckArbitrary =
     { dependency = Just Dependencies.quickCheck,
       name = "Test.QuickCheck.Arbitrary"
     }
+
+quickCheckGen :: Code.Import
+quickCheckGen =
+  Code.Import
+    { dependency = Just Dependencies.quickCheck,
+      name = "Test.QuickCheck.Gen"
+    }

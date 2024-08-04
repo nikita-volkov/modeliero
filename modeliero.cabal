@@ -92,4 +92,5 @@ library
 
   build-depends:
     coalmine,
+    structure-kit,
     text,

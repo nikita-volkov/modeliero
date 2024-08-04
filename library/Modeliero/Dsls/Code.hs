@@ -46,7 +46,7 @@ import_ ::
 import_ =
   error "TODO"
 
-importing :: Import -> (Text -> TextBlock) -> Code
+importing :: Import -> (Text -> Code) -> Code
 importing =
   error "TODO"
 
