@@ -1,11 +1,7 @@
-{-# OPTIONS_GHC -Wno-unused-binds -Wno-unused-imports -Wno-name-shadowing #-}
-
 module Modeliero.Templates.RefinedArbitraryInstance where
 
 import Coalmine.Prelude
-import Modeliero.Dsls.Code qualified as Code
-import Modeliero.Dsls.Namespace qualified as Namespace
-import Modeliero.Dsls.Package qualified as Package
+import Modeliero.Dsls.InModule
 import Modeliero.Imports qualified as Imports
 
 data Params = Params
@@ -13,7 +9,7 @@ data Params = Params
     type_ :: Type
   }
 
-type Result = Code.Code
+type Result = InModule TextBlock
 
 data Type
   = IntType
@@ -28,49 +24,37 @@ data Type
       Int
 
 compile :: Params -> Result
-compile params =
-  evalCont do
-    withImports
-      <$> cont (Code.importing Imports.quickCheckArbitrary)
-      <*> cont (Code.importing Imports.quickCheckGen)
-  where
-    withImports arbitraryQualifier genQualifier =
-      evalCont do
-        withBodies
-          <$> cont (Code.splicing arbitraryBody)
-          <*> cont (Code.splicing shrinkBody)
-      where
-        withBodies arbitraryBody shrinkBody =
-          Code.textBlock
-            [j|
-              instance ${arbitraryQualifier}Arbitrary ${params.name} where
-                arbitrary = $arbitraryBody
-                shrink = $shrinkBody
-            |]
-        (arbitraryBody, shrinkBody) = case params.type_ of
-          IntType min max ->
-            ( Code.textBlock
-                [j|
-                ${params.name} <$$> ${genQualifier}choose ($min, $max)
-              |],
-              Code.textBlock
-                [j|
-                  const []
-                |]
-            )
-          TextType minLength maxLength ->
-            ( Code.textBlock
-                [j|
-                  do
-                    length <- ${genQualifier}chooseInt ($minLength, $maxLength)
-                    string <- ${genQualifier}vectorOf length ${arbitraryQualifier}arbitrary
-                    pure (${params.name} (fromString string))
-                |],
-              Code.importing Imports.text \textQualifier ->
-                Code.textBlock
-                  [j|
-                    \(${params.name} text) -> do
-                      toTake <- enumFromTo $minLength (${textQualifier}length text)
-                      pure (${params.name} (${textQualifier}take toTake text))
-                  |]
-            )
+compile params = do
+  arbitraryQualifier <- import_ Imports.quickCheckArbitrary
+  genQualifier <- import_ Imports.quickCheckGen
+  (arbitraryBody, shrinkBody) <- case params.type_ of
+    IntType min max ->
+      pure
+        ( [j|
+            ${params.name} <$$> ${genQualifier}choose ($min, $max)
+          |],
+          [j|
+            const []
+          |]
+        )
+    TextType minLength maxLength -> do
+      textQualifier <- import_ Imports.text
+      pure
+        ( [j|
+            do
+              length <- ${genQualifier}chooseInt ($minLength, $maxLength)
+              string <- ${genQualifier}vectorOf length ${arbitraryQualifier}arbitrary
+              pure (${params.name} (fromString string))
+          |],
+          [j|
+            \(${params.name} text) -> do
+              toTake <- enumFromTo $minLength (${textQualifier}length text)
+              pure (${params.name} (${textQualifier}take toTake text))
+          |]
+        )
+  pure
+    [j|
+      instance ${arbitraryQualifier}Arbitrary ${params.name} where
+        arbitrary = $arbitraryBody
+        shrink = $shrinkBody
+    |]

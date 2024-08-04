@@ -1,7 +1,9 @@
+-- | A simpler API over Code.
 module Modeliero.Dsls.InModule
   ( compileModule,
     compileDependencies,
     compileContent,
+    compileCode,
     InModule,
     import_,
     export,

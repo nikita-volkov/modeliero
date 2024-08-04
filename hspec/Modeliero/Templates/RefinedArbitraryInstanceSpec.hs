@@ -1,7 +1,7 @@
 module Modeliero.Templates.RefinedArbitraryInstanceSpec where
 
 import Coalmine.Prelude
-import Modeliero.Dsls.Code qualified as Code
+import Modeliero.Dsls.InModule qualified as InModule
 import Modeliero.Templates.RefinedArbitraryInstance qualified as Subject
 import Test.Hspec
 
@@ -57,7 +57,7 @@ producesExpectedContent params expectedResult = do
   it "Produces expected content" do
     let code = Subject.compile params
         codeText =
-          Code.compileCodeContent
+          InModule.compileContent
             ["Z", "V"]
             [ ("Test.QuickCheck.Gen", "QuickCheck.Gen"),
               ("Test.QuickCheck.Arbitrary", "QuickCheck.Arbitrary"),
