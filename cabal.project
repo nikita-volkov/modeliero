@@ -19,7 +19,7 @@ source-repository-package
 source-repository-package
   type: git
   location: https://github.com/nikita-volkov/codegen-kit
-  tag: 1e6ddff22a3905384e68861682568c19d4c83bfb
+  tag: e4a57636ffa9d8b66dae67648e8d50401dae534e
   subdir:
     packages/legacy
     packages/haskell-package

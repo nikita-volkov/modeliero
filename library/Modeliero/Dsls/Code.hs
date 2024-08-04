@@ -53,6 +53,12 @@ data Import = Import
   }
   deriving (Eq, Ord, Show, Generic, Hashable)
 
+splicing :: Code -> (TextBlock -> Code) -> Code
+splicing code cont =
+  Code
+    { legacy = Legacy.splicing code.legacy \splice -> (cont splice).legacy
+    }
+
 importing :: Import -> (Text -> Code) -> Code
 importing import_ cont =
   Code

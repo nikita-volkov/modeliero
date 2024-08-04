@@ -17,3 +17,17 @@ quickCheckGen =
     { dependency = Just Dependencies.quickCheck,
       name = "Test.QuickCheck.Gen"
     }
+
+text :: Code.Import
+text =
+  Code.Import
+    { dependency = Just Dependencies.text,
+      name = "Data.Text"
+    }
+
+textLazy :: Code.Import
+textLazy =
+  Code.Import
+    { dependency = Just Dependencies.text,
+      name = "Data.Text.Lazy"
+    }
