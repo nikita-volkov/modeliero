@@ -52,3 +52,10 @@ aesonKey =
     { dependency = Just Dependencies.aeson,
       name = "Data.Aeson.Key"
     }
+
+modelieroBaseSpecial :: Code.Import
+modelieroBaseSpecial =
+  Code.Import
+    { dependency = Just Dependencies.modelieroBase,
+      name = "ModelieroBase.Classes.Special"
+    }

@@ -26,3 +26,11 @@ aeson =
       minVersion = $$(l "2"),
       maxVersion = $$(l "3")
     }
+
+modelieroBase :: Package.Dependency
+modelieroBase =
+  Package.Dependency
+    { name = "modeliero-base",
+      minVersion = $$(l "1"),
+      maxVersion = $$(l "1.1")
+    }

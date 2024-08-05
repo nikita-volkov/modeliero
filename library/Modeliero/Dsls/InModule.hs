@@ -10,6 +10,7 @@ module Modeliero.Dsls.InModule
     code,
     groupedLegacyExp,
     ungroupedLegacyExp,
+    Code.Import (..),
   )
 where
 

@@ -89,20 +89,19 @@ library
   import: base
   hs-source-dirs: library
   exposed-modules:
+    Modeliero.Dependencies
     Modeliero.Dsls.Code
     Modeliero.Dsls.InModule
     Modeliero.Dsls.Namespace
     Modeliero.Dsls.Package
+    Modeliero.Imports
     Modeliero.Templates.ModelPackage
     Modeliero.Templates.ModelPackage.Params
     Modeliero.Templates.ProductArbitraryInstance
     Modeliero.Templates.ReexportsModule
     Modeliero.Templates.RefinedArbitraryInstance
+    Modeliero.Templates.SpecialInstance
     Modeliero.Templates.ToJsonInstance
-
-  other-modules:
-    Modeliero.Dependencies
-    Modeliero.Imports
 
   build-depends:
     coalmine,
@@ -118,6 +117,7 @@ test-suite hspec
     Modeliero.ExtrasFor.Hspec
     Modeliero.Templates.ProductArbitraryInstanceSpec
     Modeliero.Templates.RefinedArbitraryInstanceSpec
+    Modeliero.Templates.SpecialInstanceSpec
     Modeliero.Templates.ToJsonInstanceSpec
 
   build-tool-depends:
