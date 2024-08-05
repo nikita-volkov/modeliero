@@ -13,7 +13,7 @@ type Result = InModule TextBlock
 
 compile :: Params -> Result
 compile params = do
-  arbitraryQualifier <- import_ Imports.quickCheckArbitrary
+  arbitraryQualifier <- requestImport Imports.quickCheckArbitrary
   let arbitraryAssignments =
         params.fields
           & foldMap

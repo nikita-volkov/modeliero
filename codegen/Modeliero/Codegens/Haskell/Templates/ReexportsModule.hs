@@ -12,6 +12,6 @@ type Result = InModule TextBlock
 compile :: Params -> Result
 compile params = do
   for_ params.models \reexportName -> do
-    reexport Import {dependency = Nothing, name = reexportName}
+    registerReexport Import {dependency = Nothing, name = reexportName}
 
   pure mempty

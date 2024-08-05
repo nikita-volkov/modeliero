@@ -22,8 +22,8 @@ data Field = Field
 
 compile :: Params -> Result
 compile params = do
-  aesonQfr <- import_ Imports.aeson
-  aesonKeyMapQfr <- import_ Imports.aesonKeyMap
+  aesonQfr <- requestImport Imports.aeson
+  aesonKeyMapQfr <- requestImport Imports.aesonKeyMap
   let toJsonBody = case params.structure of
         ProductStructure fields ->
           [j|

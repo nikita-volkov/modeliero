@@ -25,8 +25,8 @@ data Type
 
 compile :: Params -> Result
 compile params = do
-  arbitraryQualifier <- import_ Imports.quickCheckArbitrary
-  genQualifier <- import_ Imports.quickCheckGen
+  arbitraryQualifier <- requestImport Imports.quickCheckArbitrary
+  genQualifier <- requestImport Imports.quickCheckGen
   (arbitraryBody, shrinkBody) <- case params.type_ of
     IntType min max ->
       pure
@@ -38,7 +38,7 @@ compile params = do
           |]
         )
     TextType minLength maxLength -> do
-      textQualifier <- import_ Imports.text
+      textQualifier <- requestImport Imports.text
       pure
         ( [j|
             do

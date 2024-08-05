@@ -1,16 +1,16 @@
 -- | A simpler API over Code.
 module Modeliero.Codegens.Haskell.Dsls.InModule
-  ( compileModule,
-    compileDependencies,
-    compileContent,
-    compileCode,
+  ( compileToModule,
+    compileToDependencies,
+    compileToContent,
+    compileToCode,
     InModule,
-    import_,
-    export,
-    reexport,
-    code,
-    groupedLegacyExp,
-    ungroupedLegacyExp,
+    requestImport,
+    registerExport,
+    registerReexport,
+    liftCode,
+    liftGroupedLegacyExp,
+    liftUngroupedLegacyExp,
     Import (..),
     Dependency (..),
   )
@@ -23,24 +23,24 @@ import Modeliero.Codegens.Haskell.Dsls.Code qualified as Code
 import Modeliero.Codegens.Haskell.Dsls.Package (Dependency (..))
 import Modeliero.Codegens.Haskell.Dsls.Package qualified as Package
 
-compileModule ::
+compileToModule ::
   [Text] ->
   [(Text, Text)] ->
   InModule TextBlock ->
   Package.Module
-compileModule name importAliases =
-  Code.compileCodeModule name importAliases . compileCode
+compileToModule name importAliases =
+  Code.compileCodeModule name importAliases . compileToCode
 
-compileDependencies :: InModule TextBlock -> [Package.Dependency]
-compileDependencies =
-  Code.compileCodeDependencies . compileCode
+compileToDependencies :: InModule TextBlock -> [Package.Dependency]
+compileToDependencies =
+  Code.compileCodeDependencies . compileToCode
 
-compileContent :: [Text] -> [(Text, Text)] -> InModule TextBlock -> Text
-compileContent namespace importAliases =
-  Code.compileCodeContent namespace importAliases . compileCode
+compileToContent :: [Text] -> [(Text, Text)] -> InModule TextBlock -> Text
+compileToContent namespace importAliases =
+  Code.compileCodeContent namespace importAliases . compileToCode
 
-compileCode :: InModule TextBlock -> Code.Code
-compileCode (InModule run) =
+compileToCode :: InModule TextBlock -> Code.Code
+compileToCode (InModule run) =
   run Code.textBlock
 
 newtype InModule a
@@ -49,26 +49,26 @@ newtype InModule a
     (Functor, Applicative, Monad)
     via (Cont Code.Code)
 
-import_ :: Code.Import -> InModule Text
-import_ import_ =
+requestImport :: Code.Import -> InModule Text
+requestImport import_ =
   InModule (Code.importing import_)
 
-export :: Text -> InModule ()
-export export =
+registerExport :: Text -> InModule ()
+registerExport export =
   InModule (\cont -> cont () <> Code.export export)
 
-reexport :: Code.Import -> InModule ()
-reexport =
-  void . code . Code.reexport
+registerReexport :: Code.Import -> InModule ()
+registerReexport =
+  void . liftCode . Code.reexport
 
-code :: Code.Code -> InModule TextBlock
-code code =
+liftCode :: Code.Code -> InModule TextBlock
+liftCode code =
   InModule (Code.splicing code)
 
-groupedLegacyExp :: LegacyExp.Exp -> InModule TextBlock
-groupedLegacyExp =
-  code . Code.groupedLegacyExp
+liftGroupedLegacyExp :: LegacyExp.Exp -> InModule TextBlock
+liftGroupedLegacyExp =
+  liftCode . Code.groupedLegacyExp
 
-ungroupedLegacyExp :: LegacyExp.Exp -> InModule TextBlock
-ungroupedLegacyExp =
-  code . Code.ungroupedLegacyExp
+liftUngroupedLegacyExp :: LegacyExp.Exp -> InModule TextBlock
+liftUngroupedLegacyExp =
+  liftCode . Code.ungroupedLegacyExp

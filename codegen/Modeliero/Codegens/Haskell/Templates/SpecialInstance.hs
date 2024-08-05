@@ -18,8 +18,8 @@ data Type
 
 compile :: Params -> Result
 compile params = do
-  textQfr <- import_ Imports.text
-  specialClassQfr <- import_ params.specialClassImport
+  textQfr <- requestImport Imports.text
+  specialClassQfr <- requestImport params.specialClassImport
   (baseType :: TextBlock, specializeBody) <- case params.type_ of
     IntType min max ->
       pure

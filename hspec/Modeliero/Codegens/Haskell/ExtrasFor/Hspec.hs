@@ -13,7 +13,7 @@ compilingProducesExpectedContent compile params expectedResult = do
   it "Produces expected content" do
     let code = compile params
         codeText =
-          InModule.compileContent
+          InModule.compileToContent
             ["Z", "V"]
             [ ("Test.QuickCheck.Gen", "QuickCheck.Gen"),
               ("Test.QuickCheck.Arbitrary", "QuickCheck.Arbitrary"),

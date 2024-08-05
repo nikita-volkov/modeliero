@@ -23,8 +23,8 @@ data Field = Field
 
 compile :: Params -> Result
 compile params = do
-  aesonQfr <- import_ Imports.aeson
-  aesonTypesQfr <- import_ Imports.aesonTypes
+  aesonQfr <- requestImport Imports.aeson
+  aesonTypesQfr <- requestImport Imports.aesonTypes
   let parseJsonBody = case params.structure of
         ProductStructure fields ->
           [j|
