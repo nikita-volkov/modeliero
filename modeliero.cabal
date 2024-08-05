@@ -95,6 +95,7 @@ library
     Modeliero.Dsls.Namespace
     Modeliero.Dsls.Package
     Modeliero.Imports
+    Modeliero.Templates.FromJsonInstance
     Modeliero.Templates.ModelPackage
     Modeliero.Templates.ModelPackage.Params
     Modeliero.Templates.ProductArbitraryInstance
@@ -106,6 +107,7 @@ library
   build-depends:
     coalmine,
     codegen-kit-haskell-package,
+    codegen-kit-legacy,
     text,
 
 test-suite hspec
@@ -115,6 +117,7 @@ test-suite hspec
   main-is: Main.hs
   other-modules:
     Modeliero.ExtrasFor.Hspec
+    Modeliero.Templates.FromJsonInstanceSpec
     Modeliero.Templates.ProductArbitraryInstanceSpec
     Modeliero.Templates.RefinedArbitraryInstanceSpec
     Modeliero.Templates.SpecialInstanceSpec

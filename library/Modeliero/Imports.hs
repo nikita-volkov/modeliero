@@ -53,6 +53,13 @@ aesonKey =
       name = "Data.Aeson.Key"
     }
 
+aesonTypes :: Import
+aesonTypes =
+  Import
+    { dependency = Just Dependencies.aeson,
+      name = "Data.Aeson.Types"
+    }
+
 modelieroBaseSpecial :: Import
 modelieroBaseSpecial =
   Import
