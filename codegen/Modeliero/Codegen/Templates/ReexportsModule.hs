@@ -1,20 +1,17 @@
 module Modeliero.Codegen.Templates.ReexportsModule where
 
 import Coalmine.Prelude
-import Modeliero.Codegen.Dsls.Code qualified as Code
-import Modeliero.Codegen.Dsls.Namespace qualified as Namespace
-import Modeliero.Codegen.Dsls.Package qualified as Package
+import Modeliero.Codegen.Dsls.InModule
 
 data Params = Params
-  { namespace :: Namespace.Namespace,
-    modules :: [Namespace.Namespace]
+  { models :: [Text]
   }
 
-data Result = Result
-  { module_ :: Package.Module,
-    code :: Code.Code
-  }
+type Result = InModule TextBlock
 
 compile :: Params -> Result
-compile =
-  error "TODO"
+compile params = do
+  for_ params.models \reexportName -> do
+    reexport Import {dependency = Nothing, name = reexportName}
+
+  pure mempty

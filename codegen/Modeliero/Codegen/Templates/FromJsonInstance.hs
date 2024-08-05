@@ -44,9 +44,9 @@ compile params = do
                               then "parseFieldMaybe"
                               else "parseField"
                        in [j|
-                        ${field.haskellName} <- ${aesonTypesQfr}${parseExp} object ${jsonNameLit}
+                            ${field.haskellName} <- ${aesonTypesQfr}${parseExp} object ${jsonNameLit}
 
-                      |]
+                          |]
                   )
 
   pure

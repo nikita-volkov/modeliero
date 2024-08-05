@@ -119,6 +119,7 @@ test-suite hspec
     Modeliero.Codegen.ExtrasFor.Hspec
     Modeliero.Codegen.Templates.FromJsonInstanceSpec
     Modeliero.Codegen.Templates.ProductArbitraryInstanceSpec
+    Modeliero.Codegen.Templates.ReexportsModuleSpec
     Modeliero.Codegen.Templates.RefinedArbitraryInstanceSpec
     Modeliero.Codegen.Templates.SpecialInstanceSpec
     Modeliero.Codegen.Templates.ToJsonInstanceSpec

@@ -94,8 +94,23 @@ textBlock block =
 
 -- | Register export.
 export :: Text -> Code
-export name =
-  error "TODO"
+export = Code . Legacy.export
+
+reexport :: Import -> Code
+reexport import_ =
+  mappend (foldMap dependency import_.dependency)
+    $ Code
+    $ Legacy.reexportUnqualifiedModule import_.name
+
+dependency :: Dependency -> Code
+dependency dependency =
+  Code
+    $ Legacy.dependency
+      dependency.name
+      dependency.minVersion.head
+      dependency.minVersion.tail
+      dependency.maxVersion.head
+      dependency.maxVersion.tail
 
 groupedLegacyExp :: LegacyExp.Exp -> Code
 groupedLegacyExp exp =

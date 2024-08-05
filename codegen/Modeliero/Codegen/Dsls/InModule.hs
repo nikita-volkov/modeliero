@@ -7,16 +7,20 @@ module Modeliero.Codegen.Dsls.InModule
     InModule,
     import_,
     export,
+    reexport,
     code,
     groupedLegacyExp,
     ungroupedLegacyExp,
-    Code.Import (..),
+    Import (..),
+    Dependency (..),
   )
 where
 
 import Coalmine.Prelude
 import CodegenKit.HaskellPackage.Contexts.Exp qualified as LegacyExp
+import Modeliero.Codegen.Dsls.Code (Import (..))
 import Modeliero.Codegen.Dsls.Code qualified as Code
+import Modeliero.Codegen.Dsls.Package (Dependency (..))
 import Modeliero.Codegen.Dsls.Package qualified as Package
 
 compileModule ::
@@ -36,13 +40,11 @@ compileContent namespace importAliases =
   Code.compileCodeContent namespace importAliases . compileCode
 
 compileCode :: InModule TextBlock -> Code.Code
-compileCode inModule =
-  inModule.run Code.textBlock
+compileCode (InModule run) =
+  run Code.textBlock
 
 newtype InModule a
-  = InModule
-  { run :: (a -> Code.Code) -> Code.Code
-  }
+  = InModule ((a -> Code.Code) -> Code.Code)
   deriving
     (Functor, Applicative, Monad)
     via (Cont Code.Code)
@@ -54,6 +56,10 @@ import_ import_ =
 export :: Text -> InModule ()
 export export =
   InModule (\cont -> cont () <> Code.export export)
+
+reexport :: Code.Import -> InModule ()
+reexport =
+  void . code . Code.reexport
 
 code :: Code.Code -> InModule TextBlock
 code code =
