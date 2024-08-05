@@ -1,8 +1,8 @@
-module Modeliero.Templates.ProductArbitraryInstance where
+module Modeliero.Codegen.Templates.ProductArbitraryInstance where
 
 import Coalmine.Prelude
-import Modeliero.Dsls.InModule
-import Modeliero.Imports qualified as Imports
+import Modeliero.Codegen.Dsls.InModule
+import Modeliero.Codegen.Imports qualified as Imports
 
 data Params = Params
   { name :: Text,

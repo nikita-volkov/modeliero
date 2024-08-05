@@ -1,9 +1,9 @@
-module Modeliero.Templates.FromJsonInstance where
+module Modeliero.Codegen.Templates.FromJsonInstance where
 
 import Coalmine.Prelude
 import CodegenKit.Legacy.ByLanguage.Haskell.Snippets qualified as CodegenKitLegacy.Snippets
-import Modeliero.Dsls.InModule
-import Modeliero.Imports qualified as Imports
+import Modeliero.Codegen.Dsls.InModule
+import Modeliero.Codegen.Imports qualified as Imports
 
 data Params = Params
   { typeName :: Text,

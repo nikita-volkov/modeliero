@@ -1,5 +1,5 @@
 -- | A simpler API over Code.
-module Modeliero.Dsls.InModule
+module Modeliero.Codegen.Dsls.InModule
   ( compileModule,
     compileDependencies,
     compileContent,
@@ -16,8 +16,8 @@ where
 
 import Coalmine.Prelude
 import CodegenKit.HaskellPackage.Contexts.Exp qualified as LegacyExp
-import Modeliero.Dsls.Code qualified as Code
-import Modeliero.Dsls.Package qualified as Package
+import Modeliero.Codegen.Dsls.Code qualified as Code
+import Modeliero.Codegen.Dsls.Package qualified as Package
 
 compileModule ::
   [Text] ->

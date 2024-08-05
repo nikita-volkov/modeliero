@@ -1,7 +1,7 @@
-module Modeliero.Dependencies where
+module Modeliero.Codegen.Dependencies where
 
 import Coalmine.Prelude
-import Modeliero.Dsls.Package (Dependency (..))
+import Modeliero.Codegen.Dsls.Package (Dependency (..))
 
 quickCheck :: Dependency
 quickCheck =

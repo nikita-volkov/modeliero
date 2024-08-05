@@ -1,9 +1,9 @@
-module Modeliero.Templates.SpecialInstanceSpec where
+module Modeliero.Codegen.Templates.SpecialInstanceSpec where
 
 import Coalmine.Prelude
-import Modeliero.ExtrasFor.Hspec
-import Modeliero.Imports qualified as Imports
-import Modeliero.Templates.SpecialInstance qualified as Subject
+import Modeliero.Codegen.ExtrasFor.Hspec
+import Modeliero.Codegen.Imports qualified as Imports
+import Modeliero.Codegen.Templates.SpecialInstance qualified as Subject
 import Test.Hspec
 
 spec :: Spec

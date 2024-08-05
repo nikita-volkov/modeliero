@@ -1,9 +1,9 @@
-module Modeliero.Templates.ToJsonInstance where
+module Modeliero.Codegen.Templates.ToJsonInstance where
 
 import Coalmine.MultilineTextBuilder qualified as TextBlock
 import Coalmine.Prelude
-import Modeliero.Dsls.InModule
-import Modeliero.Imports qualified as Imports
+import Modeliero.Codegen.Dsls.InModule
+import Modeliero.Codegen.Imports qualified as Imports
 
 data Params = Params
   { typeName :: Text,
