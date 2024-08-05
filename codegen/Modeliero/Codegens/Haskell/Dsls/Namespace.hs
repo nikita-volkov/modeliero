@@ -1,6 +1,6 @@
 {-# OPTIONS_GHC -Wno-unused-binds -Wno-unused-imports -Wno-name-shadowing #-}
 
-module Modeliero.Codegen.Dsls.Namespace
+module Modeliero.Codegens.Haskell.Dsls.Namespace
   ( Namespace,
     fromSlugList,
     fromModuleName,
@@ -12,7 +12,7 @@ where
 
 import Coalmine.Prelude
 import Data.Text qualified as Text
-import Modeliero.Codegen.Dsls.Package
+import Modeliero.Codegens.Haskell.Dsls.Package
 
 newtype Namespace = Namespace {slugs :: NonEmpty Slug}
 

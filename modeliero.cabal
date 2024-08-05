@@ -89,20 +89,20 @@ library codegen
   import: base
   hs-source-dirs: codegen
   exposed-modules:
-    Modeliero.Codegen.Dependencies
-    Modeliero.Codegen.Dsls.Code
-    Modeliero.Codegen.Dsls.InModule
-    Modeliero.Codegen.Dsls.Namespace
-    Modeliero.Codegen.Dsls.Package
-    Modeliero.Codegen.Imports
-    Modeliero.Codegen.Templates.FromJsonInstance
-    Modeliero.Codegen.Templates.ModelPackage
-    Modeliero.Codegen.Templates.ModelPackage.Params
-    Modeliero.Codegen.Templates.ProductArbitraryInstance
-    Modeliero.Codegen.Templates.ReexportsModule
-    Modeliero.Codegen.Templates.RefinedArbitraryInstance
-    Modeliero.Codegen.Templates.SpecialInstance
-    Modeliero.Codegen.Templates.ToJsonInstance
+    Modeliero.Codegens.Haskell.Dependencies
+    Modeliero.Codegens.Haskell.Dsls.Code
+    Modeliero.Codegens.Haskell.Dsls.InModule
+    Modeliero.Codegens.Haskell.Dsls.Namespace
+    Modeliero.Codegens.Haskell.Dsls.Package
+    Modeliero.Codegens.Haskell.Imports
+    Modeliero.Codegens.Haskell.Templates.FromJsonInstance
+    Modeliero.Codegens.Haskell.Templates.ModelPackage
+    Modeliero.Codegens.Haskell.Templates.ModelPackage.Params
+    Modeliero.Codegens.Haskell.Templates.ProductArbitraryInstance
+    Modeliero.Codegens.Haskell.Templates.ReexportsModule
+    Modeliero.Codegens.Haskell.Templates.RefinedArbitraryInstance
+    Modeliero.Codegens.Haskell.Templates.SpecialInstance
+    Modeliero.Codegens.Haskell.Templates.ToJsonInstance
 
   build-depends:
     coalmine,
@@ -116,13 +116,13 @@ test-suite hspec
   hs-source-dirs: hspec
   main-is: Main.hs
   other-modules:
-    Modeliero.Codegen.ExtrasFor.Hspec
-    Modeliero.Codegen.Templates.FromJsonInstanceSpec
-    Modeliero.Codegen.Templates.ProductArbitraryInstanceSpec
-    Modeliero.Codegen.Templates.ReexportsModuleSpec
-    Modeliero.Codegen.Templates.RefinedArbitraryInstanceSpec
-    Modeliero.Codegen.Templates.SpecialInstanceSpec
-    Modeliero.Codegen.Templates.ToJsonInstanceSpec
+    Modeliero.Codegens.Haskell.ExtrasFor.Hspec
+    Modeliero.Codegens.Haskell.Templates.FromJsonInstanceSpec
+    Modeliero.Codegens.Haskell.Templates.ProductArbitraryInstanceSpec
+    Modeliero.Codegens.Haskell.Templates.ReexportsModuleSpec
+    Modeliero.Codegens.Haskell.Templates.RefinedArbitraryInstanceSpec
+    Modeliero.Codegens.Haskell.Templates.SpecialInstanceSpec
+    Modeliero.Codegens.Haskell.Templates.ToJsonInstanceSpec
 
   build-tool-depends:
     hspec-discover:hspec-discover >=2 && <3

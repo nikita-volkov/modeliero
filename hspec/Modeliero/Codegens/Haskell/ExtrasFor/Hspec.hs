@@ -1,7 +1,7 @@
-module Modeliero.Codegen.ExtrasFor.Hspec where
+module Modeliero.Codegens.Haskell.ExtrasFor.Hspec where
 
 import Coalmine.Prelude
-import Modeliero.Codegen.Dsls.InModule qualified as InModule
+import Modeliero.Codegens.Haskell.Dsls.InModule qualified as InModule
 import Test.Hspec
 
 compilingProducesExpectedContent ::

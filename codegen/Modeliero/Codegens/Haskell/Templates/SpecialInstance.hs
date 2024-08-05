@@ -1,8 +1,8 @@
-module Modeliero.Codegen.Templates.SpecialInstance where
+module Modeliero.Codegens.Haskell.Templates.SpecialInstance where
 
 import Coalmine.Prelude
-import Modeliero.Codegen.Dsls.InModule
-import Modeliero.Codegen.Imports qualified as Imports
+import Modeliero.Codegens.Haskell.Dsls.InModule
+import Modeliero.Codegens.Haskell.Imports qualified as Imports
 
 data Params = Params
   { typeName :: Text,

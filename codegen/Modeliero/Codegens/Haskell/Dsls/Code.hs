@@ -1,13 +1,13 @@
 {-# OPTIONS_GHC -Wno-unused-binds -Wno-unused-imports -Wno-name-shadowing #-}
 
-module Modeliero.Codegen.Dsls.Code where
+module Modeliero.Codegens.Haskell.Dsls.Code where
 
 import Coalmine.NumericVersion qualified as NumericVersion
 import Coalmine.Prelude hiding (writeFile)
 import CodegenKit.HaskellPackage.Contexts.Code qualified as Legacy
 import CodegenKit.HaskellPackage.Contexts.Exp qualified as LegacyExp
 import Data.Text qualified as Text
-import Modeliero.Codegen.Dsls.Package
+import Modeliero.Codegens.Haskell.Dsls.Package
 
 compileCodeModule ::
   [Text] ->

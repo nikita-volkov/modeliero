@@ -1,8 +1,8 @@
-module Modeliero.Codegen.Imports where
+module Modeliero.Codegens.Haskell.Imports where
 
 import Coalmine.Prelude
-import Modeliero.Codegen.Dependencies qualified as Dependencies
-import Modeliero.Codegen.Dsls.Code (Import (..))
+import Modeliero.Codegens.Haskell.Dependencies qualified as Dependencies
+import Modeliero.Codegens.Haskell.Dsls.Code (Import (..))
 
 quickCheckArbitrary :: Import
 quickCheckArbitrary =

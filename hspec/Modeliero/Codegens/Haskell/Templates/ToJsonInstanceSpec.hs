@@ -1,8 +1,8 @@
-module Modeliero.Codegen.Templates.ToJsonInstanceSpec where
+module Modeliero.Codegens.Haskell.Templates.ToJsonInstanceSpec where
 
 import Coalmine.Prelude
-import Modeliero.Codegen.ExtrasFor.Hspec
-import Modeliero.Codegen.Templates.ToJsonInstance qualified as Subject
+import Modeliero.Codegens.Haskell.ExtrasFor.Hspec
+import Modeliero.Codegens.Haskell.Templates.ToJsonInstance qualified as Subject
 import Test.Hspec
 
 spec :: Spec

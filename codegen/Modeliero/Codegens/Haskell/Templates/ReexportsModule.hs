@@ -1,7 +1,7 @@
-module Modeliero.Codegen.Templates.ReexportsModule where
+module Modeliero.Codegens.Haskell.Templates.ReexportsModule where
 
 import Coalmine.Prelude
-import Modeliero.Codegen.Dsls.InModule
+import Modeliero.Codegens.Haskell.Dsls.InModule
 
 data Params = Params
   { models :: [Text]

@@ -1,9 +1,9 @@
-module Modeliero.Codegen.Templates.ToJsonInstance where
+module Modeliero.Codegens.Haskell.Templates.ToJsonInstance where
 
 import Coalmine.MultilineTextBuilder qualified as TextBlock
 import Coalmine.Prelude
-import Modeliero.Codegen.Dsls.InModule
-import Modeliero.Codegen.Imports qualified as Imports
+import Modeliero.Codegens.Haskell.Dsls.InModule
+import Modeliero.Codegens.Haskell.Imports qualified as Imports
 
 data Params = Params
   { typeName :: Text,

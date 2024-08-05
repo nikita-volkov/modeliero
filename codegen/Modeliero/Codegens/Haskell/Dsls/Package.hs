@@ -1,4 +1,4 @@
-module Modeliero.Codegen.Dsls.Package where
+module Modeliero.Codegens.Haskell.Dsls.Package where
 
 import Coalmine.Prelude hiding (writeFile)
 
