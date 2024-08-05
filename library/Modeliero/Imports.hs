@@ -2,60 +2,60 @@ module Modeliero.Imports where
 
 import Coalmine.Prelude
 import Modeliero.Dependencies qualified as Dependencies
-import Modeliero.Dsls.Code qualified as Code
+import Modeliero.Dsls.Code (Import (..))
 
-quickCheckArbitrary :: Code.Import
+quickCheckArbitrary :: Import
 quickCheckArbitrary =
-  Code.Import
+  Import
     { dependency = Just Dependencies.quickCheck,
       name = "Test.QuickCheck.Arbitrary"
     }
 
-quickCheckGen :: Code.Import
+quickCheckGen :: Import
 quickCheckGen =
-  Code.Import
+  Import
     { dependency = Just Dependencies.quickCheck,
       name = "Test.QuickCheck.Gen"
     }
 
-text :: Code.Import
+text :: Import
 text =
-  Code.Import
+  Import
     { dependency = Just Dependencies.text,
       name = "Data.Text"
     }
 
-textLazy :: Code.Import
+textLazy :: Import
 textLazy =
-  Code.Import
+  Import
     { dependency = Just Dependencies.text,
       name = "Data.Text.Lazy"
     }
 
-aeson :: Code.Import
+aeson :: Import
 aeson =
-  Code.Import
+  Import
     { dependency = Just Dependencies.aeson,
       name = "Data.Aeson"
     }
 
-aesonKeyMap :: Code.Import
+aesonKeyMap :: Import
 aesonKeyMap =
-  Code.Import
+  Import
     { dependency = Just Dependencies.aeson,
       name = "Data.Aeson.KeyMap"
     }
 
-aesonKey :: Code.Import
+aesonKey :: Import
 aesonKey =
-  Code.Import
+  Import
     { dependency = Just Dependencies.aeson,
       name = "Data.Aeson.Key"
     }
 
-modelieroBaseSpecial :: Code.Import
+modelieroBaseSpecial :: Import
 modelieroBaseSpecial =
-  Code.Import
+  Import
     { dependency = Just Dependencies.modelieroBase,
       name = "ModelieroBase.Classes.Special"
     }

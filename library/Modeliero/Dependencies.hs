@@ -1,35 +1,35 @@
 module Modeliero.Dependencies where
 
 import Coalmine.Prelude
-import Modeliero.Dsls.Package qualified as Package
+import Modeliero.Dsls.Package (Dependency (..))
 
-quickCheck :: Package.Dependency
+quickCheck :: Dependency
 quickCheck =
-  Package.Dependency
+  Dependency
     { name = "QuickCheck",
       minVersion = $$(l "2.15"),
       maxVersion = $$(l "3")
     }
 
-text :: Package.Dependency
+text :: Dependency
 text =
-  Package.Dependency
+  Dependency
     { name = "text",
       minVersion = $$(l "2"),
       maxVersion = $$(l "3")
     }
 
-aeson :: Package.Dependency
+aeson :: Dependency
 aeson =
-  Package.Dependency
+  Dependency
     { name = "aeson",
       minVersion = $$(l "2"),
       maxVersion = $$(l "3")
     }
 
-modelieroBase :: Package.Dependency
+modelieroBase :: Dependency
 modelieroBase =
-  Package.Dependency
+  Dependency
     { name = "modeliero-base",
       minVersion = $$(l "1"),
       maxVersion = $$(l "1.1")
