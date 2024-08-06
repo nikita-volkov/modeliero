@@ -1,11 +1,19 @@
 {-# OPTIONS_GHC -Wno-unused-binds -Wno-unused-imports -Wno-name-shadowing #-}
 
--- | Model of the parameters.
-module Modeliero.Codegens.Haskell.Templates.ModelPackage.Params where
+module Modeliero.Codegens.Haskell where
 
 import Coalmine.Prelude
 import Modeliero.Codegens.Haskell.Dsls.Code qualified as Code
 import Modeliero.Codegens.Haskell.Dsls.Namespace qualified as Namespace
 import Modeliero.Codegens.Haskell.Dsls.Package qualified as Package
+import Modeliero.Codegens.Haskell.Params qualified as Params
 
-data Model
+type Params = Params.Model
+
+data Result = Result
+  { package :: Package.Package
+  }
+
+compile :: Params -> Result
+compile =
+  error "TODO"

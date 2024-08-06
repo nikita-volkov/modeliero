@@ -89,14 +89,14 @@ library codegen
   import: base
   hs-source-dirs: codegen
   exposed-modules:
+    Modeliero.Codegens.Haskell
     Modeliero.Codegens.Haskell.Dependencies
     Modeliero.Codegens.Haskell.Dsls.Code
     Modeliero.Codegens.Haskell.Dsls.InModule
     Modeliero.Codegens.Haskell.Dsls.Namespace
     Modeliero.Codegens.Haskell.Dsls.Package
     Modeliero.Codegens.Haskell.Imports
-    Modeliero.Codegens.Haskell.Templates.ModelPackage
-    Modeliero.Codegens.Haskell.Templates.ModelPackage.Params
+    Modeliero.Codegens.Haskell.Params
     Modeliero.Codegens.Haskell.Templates.ProductModelModule
     Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.ArbitraryInstance
     Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.DataTypeDeclaration
