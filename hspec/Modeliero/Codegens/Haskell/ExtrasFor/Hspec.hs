@@ -5,6 +5,7 @@ import Modeliero.Codegens.Haskell.Dsls.InModule qualified as InModule
 import Test.Hspec
 
 compilingProducesExpectedContent ::
+  (HasCallStack) =>
   (params -> InModule.InModule TextBlock) ->
   params ->
   Text ->
