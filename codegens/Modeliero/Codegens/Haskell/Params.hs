@@ -4,7 +4,9 @@ module Modeliero.Codegens.Haskell.Params where
 import Coalmine.Prelude
 
 data Model = Model
-  { types :: [TypeDeclaration],
+  { name :: Slug,
+    version :: NonEmpty Word,
+    types :: [TypeDeclaration],
     instances :: Instances
   }
 
@@ -32,9 +34,12 @@ data FieldType
   | HashMapFieldType PlainType PlainType
 
 data PlainType
-  = LocalPlainType Slug
-  | StandardPlainType StandardType
-  | CustomPlainType CustomType
+  = -- | Reference to a type defined in this model.
+    LocalPlainType Slug
+  | -- | One of the finite set of standard types with extra support.
+    StandardPlainType StandardType
+  | -- | Any type from any package with a limited support.
+    CustomPlainType CustomType
 
 data StandardType
   = BoolStandardType
