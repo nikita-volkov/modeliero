@@ -32,33 +32,24 @@ textLazy =
       name = "Data.Text.Lazy"
     }
 
-aeson :: Import
-aeson =
+fromAeson :: Text -> Import
+fromAeson name =
   Import
     { dependency = Just Dependencies.aeson,
-      name = "Data.Aeson"
+      name = name
     }
+
+aeson :: Import
+aeson = fromBase "Data.Aeson"
 
 aesonKeyMap :: Import
-aesonKeyMap =
-  Import
-    { dependency = Just Dependencies.aeson,
-      name = "Data.Aeson.KeyMap"
-    }
+aesonKeyMap = fromBase "Data.Aeson.KeyMap"
 
 aesonKey :: Import
-aesonKey =
-  Import
-    { dependency = Just Dependencies.aeson,
-      name = "Data.Aeson.Key"
-    }
+aesonKey = fromBase "Data.Aeson.Key"
 
 aesonTypes :: Import
-aesonTypes =
-  Import
-    { dependency = Just Dependencies.aeson,
-      name = "Data.Aeson.Types"
-    }
+aesonTypes = fromBase "Data.Aeson.Types"
 
 modelieroBaseSpecial :: Import
 modelieroBaseSpecial =
