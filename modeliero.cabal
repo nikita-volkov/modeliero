@@ -85,9 +85,9 @@ common test
     -threaded
     "-with-rtsopts=-N -I0 -qg"
 
-library codegen
+library codegens
   import: base
-  hs-source-dirs: codegen
+  hs-source-dirs: codegens
   exposed-modules:
     Modeliero.Codegens.Haskell
     Modeliero.Codegens.Haskell.Dependencies
@@ -134,4 +134,4 @@ test-suite hspec
   build-depends:
     coalmine,
     hspec,
-    modeliero:codegen,
+    modeliero:codegens,
