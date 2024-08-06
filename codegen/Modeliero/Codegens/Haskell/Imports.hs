@@ -57,3 +57,16 @@ modelieroBaseSpecial =
     { dependency = Just Dependencies.modelieroBase,
       name = "ModelieroBase.Classes.Special"
     }
+
+fromBase :: Text -> Import
+fromBase name =
+  Import
+    { dependency = Just Dependencies.base,
+      name = name
+    }
+
+basePrelude :: Import
+basePrelude = fromBase "Prelude"
+
+baseGenerics :: Import
+baseGenerics = fromBase "GHC.Generics"

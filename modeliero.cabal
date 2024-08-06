@@ -99,6 +99,7 @@ library codegen
     Modeliero.Codegens.Haskell.Templates.ModelPackage
     Modeliero.Codegens.Haskell.Templates.ModelPackage.Params
     Modeliero.Codegens.Haskell.Templates.ProductArbitraryInstance
+    Modeliero.Codegens.Haskell.Templates.ProductDataTypeDeclaration
     Modeliero.Codegens.Haskell.Templates.ReexportsModule
     Modeliero.Codegens.Haskell.Templates.RefinedArbitraryInstance
     Modeliero.Codegens.Haskell.Templates.SpecialInstance
@@ -119,6 +120,7 @@ test-suite hspec
     Modeliero.Codegens.Haskell.ExtrasFor.Hspec
     Modeliero.Codegens.Haskell.Templates.FromJsonInstanceSpec
     Modeliero.Codegens.Haskell.Templates.ProductArbitraryInstanceSpec
+    Modeliero.Codegens.Haskell.Templates.ProductDataTypeDeclarationSpec
     Modeliero.Codegens.Haskell.Templates.ReexportsModuleSpec
     Modeliero.Codegens.Haskell.Templates.RefinedArbitraryInstanceSpec
     Modeliero.Codegens.Haskell.Templates.SpecialInstanceSpec

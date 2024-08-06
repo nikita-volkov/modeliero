@@ -3,6 +3,14 @@ module Modeliero.Codegens.Haskell.Dependencies where
 import Coalmine.Prelude
 import Modeliero.Codegens.Haskell.Dsls.Package (Dependency (..))
 
+base :: Dependency
+base =
+  Dependency
+    { name = "base",
+      minVersion = $$(l "4.14"),
+      maxVersion = $$(l "5")
+    }
+
 quickCheck :: Dependency
 quickCheck =
   Dependency

@@ -21,7 +21,8 @@ compilingProducesExpectedContent compile params expectedResult = do
               ("Data.Aeson", "Aeson"),
               ("Data.Aeson.Key", "Aeson.Key"),
               ("Data.Aeson.KeyMap", "Aeson.KeyMap"),
-              ("Data.Aeson.Types", "Aeson.Types")
+              ("Data.Aeson.Types", "Aeson.Types"),
+              ("Prelude", "")
             ]
             code
     shouldBe codeText expectedResult
