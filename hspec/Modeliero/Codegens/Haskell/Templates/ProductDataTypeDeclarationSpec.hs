@@ -46,8 +46,7 @@ spec = do
             -- more docs
             data Artist = Artist
               { name :: Text,
-                -- |
-                -- Some docs
+                -- | Some docs
                 genreName :: Text
               }
               deriving (Show, Eq, Ord, GHC.Generics.Generic)

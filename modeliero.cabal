@@ -96,6 +96,7 @@ library codegen
     Modeliero.Codegens.Haskell.Dsls.Package
     Modeliero.Codegens.Haskell.Imports
     Modeliero.Codegens.Haskell.Templates.FromJsonInstance
+    Modeliero.Codegens.Haskell.Templates.ModelModule
     Modeliero.Codegens.Haskell.Templates.ModelPackage
     Modeliero.Codegens.Haskell.Templates.ModelPackage.Params
     Modeliero.Codegens.Haskell.Templates.ProductArbitraryInstance
@@ -119,6 +120,7 @@ test-suite hspec
   other-modules:
     Modeliero.Codegens.Haskell.ExtrasFor.Hspec
     Modeliero.Codegens.Haskell.Templates.FromJsonInstanceSpec
+    Modeliero.Codegens.Haskell.Templates.ModelModuleSpec
     Modeliero.Codegens.Haskell.Templates.ProductArbitraryInstanceSpec
     Modeliero.Codegens.Haskell.Templates.ProductDataTypeDeclarationSpec
     Modeliero.Codegens.Haskell.Templates.ReexportsModuleSpec
