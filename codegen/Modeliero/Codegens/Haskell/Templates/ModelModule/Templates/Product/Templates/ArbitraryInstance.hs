@@ -1,4 +1,4 @@
-module Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.ProductArbitraryInstance where
+module Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.Product.Templates.ArbitraryInstance where
 
 import Coalmine.Prelude
 import Modeliero.Codegens.Haskell.Dsls.InModule

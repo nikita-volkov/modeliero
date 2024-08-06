@@ -1,8 +1,8 @@
-module Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.ProductDataTypeDeclarationSpec where
+module Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.Product.Templates.DataTypeDeclarationSpec where
 
 import Coalmine.Prelude
 import Modeliero.Codegens.Haskell.ExtrasFor.Hspec
-import Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.ProductDataTypeDeclaration qualified as Subject
+import Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.Product.Templates.DataTypeDeclaration qualified as Subject
 import Test.Hspec
 
 spec :: Spec

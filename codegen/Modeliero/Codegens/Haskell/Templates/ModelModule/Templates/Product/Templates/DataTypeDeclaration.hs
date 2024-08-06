@@ -1,4 +1,4 @@
-module Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.ProductDataTypeDeclaration where
+module Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.Product.Templates.DataTypeDeclaration where
 
 import Coalmine.MultilineTextBuilder qualified as TextBlock
 import Coalmine.Prelude

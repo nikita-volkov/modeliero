@@ -1,8 +1,8 @@
-module Modeliero.Codegens.Haskell.Templates.ModelModuleSpec where
+module Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.ProductSpec where
 
 import Coalmine.Prelude
 import Modeliero.Codegens.Haskell.ExtrasFor.Hspec
-import Modeliero.Codegens.Haskell.Templates.ModelModule qualified as Subject
+import Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.Product qualified as Subject
 import Test.Hspec
 
 spec :: Spec
@@ -60,10 +60,11 @@ spec = do
               deriving (Show, Eq, Ord, GHC.Generics.Generic)
             
             instance Aeson.ToJSON Artist where
-              toJSON value = (Aeson.Object . Aeson.KeyMap.fromList)
-                [ ("name", Aeson.toJSON value.name),
-                  ("genre-name", Aeson.toJSON value.genreName)
-                ]
+              toJSON value =
+                (Aeson.Object . Aeson.KeyMap.fromList)
+                  [ ("name", Aeson.toJSON value.name),
+                    ("genre-name", Aeson.toJSON value.genreName)
+                  ]
             
             instance Aeson.FromJSON Artist where
               parseJSON = \case

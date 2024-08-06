@@ -1,12 +1,12 @@
-module Modeliero.Codegens.Haskell.Templates.ModelModule where
+module Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.Product where
 
 import Coalmine.MultilineTextBuilder qualified as TextBlock
 import Coalmine.Prelude
 import Modeliero.Codegens.Haskell.Dsls.InModule
-import Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.FromJsonInstance qualified as Templates.FromJsonInstance
-import Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.ProductArbitraryInstance qualified as Templates.ProductArbitraryInstance
-import Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.ProductDataTypeDeclaration qualified as Templates.ProductDataTypeDeclaration
-import Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.ToJsonInstance qualified as Templates.ToJsonInstance
+import Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.Product.Templates.ArbitraryInstance qualified as Templates.ProductArbitraryInstance
+import Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.Product.Templates.DataTypeDeclaration qualified as Templates.ProductDataTypeDeclaration
+import Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.Product.Templates.FromJsonInstance qualified as Templates.FromJsonInstance
+import Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.Product.Templates.ToJsonInstance qualified as Templates.ToJsonInstance
 
 data Params = Params
   { name :: Text,
@@ -67,7 +67,7 @@ compile params = do
               $ Templates.ToJsonInstance.compile
                 Templates.ToJsonInstance.Params
                   { typeName = params.name,
-                    structure =
+                    fields =
                       params.fields
                         & fmap
                           ( \field ->
@@ -76,7 +76,6 @@ compile params = do
                                   jsonName = field.jsonName
                                 }
                           )
-                        & Templates.ToJsonInstance.ProductStructure
                   }
           else Nothing,
         if params.instances.aeson
@@ -85,7 +84,7 @@ compile params = do
               $ Templates.FromJsonInstance.compile
                 Templates.FromJsonInstance.Params
                   { typeName = params.name,
-                    structure =
+                    fields =
                       params.fields
                         & fmap
                           ( \field ->
@@ -95,7 +94,6 @@ compile params = do
                                   nullable = field.nullable
                                 }
                           )
-                        & Templates.FromJsonInstance.ProductStructure
                   }
           else Nothing,
         if params.instances.arbitrary

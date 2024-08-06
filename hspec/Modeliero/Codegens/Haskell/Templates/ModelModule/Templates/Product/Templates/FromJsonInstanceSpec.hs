@@ -1,8 +1,8 @@
-module Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.FromJsonInstanceSpec where
+module Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.Product.Templates.FromJsonInstanceSpec where
 
 import Coalmine.Prelude
 import Modeliero.Codegens.Haskell.ExtrasFor.Hspec
-import Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.FromJsonInstance qualified as Subject
+import Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.Product.Templates.FromJsonInstance qualified as Subject
 import Test.Hspec
 
 spec :: Spec
@@ -12,19 +12,18 @@ spec = do
       let params =
             Subject.Params
               { typeName = "Artist",
-                structure =
-                  Subject.ProductStructure
-                    [ Subject.Field
-                        { haskellName = "name",
-                          jsonName = "name",
-                          nullable = False
-                        },
-                      Subject.Field
-                        { haskellName = "genreName",
-                          jsonName = "genre-name",
-                          nullable = True
-                        }
-                    ]
+                fields =
+                  [ Subject.Field
+                      { haskellName = "name",
+                        jsonName = "name",
+                        nullable = False
+                      },
+                    Subject.Field
+                      { haskellName = "genreName",
+                        jsonName = "genre-name",
+                        nullable = True
+                      }
+                  ]
               }
 
       compilingProducesExpectedContent Subject.compile params

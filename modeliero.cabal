@@ -95,13 +95,13 @@ library codegen
     Modeliero.Codegens.Haskell.Dsls.Namespace
     Modeliero.Codegens.Haskell.Dsls.Package
     Modeliero.Codegens.Haskell.Imports
-    Modeliero.Codegens.Haskell.Templates.ModelModule
-    Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.FromJsonInstance
-    Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.ProductArbitraryInstance
-    Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.ProductDataTypeDeclaration
-    Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.RefinedArbitraryInstance
-    Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.SpecialInstance
-    Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.ToJsonInstance
+    Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.Product
+    Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.Product.Templates.ArbitraryInstance
+    Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.Product.Templates.DataTypeDeclaration
+    Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.Product.Templates.FromJsonInstance
+    Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.Product.Templates.ToJsonInstance
+    Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.Refined.Templates.ArbitraryInstance
+    Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.Refined.Templates.SpecialInstance
     Modeliero.Codegens.Haskell.Templates.ModelPackage
     Modeliero.Codegens.Haskell.Templates.ModelPackage.Params
     Modeliero.Codegens.Haskell.Templates.ReexportsModule
@@ -119,13 +119,13 @@ test-suite hspec
   main-is: Main.hs
   other-modules:
     Modeliero.Codegens.Haskell.ExtrasFor.Hspec
-    Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.FromJsonInstanceSpec
-    Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.ProductArbitraryInstanceSpec
-    Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.ProductDataTypeDeclarationSpec
-    Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.RefinedArbitraryInstanceSpec
-    Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.SpecialInstanceSpec
-    Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.ToJsonInstanceSpec
-    Modeliero.Codegens.Haskell.Templates.ModelModuleSpec
+    Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.Product.Templates.ArbitraryInstanceSpec
+    Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.Product.Templates.DataTypeDeclarationSpec
+    Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.Product.Templates.FromJsonInstanceSpec
+    Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.Product.Templates.ToJsonInstanceSpec
+    Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.ProductSpec
+    Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.Refined.Templates.ArbitraryInstanceSpec
+    Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.Refined.Templates.SpecialInstanceSpec
     Modeliero.Codegens.Haskell.Templates.ReexportsModuleSpec
 
   build-tool-depends:
