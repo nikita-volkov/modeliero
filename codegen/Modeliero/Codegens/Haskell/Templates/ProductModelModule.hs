@@ -1,12 +1,12 @@
-module Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.Product where
+module Modeliero.Codegens.Haskell.Templates.ProductModelModule where
 
 import Coalmine.MultilineTextBuilder qualified as TextBlock
 import Coalmine.Prelude
 import Modeliero.Codegens.Haskell.Dsls.InModule
-import Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.Product.Templates.ArbitraryInstance qualified as Templates.ProductArbitraryInstance
-import Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.Product.Templates.DataTypeDeclaration qualified as Templates.ProductDataTypeDeclaration
-import Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.Product.Templates.FromJsonInstance qualified as Templates.FromJsonInstance
-import Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.Product.Templates.ToJsonInstance qualified as Templates.ToJsonInstance
+import Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.ArbitraryInstance qualified as Templates.ProductArbitraryInstance
+import Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.DataTypeDeclaration qualified as Templates.ProductDataTypeDeclaration
+import Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.FromJsonInstance qualified as Templates.FromJsonInstance
+import Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.ToJsonInstance qualified as Templates.ToJsonInstance
 
 data Params = Params
   { name :: Text,

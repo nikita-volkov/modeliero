@@ -1,8 +1,8 @@
-module Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.Product.Templates.ArbitraryInstanceSpec where
+module Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.ArbitraryInstanceSpec where
 
 import Coalmine.Prelude
 import Modeliero.Codegens.Haskell.ExtrasFor.Hspec
-import Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.Product.Templates.ArbitraryInstance qualified as Subject
+import Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.ArbitraryInstance qualified as Subject
 import Test.Hspec
 
 spec :: Spec

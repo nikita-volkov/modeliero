@@ -1,4 +1,4 @@
-module Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.Product.Templates.FromJsonInstance where
+module Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.FromJsonInstance where
 
 import Coalmine.Prelude
 import CodegenKit.Legacy.ByLanguage.Haskell.Snippets qualified as CodegenKitLegacy.Snippets

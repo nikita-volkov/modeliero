@@ -1,8 +1,8 @@
-module Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.ProductSpec where
+module Modeliero.Codegens.Haskell.Templates.ProductModelModuleSpec where
 
 import Coalmine.Prelude
 import Modeliero.Codegens.Haskell.ExtrasFor.Hspec
-import Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.Product qualified as Subject
+import Modeliero.Codegens.Haskell.Templates.ProductModelModule qualified as Subject
 import Test.Hspec
 
 spec :: Spec
