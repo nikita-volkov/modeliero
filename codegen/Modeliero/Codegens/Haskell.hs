@@ -10,9 +10,8 @@ import Modeliero.Codegens.Haskell.Params qualified as Params
 
 type Params = Params.Model
 
-data Result = Result
-  { package :: Package.Package
-  }
+-- | Compiled files of the package at their relative paths.
+type Result = [(FilePath, Text)]
 
 compile :: Params -> Result
 compile =
