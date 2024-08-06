@@ -1,4 +1,4 @@
-module Modeliero.Codegens.Haskell.Templates.ToJsonInstance where
+module Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.ToJsonInstance where
 
 import Coalmine.MultilineTextBuilder qualified as TextBlock
 import Coalmine.Prelude

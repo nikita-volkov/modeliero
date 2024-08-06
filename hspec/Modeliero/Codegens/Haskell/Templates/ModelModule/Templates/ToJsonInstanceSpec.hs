@@ -1,8 +1,8 @@
-module Modeliero.Codegens.Haskell.Templates.FromJsonInstanceSpec where
+module Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.ToJsonInstanceSpec where
 
 import Coalmine.Prelude
 import Modeliero.Codegens.Haskell.ExtrasFor.Hspec
-import Modeliero.Codegens.Haskell.Templates.FromJsonInstance qualified as Subject
+import Modeliero.Codegens.Haskell.Templates.ModelModule.Templates.ToJsonInstance qualified as Subject
 import Test.Hspec
 
 spec :: Spec
@@ -16,13 +16,11 @@ spec = do
                   Subject.ProductStructure
                     [ Subject.Field
                         { haskellName = "name",
-                          jsonName = "name",
-                          nullable = False
+                          jsonName = "name"
                         },
                       Subject.Field
                         { haskellName = "genreName",
-                          jsonName = "genre-name",
-                          nullable = True
+                          jsonName = "genre-name"
                         }
                     ]
               }
@@ -32,13 +30,11 @@ spec = do
             module Z.V where
 
             import Data.Aeson qualified as Aeson
-            import Data.Aeson.Types qualified as Aeson.Types
+            import Data.Aeson.KeyMap qualified as Aeson.KeyMap
             
-            instance Aeson.FromJSON Artist where
-              parseJSON = \case
-                Aeson.Object object -> do
-                  name <- Aeson.Types.parseField object "name"
-                  genreName <- Aeson.Types.parseFieldMaybe object "genre-name"
-                  pure Artist{..}
-                json -> Aeson.Types.typeMismatch "Object" json
+            instance Aeson.ToJSON Artist where
+              toJSON value = (Aeson.Object . Aeson.KeyMap.fromList)
+                [ ("name", Aeson.toJSON value.name),
+                  ("genre-name", Aeson.toJSON value.genreName)
+                ]
           |]
