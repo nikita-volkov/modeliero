@@ -97,6 +97,7 @@ library codegens
     Modeliero.Codegens.Haskell.Dsls.Package
     Modeliero.Codegens.Haskell.Imports
     Modeliero.Codegens.Haskell.Params
+    Modeliero.Codegens.Haskell.TemplateAdapters.ProductModelModule
     Modeliero.Codegens.Haskell.Templates.ProductModelModule
     Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.ArbitraryInstance
     Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.DataTypeDeclaration
