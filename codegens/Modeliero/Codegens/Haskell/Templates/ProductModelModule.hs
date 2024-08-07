@@ -36,6 +36,7 @@ data Instances = Instances
 
 compile :: Params -> Result
 compile params = do
+  registerExport [i|${params.name}(..)|]
   decls <-
     (sequence . catMaybes)
       [ Just

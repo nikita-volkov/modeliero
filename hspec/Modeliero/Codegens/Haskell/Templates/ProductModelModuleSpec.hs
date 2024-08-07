@@ -42,7 +42,10 @@ spec = do
 
       compilingProducesExpectedContent Subject.compile params
         $ [i|
-            module Z.V where
+            module Z.V
+              ( Artist(..),
+              )
+            where
             
             import Prelude
             import Data.Aeson qualified as Aeson

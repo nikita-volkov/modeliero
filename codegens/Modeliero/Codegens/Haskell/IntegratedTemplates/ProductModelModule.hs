@@ -8,6 +8,7 @@ import Coalmine.MultilineTextBuilder qualified as TextBlock
 import Coalmine.Prelude
 import Coalmine.Slug qualified as Slug
 import Modeliero.Codegens.Haskell.Dsls.InModule qualified as InModule
+import Modeliero.Codegens.Haskell.Imports qualified as Imports
 import Modeliero.Codegens.Haskell.Params
 import Modeliero.Codegens.Haskell.Templates.ProductModelModule qualified as Template
 
@@ -69,3 +70,7 @@ compileFieldType modelsNamespace = \case
               name = foldMap (<> ".") modelsNamespace <> typeName
             }
       pure (qfr <> typeName)
+    StandardPlainType standardType -> case standardType of
+      BoolStandardType -> do
+        qfr <- InModule.requestImport Imports.basePrelude
+        pure (qfr <> "Bool")

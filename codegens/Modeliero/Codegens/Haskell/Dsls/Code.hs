@@ -6,6 +6,9 @@ import Coalmine.NumericVersion qualified as NumericVersion
 import Coalmine.Prelude hiding (writeFile)
 import CodegenKit.HaskellPackage.Contexts.Code qualified as Legacy
 import CodegenKit.HaskellPackage.Contexts.Exp qualified as LegacyExp
+import CodegenKit.HaskellPackage.Contexts.Package qualified as Legacy.Package
+import CodegenKit.Legacy.Dependencies qualified as Legacy.Dependencies
+import CodegenKit.Legacy.Versioning qualified as Legacy.Versioning
 import Data.Text qualified as Text
 import Modeliero.Codegens.Haskell.Dsls.Package
 
@@ -17,28 +20,54 @@ compileCodeModule ::
 compileCodeModule name importAliases code =
   Module
     { name,
-      dependencies = compileCodeDependencies code,
-      content = compileCodeContent name importAliases code
+      dependencies,
+      content = legacyPackageCompiledModule.content
     }
+  where
+    legacyPackageCompiledModule =
+      Legacy.toPackageCompiledModule
+        Legacy.ModuleConfig
+          { namespace = name,
+            importAliases,
+            importRemappings = []
+          }
+        Legacy.Preferences
+          { strictData = False,
+            overloadedRecordDot = True,
+            importQualifiedPost = True
+          }
+        code.legacy
+    dependencies =
+      legacyPackageCompiledModule.requestedDependencies
+        & Legacy.Dependencies.toList
+        & fmap
+          ( \(name, Legacy.Versioning.VersionRange from upto) ->
+              Dependency
+                { name,
+                  minVersion =
+                    case from of
+                      Just (Legacy.Versioning.Version head tail) ->
+                        NumericVersion.NumericVersion {head, tail}
+                      Nothing ->
+                        NumericVersion.NumericVersion 0 [],
+                  maxVersion =
+                    case upto of
+                      Just (Legacy.Versioning.Version head tail) ->
+                        NumericVersion.NumericVersion {head, tail}
+                      Nothing ->
+                        NumericVersion.NumericVersion 0 []
+                }
+          )
 
 compileCodeDependencies :: Code -> [Dependency]
-compileCodeDependencies =
-  error "TODO"
+compileCodeDependencies code =
+  compileCodeModule [] [] code
+    & (.dependencies)
 
 compileCodeContent :: [Text] -> [(Text, Text)] -> Code -> Text
 compileCodeContent namespace importAliases code =
-  Legacy.toModuleText
-    Legacy.ModuleConfig
-      { namespace,
-        importAliases,
-        importRemappings = []
-      }
-    Legacy.Preferences
-      { strictData = False,
-        overloadedRecordDot = True,
-        importQualifiedPost = True
-      }
-    code.legacy
+  compileCodeModule namespace importAliases code
+    & (.content)
 
 newtype Code = Code
   { legacy :: Legacy.Code

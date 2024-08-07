@@ -2,6 +2,7 @@
 
 module Modeliero.Codegens.Haskell where
 
+import Coalmine.NumericVersion qualified as NumericVersion
 import Coalmine.Prelude
 import Coalmine.Slug qualified as Slug
 import Data.Text qualified as Text
@@ -26,8 +27,9 @@ compile params =
   where
     package =
       Package.Package
-        { name = params.name & Slug.toSpinalCaseText,
+        { name = ("modeliero-artifacts" <> params.name) & Slug.toSpinalCaseText,
           synopsis = "Generated model package",
+          version = NumericVersion.fromNonEmpty params.version,
           modules
         }
     modules =
@@ -39,10 +41,21 @@ compile params =
             modelModules
         }
     rootNamespace =
-      [params.name & Slug.toUpperCamelCaseText]
+      [ "ModelieroArtifacts",
+        params.name & Slug.toUpperCamelCaseText
+      ]
     typesNamespace =
       rootNamespace <> ["Types"]
-    importAliases = []
+    importAliases =
+      [ ("Test.QuickCheck.Gen", "Qc.Gen"),
+        ("Test.QuickCheck.Arbitrary", "Qc.Arbitrary"),
+        ("Data.Text", "Text"),
+        ("Data.Aeson", "Aeson"),
+        ("Data.Aeson.Key", "Aeson.Key"),
+        ("Data.Aeson.KeyMap", "Aeson.KeyMap"),
+        ("Data.Aeson.Types", "Aeson.Types"),
+        ("Prelude", "")
+      ]
     modelModules =
       params.types
         & fmap

@@ -4,52 +4,50 @@ import Coalmine.Prelude
 import Modeliero.Codegens.Haskell.Dependencies qualified as Dependencies
 import Modeliero.Codegens.Haskell.Dsls.Code (Import (..))
 
-quickCheckArbitrary :: Import
-quickCheckArbitrary =
+fromQuickCheck :: Text -> Import
+fromQuickCheck name =
   Import
     { dependency = Just Dependencies.quickCheck,
-      name = "Test.QuickCheck.Arbitrary"
+      name
     }
 
+quickCheckArbitrary :: Import
+quickCheckArbitrary = fromQuickCheck "Test.QuickCheck.Arbitrary"
+
 quickCheckGen :: Import
-quickCheckGen =
+quickCheckGen = fromQuickCheck "Test.QuickCheck.Gen"
+
+fromText :: Text -> Import
+fromText name =
   Import
-    { dependency = Just Dependencies.quickCheck,
-      name = "Test.QuickCheck.Gen"
+    { dependency = Just Dependencies.text,
+      name
     }
 
 text :: Import
-text =
-  Import
-    { dependency = Just Dependencies.text,
-      name = "Data.Text"
-    }
+text = fromText "Data.Text"
 
 textLazy :: Import
-textLazy =
-  Import
-    { dependency = Just Dependencies.text,
-      name = "Data.Text.Lazy"
-    }
+textLazy = fromText "Data.Text.Lazy"
 
 fromAeson :: Text -> Import
 fromAeson name =
   Import
     { dependency = Just Dependencies.aeson,
-      name = name
+      name
     }
 
 aeson :: Import
-aeson = fromBase "Data.Aeson"
+aeson = fromAeson "Data.Aeson"
 
 aesonKeyMap :: Import
-aesonKeyMap = fromBase "Data.Aeson.KeyMap"
+aesonKeyMap = fromAeson "Data.Aeson.KeyMap"
 
 aesonKey :: Import
-aesonKey = fromBase "Data.Aeson.Key"
+aesonKey = fromAeson "Data.Aeson.Key"
 
 aesonTypes :: Import
-aesonTypes = fromBase "Data.Aeson.Types"
+aesonTypes = fromAeson "Data.Aeson.Types"
 
 modelieroBaseSpecial :: Import
 modelieroBaseSpecial =
