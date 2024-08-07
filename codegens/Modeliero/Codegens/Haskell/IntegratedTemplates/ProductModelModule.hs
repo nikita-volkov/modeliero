@@ -1,6 +1,8 @@
 {-# OPTIONS_GHC -Wno-unused-binds -Wno-unused-imports -Wno-name-shadowing -Wno-incomplete-patterns #-}
 
-module Modeliero.Codegens.Haskell.TemplateAdapters.ProductModelModule (compile) where
+-- |
+-- Integrates template to the Params model.
+module Modeliero.Codegens.Haskell.IntegratedTemplates.ProductModelModule (compile) where
 
 import Coalmine.MultilineTextBuilder qualified as TextBlock
 import Coalmine.Prelude

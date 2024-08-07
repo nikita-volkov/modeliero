@@ -5,8 +5,10 @@ module Modeliero.Codegens.Haskell where
 import Coalmine.Prelude
 import Coalmine.Slug qualified as Slug
 import Modeliero.Codegens.Haskell.Dsls.Code qualified as Code
+import Modeliero.Codegens.Haskell.Dsls.InModule qualified as InModule
 import Modeliero.Codegens.Haskell.Dsls.Namespace qualified as Namespace
 import Modeliero.Codegens.Haskell.Dsls.Package qualified as Package
+import Modeliero.Codegens.Haskell.IntegratedTemplates.ProductModelModule qualified as IntegratedTemplates.ProductModelModule
 import Modeliero.Codegens.Haskell.Params qualified as Params
 import Modeliero.Codegens.Haskell.Templates.ProductModelModule qualified as Templates.ProductModelModule
 
@@ -19,19 +21,23 @@ compile :: Params -> Result
 compile params =
   error "TODO"
   where
+    modelsNamespace =
+      [ params.name & Slug.toUpperCamelCaseText,
+        "Types"
+      ]
+    importAliases = []
     modelModules =
       params.types
         & fmap
           ( \type_ ->
-              case type_.definition of
-                Params.ProductTypeDefinition fields ->
-                  Templates.ProductModelModule.Params
-                    { name = Slug.toUpperCamelCaseText type_.name,
-                      haddock = type_.docs,
-                      fields =
-                        fields
-                          & fmap (error "TODO"),
-                      instances =
-                        error "TODO"
-                    }
+              let moduleName = modelsNamespace <> [type_.name & Slug.toUpperCamelCaseText]
+               in case type_.definition of
+                    Params.ProductTypeDefinition fields ->
+                      InModule.compileToModule moduleName importAliases
+                        $ IntegratedTemplates.ProductModelModule.compile
+                          modelsNamespace
+                          params.instances
+                          type_.name
+                          type_.docs
+                          fields
           )
