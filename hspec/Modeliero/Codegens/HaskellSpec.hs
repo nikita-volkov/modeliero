@@ -136,9 +136,9 @@ spec = do
                       import Data.Aeson.KeyMap qualified as Aeson.KeyMap
                       import Data.Aeson.Types qualified as Aeson.Types
                       import GHC.Generics qualified
-                      import ModelieroArtifacts.Iso8601.Types.Day qualified
-                      import ModelieroArtifacts.Iso8601.Types.Month qualified
-                      import ModelieroArtifacts.Iso8601.Types.Year qualified
+                      import ModelieroArtifacts.Iso8601.Types.Day qualified as Local
+                      import ModelieroArtifacts.Iso8601.Types.Month qualified as Local
+                      import ModelieroArtifacts.Iso8601.Types.Year qualified as Local
                       import Test.QuickCheck.Arbitrary qualified as Qc.Arbitrary
 
                       -- | ISO-8601 Year Month Day for representing a date.
@@ -146,11 +146,11 @@ spec = do
                         { -- | Whether the format contains dashes.
                           separated :: Bool,
                           -- | Year.
-                          year :: ModelieroArtifacts.Iso8601.Types.Year.Year,
+                          year :: Local.Year,
                           -- | Month.
-                          month :: ModelieroArtifacts.Iso8601.Types.Month.Month,
+                          month :: Local.Month,
                           -- | Day.
-                          day :: ModelieroArtifacts.Iso8601.Types.Day.Day
+                          day :: Local.Day
                         }
                         deriving (Show, Eq, Ord, GHC.Generics.Generic)
 

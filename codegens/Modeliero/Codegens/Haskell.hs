@@ -47,15 +47,27 @@ compile params =
     typesNamespace =
       rootNamespace <> ["Types"]
     importAliases =
-      [ ("Test.QuickCheck.Gen", "Qc.Gen"),
-        ("Test.QuickCheck.Arbitrary", "Qc.Arbitrary"),
-        ("Data.Text", "Text"),
-        ("Data.Aeson", "Aeson"),
-        ("Data.Aeson.Key", "Aeson.Key"),
-        ("Data.Aeson.KeyMap", "Aeson.KeyMap"),
-        ("Data.Aeson.Types", "Aeson.Types"),
-        ("Prelude", "")
-      ]
+      stdAliases <> modelAliases
+      where
+        stdAliases =
+          [ ("Test.QuickCheck.Gen", "Qc.Gen"),
+            ("Test.QuickCheck.Arbitrary", "Qc.Arbitrary"),
+            ("Data.Text", "Text"),
+            ("Data.Aeson", "Aeson"),
+            ("Data.Aeson.Key", "Aeson.Key"),
+            ("Data.Aeson.KeyMap", "Aeson.KeyMap"),
+            ("Data.Aeson.Types", "Aeson.Types"),
+            ("Prelude", "")
+          ]
+        modelAliases =
+          params.types
+            & fmap
+              ( \type_ ->
+                  ( (typesNamespace <> [type_.name & Slug.toUpperCamelCaseText])
+                      & Text.intercalate ".",
+                    "Local"
+                  )
+              )
     modelModules =
       params.types
         & fmap
