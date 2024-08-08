@@ -59,20 +59,14 @@ compilePackageCabalFile package =
           package.synopsis
           (Cabal.listVersion package.version.head package.version.tail)
           ( package.modules.public
-              & fmap
-                ( \module_ ->
-                    module_.name
-                      & Text.intercalate "."
-                      & Cabal.plainModuleRef
-                )
+              & fmap (.name)
+              & sort
+              & fmap (Cabal.plainModuleRef . Text.intercalate ".")
           )
           ( package.modules.private
-              & fmap
-                ( \module_ ->
-                    module_.name
-                      & Text.intercalate "."
-                      & Cabal.plainModuleRef
-                )
+              & fmap (.name)
+              & sort
+              & fmap (Cabal.plainModuleRef . Text.intercalate ".")
           )
           (compileCabalDependencies package)
     }

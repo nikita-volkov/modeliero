@@ -104,6 +104,7 @@ library codegens
     Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.FromJsonInstance
     Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.ToJsonInstance
     Modeliero.Codegens.Haskell.Templates.ReexportsModule
+    Modeliero.Codegens.Haskell.Templates.RefinedModelModule
     Modeliero.Codegens.Haskell.Templates.RefinedModelModule.Templates.ArbitraryInstance
     Modeliero.Codegens.Haskell.Templates.RefinedModelModule.Templates.DataTypeDeclaration
     Modeliero.Codegens.Haskell.Templates.RefinedModelModule.Templates.SpecialInstance

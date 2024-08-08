@@ -4,7 +4,7 @@ import Coalmine.Prelude
 import Data.Map.Strict qualified as Map
 import Data.Text qualified as Text
 import Modeliero.Codegens.Haskell qualified as Subject
-import Modeliero.Codegens.Haskell.Params qualified as Subject.Params
+import Modeliero.Codegens.Haskell.Params qualified as Subject
 import Test.Hspec
 import Test.Hspec.Expectations.Contrib
 
@@ -13,58 +13,91 @@ spec = do
   describe "Cases" do
     describe "ISO-8601" do
       let params =
-            Subject.Params.Model
+            Subject.Model
               { name = "iso8601",
                 version = pure 0 <> pure 1 <> pure 0,
                 types =
-                  [ Subject.Params.TypeDeclaration
+                  [ Subject.TypeDeclaration
                       { name = "ymd",
                         docs = "ISO-8601 Year Month Day for representing a date.",
                         definition =
-                          Subject.Params.ProductTypeDefinition
-                            [ Subject.Params.Field
+                          Subject.ProductTypeDefinition
+                            [ Subject.Field
                                 { name = "separated",
                                   docs = "Whether the format contains dashes.",
                                   type_ =
-                                    Subject.Params.PlainFieldType
-                                      ( Subject.Params.StandardPlainType
-                                          Subject.Params.BoolStandardType
+                                    Subject.PlainFieldType
+                                      ( Subject.StandardPlainType
+                                          Subject.BoolStandardType
                                       )
                                 },
-                              Subject.Params.Field
+                              Subject.Field
                                 { name = "year",
                                   docs = "Year.",
                                   type_ =
-                                    Subject.Params.PlainFieldType
-                                      (Subject.Params.LocalPlainType "year")
+                                    Subject.PlainFieldType
+                                      (Subject.LocalPlainType "year")
                                 },
-                              Subject.Params.Field
+                              Subject.Field
                                 { name = "month",
                                   docs = "Month.",
                                   type_ =
-                                    Subject.Params.PlainFieldType
-                                      (Subject.Params.LocalPlainType "month")
+                                    Subject.PlainFieldType
+                                      (Subject.LocalPlainType "month")
                                 },
-                              Subject.Params.Field
+                              Subject.Field
                                 { name = "day",
                                   docs = "Day.",
                                   type_ =
-                                    Subject.Params.PlainFieldType
-                                      (Subject.Params.LocalPlainType "day")
+                                    Subject.PlainFieldType
+                                      (Subject.LocalPlainType "day")
                                 }
                             ]
+                      },
+                    Subject.TypeDeclaration
+                      { name = "year",
+                        docs = "",
+                        definition =
+                          Subject.RefinedTypeDefinition
+                            $ Subject.IntegerRefinement
+                              Subject.IntegerRestrictions
+                                { min = Just (-9999),
+                                  max = Just 9999
+                                }
+                      },
+                    Subject.TypeDeclaration
+                      { name = "month",
+                        docs = "",
+                        definition =
+                          Subject.RefinedTypeDefinition
+                            $ Subject.IntegerRefinement
+                              Subject.IntegerRestrictions
+                                { min = Just 1,
+                                  max = Just 12
+                                }
+                      },
+                    Subject.TypeDeclaration
+                      { name = "day",
+                        docs = "",
+                        definition =
+                          Subject.RefinedTypeDefinition
+                            $ Subject.IntegerRefinement
+                              Subject.IntegerRestrictions
+                                { min = Just 1,
+                                  max = Just 31
+                                }
                       }
                   ],
                 instances =
-                  Subject.Params.Instances
+                  Subject.Instances
                     { show = True,
                       eq = True,
                       ord = True,
                       generic = True,
                       aeson =
                         Just
-                          Subject.Params.Aeson
-                            { casing = Subject.Params.KebabCasing
+                          Subject.Aeson
+                            { casing = Subject.KebabCasing
                             },
                       arbitrary = True
                     }
@@ -81,7 +114,7 @@ spec = do
             shouldBe resultLength (Map.size fileMap)
 
           it "Is as expected" . annotate (show fileNames) $ do
-            shouldBe resultLength 3
+            shouldBe resultLength 6
 
       describe "Cabal file" do
         let lookupResult = Map.lookup "modeliero-artifacts-iso8601.cabal" fileMap
@@ -107,6 +140,9 @@ spec = do
                       exposed-modules:
                         ModelieroArtifacts.Iso8601
                       other-modules:
+                        ModelieroArtifacts.Iso8601.Types.Day
+                        ModelieroArtifacts.Iso8601.Types.Month
+                        ModelieroArtifacts.Iso8601.Types.Year
                         ModelieroArtifacts.Iso8601.Types.Ymd
                       build-depends:
                         QuickCheck >=2.15 && <3,
@@ -188,6 +224,32 @@ spec = do
                           pure Ymd{..}
                     |]
 
+        describe "Year" do
+          let lookupResult = Map.lookup "library/ModelieroArtifacts/Iso8601/Types/Year.hs" fileMap
+
+          it "Exists" do
+            shouldNotBe lookupResult Nothing
+
+          forM_ lookupResult \content ->
+            describe "Content" do
+              it "Is as expected" do
+                shouldBe
+                  content
+                  [i|
+                    module ModelieroArtifacts.Iso8601.Types.Year
+                      ( Year,
+                      )
+                    where
+                    
+                    import Prelude
+                    import GHC.Generics qualified
+                    
+                    newtype Year = Year
+                      { base :: Int
+                      }
+                      deriving (Show, Eq, Ord, GHC.Generics.Generic)
+                  |]
+
       describe "Reexports" do
         let lookupResult = Map.lookup "library/ModelieroArtifacts/Iso8601.hs" fileMap
 
@@ -200,9 +262,15 @@ spec = do
               shouldBe content
                 $ [i|
                     module ModelieroArtifacts.Iso8601
-                      ( module ModelieroArtifacts.Iso8601.Types.Ymd,
+                      ( module ModelieroArtifacts.Iso8601.Types.Day,
+                        module ModelieroArtifacts.Iso8601.Types.Month,
+                        module ModelieroArtifacts.Iso8601.Types.Year,
+                        module ModelieroArtifacts.Iso8601.Types.Ymd,
                       )
                     where
                     
+                    import ModelieroArtifacts.Iso8601.Types.Day
+                    import ModelieroArtifacts.Iso8601.Types.Month
+                    import ModelieroArtifacts.Iso8601.Types.Year
                     import ModelieroArtifacts.Iso8601.Types.Ymd
                   |]

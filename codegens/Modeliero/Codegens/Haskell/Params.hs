@@ -20,6 +20,9 @@ data TypeDeclaration = TypeDeclaration
 
 data TypeDefinition
   = ProductTypeDefinition [Field]
+  | RefinedTypeDefinition Refinement
+
+-- *** Product
 
 data Field = Field
   { name :: Slug,
@@ -62,6 +65,30 @@ data CustomType = CustomType
     maxVersion :: NonEmpty Word,
     module_ :: Text,
     name :: Text
+  }
+
+-- *** Refinement
+
+data Refinement
+  = TextRefinement TextRestrictions
+  | IntegerRefinement IntegerRestrictions
+  | DoubleRefinement DoubleRestrictions
+
+data TextRestrictions = TextRestrictions
+  { minLength :: Maybe Int,
+    maxLength :: Maybe Int,
+    charsetRangeList :: Maybe [(Char, Char)],
+    regexp :: Maybe Text
+  }
+
+data IntegerRestrictions = IntegerRestrictions
+  { min :: Maybe Integer,
+    max :: Maybe Integer
+  }
+
+data DoubleRestrictions = DoubleRestrictions
+  { min :: Maybe Double,
+    max :: Maybe Double
   }
 
 -- ** Instances

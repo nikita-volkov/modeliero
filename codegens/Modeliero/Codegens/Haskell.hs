@@ -14,6 +14,7 @@ import Modeliero.Codegens.Haskell.IntegratedTemplates.ProductModelModule qualifi
 import Modeliero.Codegens.Haskell.Params qualified as Params
 import Modeliero.Codegens.Haskell.Templates.ProductModelModule qualified as Templates.ProductModelModule
 import Modeliero.Codegens.Haskell.Templates.ReexportsModule qualified as Templates.ReexportsModule
+import Modeliero.Codegens.Haskell.Templates.RefinedModelModule qualified as Templates.RefinedModelModule
 
 type Params = Params.Model
 
@@ -72,16 +73,25 @@ compile params =
       params.types
         & fmap
           ( \type_ ->
-              let moduleName = typesNamespace <> [type_.name & Slug.toUpperCamelCaseText]
-               in case type_.definition of
-                    Params.ProductTypeDefinition fields ->
-                      InModule.compileToModule moduleName importAliases
-                        $ IntegratedTemplates.ProductModelModule.compile
-                          typesNamespace
-                          params.instances
-                          type_.name
-                          type_.docs
-                          fields
+              InModule.compileToModule
+                (typesNamespace <> [type_.name & Slug.toUpperCamelCaseText])
+                importAliases
+                case type_.definition of
+                  Params.ProductTypeDefinition fields ->
+                    IntegratedTemplates.ProductModelModule.compile
+                      typesNamespace
+                      params.instances
+                      type_.name
+                      type_.docs
+                      fields
+                  Params.RefinedTypeDefinition refinement ->
+                    Templates.RefinedModelModule.compile
+                      Templates.RefinedModelModule.Params
+                        { name = type_.name,
+                          docs = type_.docs,
+                          refinement,
+                          instances = params.instances
+                        }
           )
     reexportsModule =
       InModule.compileToModule rootNamespace importAliases
