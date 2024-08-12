@@ -75,20 +75,20 @@ data Refinement
   | DoubleRefinement DoubleRestrictions
 
 data TextRestrictions = TextRestrictions
-  { minLength :: Maybe Int,
-    maxLength :: Maybe Int,
+  { minLength :: Int,
+    maxLength :: Int,
     charsetRangeList :: Maybe [(Char, Char)],
     regexp :: Maybe Text
   }
 
 data IntegerRestrictions = IntegerRestrictions
-  { min :: Maybe Integer,
-    max :: Maybe Integer
+  { min :: Integer,
+    max :: Integer
   }
 
 data DoubleRestrictions = DoubleRestrictions
-  { min :: Maybe Double,
-    max :: Maybe Double
+  { min :: Double,
+    max :: Double
   }
 
 -- ** Instances

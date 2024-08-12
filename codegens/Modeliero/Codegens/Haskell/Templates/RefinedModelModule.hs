@@ -46,7 +46,8 @@ compile params = do
                       generic = params.instances.generic
                     }
               },
-        compileArbitrary params
+        compileArbitrary params,
+        Just (compileSpecial params)
       ]
   pure (TextBlock.intercalate "\n\n" decls)
 
@@ -63,19 +64,31 @@ compileArbitrary params =
                 case params.refinement of
                   Params.TextRefinement textRestrictions ->
                     Templates.ArbitraryInstance.TextType
-                      (fromMaybe 0 textRestrictions.minLength)
-                      (fromMaybe 1_000_000 textRestrictions.maxLength)
+                      textRestrictions.minLength
+                      textRestrictions.maxLength
                   Params.IntegerRefinement integerRestrictions ->
-                    case integerRestrictions of
-                      Params.IntegerRestrictions (Just min) (Just max)
-                        | min
-                            >= toInteger @Int minBound
-                            && max
-                            <= toInteger @Int maxBound ->
-                            Templates.ArbitraryInstance.IntType
-                              (fromIntegral min)
-                              (fromIntegral max)
-                      Params.IntegerRestrictions min max ->
-                        Templates.ArbitraryInstance.IntegerType min max
+                    if integerRestrictions.min >= toInteger @Int minBound && integerRestrictions.max <= toInteger @Int maxBound
+                      then
+                        Templates.ArbitraryInstance.IntType
+                          (fromIntegral integerRestrictions.min)
+                          (fromIntegral integerRestrictions.max)
+                      else
+                        Templates.ArbitraryInstance.IntegerType
+                          (Just integerRestrictions.min)
+                          (Just integerRestrictions.max)
             }
     else Nothing
+
+compileSpecial :: Params -> InModule TextBlock
+compileSpecial params =
+  Templates.SpecialInstance.compile
+    Templates.SpecialInstance.Params
+      { typeName = params.name & Slug.toUpperCamelCaseText,
+        type_ =
+          case params.refinement of
+            Params.TextRefinement textRestrictions ->
+              Templates.SpecialInstance.TextType textRestrictions.minLength textRestrictions.maxLength
+            Params.IntegerRefinement integerRestrictions ->
+              Templates.SpecialInstance.IntType integerRestrictions.min integerRestrictions.max,
+        specialClassImport = Imports.modelieroBaseSpecial
+      }

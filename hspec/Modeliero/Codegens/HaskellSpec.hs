@@ -61,8 +61,8 @@ spec = do
                           Subject.RefinedTypeDefinition
                             $ Subject.IntegerRefinement
                               Subject.IntegerRestrictions
-                                { min = Just (-9999),
-                                  max = Just 9999
+                                { min = (-9999),
+                                  max = 9999
                                 }
                       },
                     Subject.TypeDeclaration
@@ -72,8 +72,8 @@ spec = do
                           Subject.RefinedTypeDefinition
                             $ Subject.IntegerRefinement
                               Subject.IntegerRestrictions
-                                { min = Just 1,
-                                  max = Just 12
+                                { min = 1,
+                                  max = 12
                                 }
                       },
                     Subject.TypeDeclaration
@@ -83,8 +83,8 @@ spec = do
                           Subject.RefinedTypeDefinition
                             $ Subject.IntegerRefinement
                               Subject.IntegerRestrictions
-                                { min = Just 1,
-                                  max = Just 31
+                                { min = 1,
+                                  max = 31
                                 }
                       }
                   ],
@@ -147,7 +147,9 @@ spec = do
                       build-depends:
                         QuickCheck >=2.15 && <3,
                         aeson >=2 && <3,
-                        base >=4.14 && <5
+                        base >=4.14 && <5,
+                        modeliero-base >=1 && <1.1,
+                        text >=2 && <3
                   |]
 
       describe "Types" do
@@ -242,7 +244,9 @@ spec = do
                     where
                     
                     import Prelude
+                    import Data.Text qualified as Text
                     import GHC.Generics qualified
+                    import ModelieroBase.Classes.Special qualified
                     import Test.QuickCheck.Arbitrary qualified as Qc.Arbitrary
                     import Test.QuickCheck.Gen qualified as Qc.Gen
                     
@@ -254,6 +258,17 @@ spec = do
                     instance Qc.Arbitrary.Arbitrary Year where
                       arbitrary = Year <$$> Qc.Gen.chooseInt (-9999, 9999)
                       shrink = const []
+                    
+                    instance ModelieroBase.Classes.Special.Special Year where
+                      type GeneralizationOf Year = Int
+                      type SpecializationError Year = Text.Text
+                      specialize value = do
+                        when (value < -9999) $$
+                          Left ("Value is smaller than -9999: " <> fromString (show value))
+                        when (value > 9999) $$
+                          Left ("Value is larger than 9999: " <> fromString (show value))
+                        pure (Year value)
+                      generalize (Year base) = base
                   |]
 
       describe "Reexports" do
