@@ -8,9 +8,9 @@ import Coalmine.Slug qualified as Slug
 import Modeliero.Codegens.Haskell.Dsls.InModule
 import Modeliero.Codegens.Haskell.Imports qualified as Imports
 import Modeliero.Codegens.Haskell.Params qualified as Params
-import Modeliero.Codegens.Haskell.Templates.RefinedModelModule.Templates.ArbitraryInstance qualified as Templates.RefinedArbitraryInstance
-import Modeliero.Codegens.Haskell.Templates.RefinedModelModule.Templates.DataTypeDeclaration qualified as Templates.RefinedDataTypeDeclaration
-import Modeliero.Codegens.Haskell.Templates.RefinedModelModule.Templates.SpecialInstance qualified as Templates.RefinedSpecialInstance
+import Modeliero.Codegens.Haskell.Templates.RefinedModelModule.Templates.ArbitraryInstance qualified as Templates.ArbitraryInstance
+import Modeliero.Codegens.Haskell.Templates.RefinedModelModule.Templates.DataTypeDeclaration qualified as Templates.DataTypeDeclaration
+import Modeliero.Codegens.Haskell.Templates.RefinedModelModule.Templates.SpecialInstance qualified as Templates.SpecialInstance
 
 data Params = Params
   { name :: Slug,
@@ -33,13 +33,13 @@ compile params = do
             Params.IntegerRefinement _ ->
               -- TODO: Add analysis on the bounds to determine whether it should be Integer or Int.
               requestImport Imports.basePrelude <&> \qfr -> qfr <> "Int"
-          Templates.RefinedDataTypeDeclaration.compile
-            Templates.RefinedDataTypeDeclaration.Params
+          Templates.DataTypeDeclaration.compile
+            Templates.DataTypeDeclaration.Params
               { name = params.name & Slug.toUpperCamelCaseText & to,
                 haddock = params.docs,
                 baseType = baseType & to,
                 derivings =
-                  Templates.RefinedDataTypeDeclaration.Derivings
+                  Templates.DataTypeDeclaration.Derivings
                     { show = params.instances.show,
                       eq = params.instances.eq,
                       ord = params.instances.ord,
