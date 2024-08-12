@@ -14,9 +14,14 @@ type Result = InModule TextBlock
 data Type
   = IntType
       -- | Min value.
-      Integer
+      Int
       -- | Max value.
-      Integer
+      Int
+  | IntegerType
+      -- | Min value.
+      (Maybe Integer)
+      -- | Max value.
+      (Maybe Integer)
   | TextType
       -- | Min length.
       Int
@@ -31,12 +36,48 @@ compile params = do
     IntType min max ->
       pure
         ( [j|
-            ${params.name} <$$> ${genQualifier}choose ($min, $max)
+            ${params.name} <$$> ${genQualifier}chooseInt ($min, $max)
           |],
           [j|
             const []
           |]
         )
+    IntegerType min max ->
+      pure case min of
+        Just min -> case max of
+          Just max ->
+            ( [j|
+                ${params.name} <$$> ${genQualifier}chooseInteger ($min, $max)
+              |],
+              [j|
+                const []
+              |]
+            )
+          Nothing ->
+            ( [j|
+                ${params.name} <$$> suchThat (${genQualifier}chooseAny) (\x -> x >= $min)
+              |],
+              [j|
+                const []
+              |]
+            )
+        Nothing -> case max of
+          Just max ->
+            ( [j|
+                ${params.name} <$$> suchThat (${genQualifier}chooseAny) (\x -> x <= $max)
+              |],
+              [j|
+                const []
+              |]
+            )
+          Nothing ->
+            ( [j|
+                ${params.name} <$$> ${genQualifier}chooseAny
+              |],
+              [j|
+                const []
+              |]
+            )
     TextType minLength maxLength -> do
       textQualifier <- requestImport Imports.text
       pure

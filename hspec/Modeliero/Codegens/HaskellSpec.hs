@@ -243,11 +243,17 @@ spec = do
                     
                     import Prelude
                     import GHC.Generics qualified
+                    import Test.QuickCheck.Arbitrary qualified as Qc.Arbitrary
+                    import Test.QuickCheck.Gen qualified as Qc.Gen
                     
                     newtype Year = Year
                       { base :: Int
                       }
                       deriving (Show, Eq, Ord, GHC.Generics.Generic)
+                    
+                    instance Qc.Arbitrary.Arbitrary Year where
+                      arbitrary = Year <$$> Qc.Gen.chooseInt (-9999, 9999)
+                      shrink = const []
                   |]
 
       describe "Reexports" do

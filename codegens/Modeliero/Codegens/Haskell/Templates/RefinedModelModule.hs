@@ -45,6 +45,37 @@ compile params = do
                       ord = params.instances.ord,
                       generic = params.instances.generic
                     }
-              }
+              },
+        compileArbitrary params
       ]
   pure (TextBlock.intercalate "\n\n" decls)
+
+compileArbitrary :: Params -> Maybe (InModule TextBlock)
+compileArbitrary params =
+  if params.instances.arbitrary
+    then
+      Just
+        $ Templates.ArbitraryInstance.compile
+          Templates.ArbitraryInstance.Params
+            { name =
+                params.name & Slug.toUpperCamelCaseText,
+              type_ =
+                case params.refinement of
+                  Params.TextRefinement textRestrictions ->
+                    Templates.ArbitraryInstance.TextType
+                      (fromMaybe 0 textRestrictions.minLength)
+                      (fromMaybe 1_000_000 textRestrictions.maxLength)
+                  Params.IntegerRefinement integerRestrictions ->
+                    case integerRestrictions of
+                      Params.IntegerRestrictions (Just min) (Just max)
+                        | min
+                            >= toInteger @Int minBound
+                            && max
+                            <= toInteger @Int maxBound ->
+                            Templates.ArbitraryInstance.IntType
+                              (fromIntegral min)
+                              (fromIntegral max)
+                      Params.IntegerRestrictions min max ->
+                        Templates.ArbitraryInstance.IntegerType min max
+            }
+    else Nothing
