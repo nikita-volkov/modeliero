@@ -21,20 +21,21 @@ data TypeDeclaration = TypeDeclaration
 data TypeDefinition
   = ProductTypeDefinition [Field]
   | RefinedTypeDefinition Refinement
+  | SumTypeDefinition [Variant]
 
 -- *** Product
 
 data Field = Field
   { name :: Slug,
     docs :: Text,
-    type_ :: FieldType
+    type_ :: ValueType
   }
 
-data FieldType
-  = PlainFieldType PlainType
-  | MaybeFieldType PlainType
-  | VectorFieldType PlainType
-  | HashMapFieldType PlainType PlainType
+data ValueType
+  = PlainValueType PlainType
+  | MaybeValueType PlainType
+  | VectorValueType PlainType
+  | HashMapValueType PlainType PlainType
 
 data PlainType
   = -- | Reference to a type defined in this model.
@@ -65,6 +66,15 @@ data CustomType = CustomType
     maxVersion :: NonEmpty Word,
     module_ :: Text,
     name :: Text
+  }
+
+-- *** Sum
+
+data Variant
+  = Variant
+  { name :: Slug,
+    type_ :: ValueType,
+    docs :: Text
   }
 
 -- *** Refinement

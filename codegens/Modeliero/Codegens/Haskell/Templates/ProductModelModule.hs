@@ -58,7 +58,7 @@ compileInstances instances =
 
 compileField :: [Text] -> Casing -> Field -> InModule.InModule Template.Field
 compileField modelsNamespace jsonCasing field = do
-  type_ <- compileFieldType modelsNamespace field.type_
+  type_ <- compileValueType modelsNamespace field.type_
   pure
     Template.Field
       { name = field.name & Slug.toLowerCamelCaseText,
@@ -70,13 +70,13 @@ compileField modelsNamespace jsonCasing field = do
             SnakeCasing -> Slug.toSnakeCaseText
             KebabCasing -> Slug.toSpinalCaseText,
         nullable = case field.type_ of
-          MaybeFieldType _ -> True
+          MaybeValueType _ -> True
           _ -> False
       }
 
-compileFieldType :: [Text] -> FieldType -> InModule.InModule Text
-compileFieldType modelsNamespace = \case
-  PlainFieldType plainType -> case plainType of
+compileValueType :: [Text] -> ValueType -> InModule.InModule Text
+compileValueType modelsNamespace = \case
+  PlainValueType plainType -> case plainType of
     LocalPlainType nameSlug -> do
       let typeName = Slug.toUpperCamelCaseText nameSlug
       qfr <-

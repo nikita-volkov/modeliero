@@ -26,7 +26,7 @@ spec = do
                                 { name = "separated",
                                   docs = "Whether the format contains dashes.",
                                   type_ =
-                                    Subject.PlainFieldType
+                                    Subject.PlainValueType
                                       ( Subject.StandardPlainType
                                           Subject.BoolStandardType
                                       )
@@ -35,21 +35,74 @@ spec = do
                                 { name = "year",
                                   docs = "Year.",
                                   type_ =
-                                    Subject.PlainFieldType
+                                    Subject.PlainValueType
                                       (Subject.LocalPlainType "year")
                                 },
                               Subject.Field
                                 { name = "month",
                                   docs = "Month.",
                                   type_ =
-                                    Subject.PlainFieldType
+                                    Subject.PlainValueType
                                       (Subject.LocalPlainType "month")
                                 },
                               Subject.Field
                                 { name = "day",
                                   docs = "Day.",
                                   type_ =
-                                    Subject.PlainFieldType
+                                    Subject.PlainValueType
+                                      (Subject.LocalPlainType "day")
+                                }
+                            ]
+                      },
+                    Subject.TypeDeclaration
+                      { name = "ym",
+                        docs =
+                          [i|
+                            Year, month.
+              
+                            @YYYY-MM@
+                          |],
+                        definition =
+                          Subject.ProductTypeDefinition
+                            [ Subject.Field
+                                { name = "year",
+                                  docs = "Year.",
+                                  type_ =
+                                    Subject.PlainValueType
+                                      (Subject.LocalPlainType "year")
+                                },
+                              Subject.Field
+                                { name = "month",
+                                  docs = "Month.",
+                                  type_ =
+                                    Subject.PlainValueType
+                                      (Subject.LocalPlainType "month")
+                                }
+                            ]
+                      },
+                    Subject.TypeDeclaration
+                      { name = "md",
+                        docs =
+                          [i|
+                            ISO-8601 Month Day for representing a date.
+
+                            - @--MM-DD@
+                            - @--MMDD@
+                          |],
+                        definition =
+                          Subject.ProductTypeDefinition
+                            [ Subject.Field
+                                { name = "month",
+                                  docs = "Month.",
+                                  type_ =
+                                    Subject.PlainValueType
+                                      (Subject.LocalPlainType "month")
+                                },
+                              Subject.Field
+                                { name = "day",
+                                  docs = "Day.",
+                                  type_ =
+                                    Subject.PlainValueType
                                       (Subject.LocalPlainType "day")
                                 }
                             ]
@@ -86,6 +139,33 @@ spec = do
                                 { min = 1,
                                   max = 31
                                 }
+                      },
+                    Subject.TypeDeclaration
+                      { name = "calendar-date",
+                        docs =
+                          [i|
+                            - @YYYY-MM-DD@ or @YYYYMMDD@
+                            - @YYYY-MM@ (but not @YYYYMM@)
+                            - @--MM-DD@ or @--MMDD@
+                          |],
+                        definition =
+                          Subject.SumTypeDefinition
+                            [ Subject.Variant
+                                { name = "ymd",
+                                  docs = "",
+                                  type_ = Subject.PlainValueType (Subject.LocalPlainType "ymd")
+                                },
+                              Subject.Variant
+                                { name = "ym",
+                                  docs = "",
+                                  type_ = Subject.PlainValueType (Subject.LocalPlainType "ym")
+                                },
+                              Subject.Variant
+                                { name = "md",
+                                  docs = "",
+                                  type_ = Subject.PlainValueType (Subject.LocalPlainType "md")
+                                }
+                            ]
                       }
                   ],
                 instances =
@@ -114,7 +194,7 @@ spec = do
             shouldBe resultLength (Map.size fileMap)
 
           it "Is as expected" . annotate (show fileNames) $ do
-            shouldBe resultLength 6
+            shouldBe resultLength 9
 
       describe "Cabal file" do
         let lookupResult = Map.lookup "modeliero-artifacts-iso8601.cabal" fileMap
@@ -140,9 +220,12 @@ spec = do
                       exposed-modules:
                         ModelieroArtifacts.Iso8601
                       other-modules:
+                        ModelieroArtifacts.Iso8601.Types.CalendarDate
                         ModelieroArtifacts.Iso8601.Types.Day
+                        ModelieroArtifacts.Iso8601.Types.Md
                         ModelieroArtifacts.Iso8601.Types.Month
                         ModelieroArtifacts.Iso8601.Types.Year
+                        ModelieroArtifacts.Iso8601.Types.Ym
                         ModelieroArtifacts.Iso8601.Types.Ymd
                       build-depends:
                         QuickCheck >=2.15 && <3,
@@ -294,6 +377,40 @@ spec = do
                           Left text -> fail (Text.unpack text)
                   |]
 
+        describe "CalendarDate" do
+          let lookupResult = Map.lookup "library/ModelieroArtifacts/Iso8601/Types/CalendarDate.hs" fileMap
+
+          it "Exists" do
+            shouldNotBe lookupResult Nothing
+
+          forM_ lookupResult \content ->
+            describe "Content" do
+              it "Is as expected" do
+                shouldBe
+                  content
+                  [i|
+                    module ModelieroArtifacts.Iso8601.Types.CalendarDate
+                      ( CalendarDate (..),
+                      )
+                    where
+                 
+                    import Prelude
+                    import GHC.Generics qualified as Generics
+                    import ModelieroArtifacts.Iso8601.Types.Md qualified as Local
+                    import ModelieroArtifacts.Iso8601.Types.Ym qualified as Local
+                    import ModelieroArtifacts.Iso8601.Types.Ymd qualified as Local
+                    
+                    -- |
+                    -- - @YYYY-MM-DD@ or @YYYYMMDD@
+                    -- - @YYYY-MM@ (but not @YYYYMM@)
+                    -- - @--MM-DD@ or @--MMDD@
+                    data CalendarDate
+                      = YmdCalendarDate Local.Ymd
+                      | YmCalendarDate Local.Ym
+                      | MdCalendarDate Local.Md
+                      deriving (Show, Eq, Ord, Generics.Generic)
+                  |]
+
       describe "Reexports" do
         let lookupResult = Map.lookup "library/ModelieroArtifacts/Iso8601.hs" fileMap
 
@@ -306,15 +423,21 @@ spec = do
               shouldBe content
                 $ [i|
                     module ModelieroArtifacts.Iso8601
-                      ( module ModelieroArtifacts.Iso8601.Types.Day,
+                      ( module ModelieroArtifacts.Iso8601.Types.CalendarDate,
+                        module ModelieroArtifacts.Iso8601.Types.Day,
+                        module ModelieroArtifacts.Iso8601.Types.Md,
                         module ModelieroArtifacts.Iso8601.Types.Month,
                         module ModelieroArtifacts.Iso8601.Types.Year,
+                        module ModelieroArtifacts.Iso8601.Types.Ym,
                         module ModelieroArtifacts.Iso8601.Types.Ymd,
                       )
                     where
                     
+                    import ModelieroArtifacts.Iso8601.Types.CalendarDate
                     import ModelieroArtifacts.Iso8601.Types.Day
+                    import ModelieroArtifacts.Iso8601.Types.Md
                     import ModelieroArtifacts.Iso8601.Types.Month
                     import ModelieroArtifacts.Iso8601.Types.Year
+                    import ModelieroArtifacts.Iso8601.Types.Ym
                     import ModelieroArtifacts.Iso8601.Types.Ymd
                   |]

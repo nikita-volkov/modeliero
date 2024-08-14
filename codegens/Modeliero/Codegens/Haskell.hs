@@ -10,6 +10,7 @@ import Modeliero.Codegens.Haskell.Params qualified as Params
 import Modeliero.Codegens.Haskell.Templates.ProductModelModule qualified as Templates.ProductModelModule
 import Modeliero.Codegens.Haskell.Templates.ReexportsModule qualified as Templates.ReexportsModule
 import Modeliero.Codegens.Haskell.Templates.RefinedModelModule qualified as Templates.RefinedModelModule
+import Modeliero.Codegens.Haskell.Templates.SumModelModule qualified as Templates.SumModelModule
 
 type Params = Params.Model
 
@@ -90,6 +91,15 @@ compile params =
                         { name = type_.name,
                           docs = type_.docs,
                           refinement,
+                          instances = params.instances
+                        }
+                  Params.SumTypeDefinition variants ->
+                    Templates.SumModelModule.compile
+                      Templates.SumModelModule.Params
+                        { modelsNamespace = typesNamespace,
+                          name = type_.name,
+                          docs = type_.docs,
+                          variants,
                           instances = params.instances
                         }
           )
