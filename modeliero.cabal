@@ -96,12 +96,12 @@ library codegens
     Modeliero.Codegens.Haskell.Dsls.Namespace
     Modeliero.Codegens.Haskell.Dsls.Package
     Modeliero.Codegens.Haskell.Imports
-    Modeliero.Codegens.Haskell.IntegratedTemplates.ProductModelModule
     Modeliero.Codegens.Haskell.Params
     Modeliero.Codegens.Haskell.Templates.ProductModelModule
     Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.ArbitraryInstance
     Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.DataTypeDeclaration
     Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.FromJsonInstance
+    Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.ProductModelModule
     Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.ToJsonInstance
     Modeliero.Codegens.Haskell.Templates.ReexportsModule
     Modeliero.Codegens.Haskell.Templates.RefinedModelModule
@@ -128,8 +128,8 @@ test-suite hspec
     Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.ArbitraryInstanceSpec
     Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.DataTypeDeclarationSpec
     Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.FromJsonInstanceSpec
+    Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.ProductModelModuleSpec
     Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.ToJsonInstanceSpec
-    Modeliero.Codegens.Haskell.Templates.ProductModelModuleSpec
     Modeliero.Codegens.Haskell.Templates.ReexportsModuleSpec
     Modeliero.Codegens.Haskell.Templates.RefinedModelModule.Templates.ArbitraryInstanceSpec
     Modeliero.Codegens.Haskell.Templates.RefinedModelModule.Templates.SpecialInstanceSpec

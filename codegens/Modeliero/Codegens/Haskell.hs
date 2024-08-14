@@ -1,16 +1,11 @@
-{-# OPTIONS_GHC -Wno-unused-binds -Wno-unused-imports -Wno-name-shadowing #-}
-
 module Modeliero.Codegens.Haskell where
 
 import Coalmine.NumericVersion qualified as NumericVersion
 import Coalmine.Prelude
 import Coalmine.Slug qualified as Slug
 import Data.Text qualified as Text
-import Modeliero.Codegens.Haskell.Dsls.Code qualified as Code
 import Modeliero.Codegens.Haskell.Dsls.InModule qualified as InModule
-import Modeliero.Codegens.Haskell.Dsls.Namespace qualified as Namespace
 import Modeliero.Codegens.Haskell.Dsls.Package qualified as Package
-import Modeliero.Codegens.Haskell.IntegratedTemplates.ProductModelModule qualified as IntegratedTemplates.ProductModelModule
 import Modeliero.Codegens.Haskell.Params qualified as Params
 import Modeliero.Codegens.Haskell.Templates.ProductModelModule qualified as Templates.ProductModelModule
 import Modeliero.Codegens.Haskell.Templates.ReexportsModule qualified as Templates.ReexportsModule
@@ -81,12 +76,14 @@ compile params =
                 importAliases
                 case type_.definition of
                   Params.ProductTypeDefinition fields ->
-                    IntegratedTemplates.ProductModelModule.compile
-                      typesNamespace
-                      params.instances
-                      type_.name
-                      type_.docs
-                      fields
+                    Templates.ProductModelModule.compile
+                      Templates.ProductModelModule.Params
+                        { modelsNamespace = typesNamespace,
+                          instances = params.instances,
+                          name = type_.name,
+                          docs = type_.docs,
+                          fields
+                        }
                   Params.RefinedTypeDefinition refinement ->
                     Templates.RefinedModelModule.compile
                       Templates.RefinedModelModule.Params
