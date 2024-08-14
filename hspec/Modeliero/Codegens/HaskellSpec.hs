@@ -296,7 +296,7 @@ spec = do
                           json -> Aeson.Types.typeMismatch "Object" json
 
                       instance QuickCheck.Arbitrary.Arbitrary Ymd where
-                        arbitrary Ymd{..} = do
+                        arbitrary = do
                           separated <- QuickCheck.Arbitrary.arbitrary
                           year <- QuickCheck.Arbitrary.arbitrary
                           month <- QuickCheck.Arbitrary.arbitrary
@@ -340,8 +340,8 @@ spec = do
                     newtype Year = Year
                       { base :: Int
                       }
-                      deriving (Show, Eq, Ord, Generics.Generic)
-                    
+                      deriving (Show, Eq, Ord, Generics.Generic, Hashable.Hashable)
+
                     instance Special.Special Year where
                       type GeneralizationOf Year = Int
                       type SpecializationError Year = Text.Text
@@ -409,6 +409,76 @@ spec = do
                       | YmCalendarDate Local.Ym
                       | MdCalendarDate Local.Md
                       deriving (Show, Eq, Ord, Generics.Generic)
+                    
+                    instance Hashable.Hashable CalendarDate where
+                      hashWithSalt salt = \case
+                        YmdCalendarDate a ->
+                          salt
+                            & flip Hashable.hashWithSalt (0 :: Int)
+                            & flip Hashable.hashWithSalt a
+                        YmCalendarDate a ->
+                          salt
+                            & flip Hashable.hashWithSalt (1 :: Int)
+                            & flip Hashable.hashWithSalt a
+                        MdCalendarDate a ->
+                          salt
+                            & flip Hashable.hashWithSalt (2 :: Int)
+                            & flip Hashable.hashWithSalt a
+
+                    instance Aeson.ToJSON CalendarDate where
+                      toJSON = \case
+                        YmdCalendarDate ymd ->
+                          (Aeson.Object . Aeson.KeyMap.fromList)
+                            [ ("ymd", Aeson.toJSON ymd)
+                            ]
+                        YmCalendarDate ym ->
+                          (Aeson.Object . Aeson.KeyMap.fromList)
+                            [ ("ym", Aeson.toJSON ym)
+                            ]
+                        MdCalendarDate md ->
+                          (Aeson.Object . Aeson.KeyMap.fromList)
+                            [ ("md", Aeson.toJSON md)
+                            ]
+                    
+                    instance Aeson.FromJSON CalendarDate where
+                      parseJSON = \case
+                        Aeson.Object object ->
+                          [ variant "ymd" YmdCalendarDate,
+                            variant "ym" YmCalendarDate,
+                            variant "md" MdCalendarDate
+                          ] & asum
+                            & fmap pure
+                            & fromMaybe (Aeson.parseFail noTagFoundMessage)
+                          where
+                            variant name constructor =
+                              object
+                                & Aeson.KeyMap.lookup (fromString name)
+                                & fmap 
+                                  ( \ymdJson -> 
+                                    constructor <$>
+                                      Aeson.parseJSON ymdJson Aeson.<?> fromString name
+                                  )
+                            noTagFoundMessage =
+                              "No expected key found. It should be one of the following: ymd, ym, md"
+                        json -> Aeson.Types.typeMismatch "Object" json
+
+                    instance QuickCheck.Arbitrary.Arbitrary CalendarDate where
+                      arbitrary =
+                        QuickCheck.Gens.oneof
+                          [ YmdCalendarDate <$> QuickCheck.Arbitrary.arbitrary,
+                            YmCalendarDate <$> QuickCheck.Arbitrary.arbitrary,
+                            MdCalendarDate <$> QuickCheck.Arbitrary.arbitrary
+                          ]
+                      shrink = \case
+                        YmdCalendarDate ymd -> YmdCalendarDate <$> QuickCheck.Arbitrary.shrink ymd
+                        YmCalendarDate ym -> YmCalendarDate <$> QuickCheck.Arbitrary.shrink ym
+                        MdCalendarDate md -> MdCalendarDate <$> QuickCheck.Arbitrary.shrink md
+                    
+                    instance Anonymizable.Anonymizable CalendarDate where
+                      anonymize = \case
+                        YmdCalendarDate ymd -> YmdCalendarDate (Anonymizable.anonymize ymd)
+                        YmCalendarDate ym -> YmCalendarDate (Anonymizable.anonymize ym)
+                        MdCalendarDate md -> MdCalendarDate (Anonymizable.anonymize md)
                   |]
 
       describe "Reexports" do
