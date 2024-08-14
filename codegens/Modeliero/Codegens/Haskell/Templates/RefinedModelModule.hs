@@ -16,6 +16,7 @@ import Modeliero.Codegens.Haskell.Params qualified as Params
 import Modeliero.Codegens.Haskell.Templates.RefinedModelModule.Templates.ArbitraryInstance qualified as Templates.ArbitraryInstance
 import Modeliero.Codegens.Haskell.Templates.RefinedModelModule.Templates.DataTypeDeclaration qualified as Templates.DataTypeDeclaration
 import Modeliero.Codegens.Haskell.Templates.RefinedModelModule.Templates.SpecialInstance qualified as Templates.SpecialInstance
+import Modeliero.Codegens.Haskell.Templates.RefinedModelModule.Templates.ToJsonInstance qualified as Templates.ToJsonInstance
 
 data Params = Params
   { name :: Slug,
@@ -51,8 +52,13 @@ compile params = do
                       generic = params.instances.generic
                     }
               },
+        Just (compileSpecial params),
         compileArbitrary params,
-        Just (compileSpecial params)
+        params.instances.aeson <&> \_ ->
+          Templates.ToJsonInstance.compile
+            Templates.ToJsonInstance.Params
+              { name = params.name & Slug.toUpperCamelCaseText
+              }
       ]
   pure (TextBlock.intercalate "\n\n" decls)
 

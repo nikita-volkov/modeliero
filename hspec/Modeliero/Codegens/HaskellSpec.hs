@@ -244,6 +244,7 @@ spec = do
                     where
                     
                     import Prelude
+                    import Data.Aeson qualified as Aeson
                     import Data.Text qualified as Text
                     import GHC.Generics qualified
                     import ModelieroBase.Classes.Special qualified
@@ -255,10 +256,6 @@ spec = do
                       }
                       deriving (Show, Eq, Ord, GHC.Generics.Generic)
                     
-                    instance Qc.Arbitrary.Arbitrary Year where
-                      arbitrary = Year <$$> Qc.Gen.chooseInt (-9999, 9999)
-                      shrink = const []
-                    
                     instance ModelieroBase.Classes.Special.Special Year where
                       type GeneralizationOf Year = Int
                       type SpecializationError Year = Text.Text
@@ -269,6 +266,13 @@ spec = do
                           Left ("Value is larger than 9999: " <> fromString (show value))
                         pure (Year value)
                       generalize (Year base) = base
+                    
+                    instance Qc.Arbitrary.Arbitrary Year where
+                      arbitrary = Year <$$> Qc.Gen.chooseInt (-9999, 9999)
+                      shrink = const []
+                    
+                    instance Aeson.ToJSON Year where
+                      toJSON (Year base) = Aeson.toJSON base
                   |]
 
       describe "Reexports" do
