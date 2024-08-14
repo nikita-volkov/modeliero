@@ -42,3 +42,11 @@ modelieroBase =
       minVersion = $$(l "1"),
       maxVersion = $$(l "1.1")
     }
+
+scientific :: Dependency
+scientific =
+  Dependency
+    { name = "scientific",
+      minVersion = $$(l "0.3"),
+      maxVersion = $$(l "0.4")
+    }

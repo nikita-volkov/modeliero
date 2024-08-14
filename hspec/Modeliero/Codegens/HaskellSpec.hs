@@ -149,6 +149,7 @@ spec = do
                         aeson >=2 && <3,
                         base >=4.14 && <5,
                         modeliero-base >=1 && <1.1,
+                        scientific >=0.3 && <0.4,
                         text >=2 && <3
                   |]
 
@@ -173,11 +174,11 @@ spec = do
                       import Data.Aeson qualified as Aeson
                       import Data.Aeson.KeyMap qualified as Aeson.KeyMap
                       import Data.Aeson.Types qualified as Aeson.Types
-                      import GHC.Generics qualified
+                      import GHC.Generics qualified as Generics
                       import ModelieroArtifacts.Iso8601.Types.Day qualified as Local
                       import ModelieroArtifacts.Iso8601.Types.Month qualified as Local
                       import ModelieroArtifacts.Iso8601.Types.Year qualified as Local
-                      import Test.QuickCheck.Arbitrary qualified as Qc.Arbitrary
+                      import Test.QuickCheck.Arbitrary qualified as QuickCheck.Arbitrary
 
                       -- | ISO-8601 Year Month Day for representing a date.
                       data Ymd = Ymd
@@ -190,7 +191,7 @@ spec = do
                           -- | Day.
                           day :: Local.Day
                         }
-                        deriving (Show, Eq, Ord, GHC.Generics.Generic)
+                        deriving (Show, Eq, Ord, Generics.Generic)
 
                       instance Aeson.ToJSON Ymd where
                         toJSON value =
@@ -211,18 +212,18 @@ spec = do
                             pure Ymd{..}
                           json -> Aeson.Types.typeMismatch "Object" json
 
-                      instance Qc.Arbitrary.Arbitrary Ymd where
+                      instance QuickCheck.Arbitrary.Arbitrary Ymd where
                         arbitrary Ymd{..} = do
-                          separated <- Qc.Arbitrary.arbitrary
-                          year <- Qc.Arbitrary.arbitrary
-                          month <- Qc.Arbitrary.arbitrary
-                          day <- Qc.Arbitrary.arbitrary
+                          separated <- QuickCheck.Arbitrary.arbitrary
+                          year <- QuickCheck.Arbitrary.arbitrary
+                          month <- QuickCheck.Arbitrary.arbitrary
+                          day <- QuickCheck.Arbitrary.arbitrary
                           pure Ymd{..}
                         shrink value = do
-                          separated <- Qc.Arbitrary.shrink value.separated
-                          year <- Qc.Arbitrary.shrink value.year
-                          month <- Qc.Arbitrary.shrink value.month
-                          day <- Qc.Arbitrary.shrink value.day
+                          separated <- QuickCheck.Arbitrary.shrink value.separated
+                          year <- QuickCheck.Arbitrary.shrink value.year
+                          month <- QuickCheck.Arbitrary.shrink value.month
+                          day <- QuickCheck.Arbitrary.shrink value.day
                           pure Ymd{..}
                     |]
 
@@ -245,18 +246,20 @@ spec = do
                     
                     import Prelude
                     import Data.Aeson qualified as Aeson
+                    import Data.Aeson.Types qualified as Aeson.Types
+                    import Data.Scientific qualified as Scientific
                     import Data.Text qualified as Text
-                    import GHC.Generics qualified
-                    import ModelieroBase.Classes.Special qualified
-                    import Test.QuickCheck.Arbitrary qualified as Qc.Arbitrary
-                    import Test.QuickCheck.Gen qualified as Qc.Gen
+                    import GHC.Generics qualified as Generics
+                    import ModelieroBase.Classes.Special qualified as Special
+                    import Test.QuickCheck.Arbitrary qualified as QuickCheck.Arbitrary
+                    import Test.QuickCheck.Gen qualified as QuickCheck.Gen
                     
                     newtype Year = Year
                       { base :: Int
                       }
-                      deriving (Show, Eq, Ord, GHC.Generics.Generic)
+                      deriving (Show, Eq, Ord, Generics.Generic)
                     
-                    instance ModelieroBase.Classes.Special.Special Year where
+                    instance Special.Special Year where
                       type GeneralizationOf Year = Int
                       type SpecializationError Year = Text.Text
                       specialize value = do
@@ -267,12 +270,28 @@ spec = do
                         pure (Year value)
                       generalize (Year base) = base
                     
-                    instance Qc.Arbitrary.Arbitrary Year where
-                      arbitrary = Year <$$> Qc.Gen.chooseInt (-9999, 9999)
+                    instance QuickCheck.Arbitrary.Arbitrary Year where
+                      arbitrary = Year <$$> QuickCheck.Gen.chooseInt (-9999, 9999)
                       shrink = const []
                     
                     instance Aeson.ToJSON Year where
                       toJSON (Year base) = Aeson.toJSON base
+                    
+                    instance Aeson.FromJSON Year where
+                      parseJSON json = do
+                        scientific <-
+                          case json of
+                            Aeson.Number scientific -> pure scientific
+                            _ -> Aeson.Types.typeMismatch "Number" json
+                        int <-
+                          if Scientific.isInteger scientific
+                            then case Scientific.toBoundedInteger scientific of
+                              Just int -> pure int
+                              Nothing -> fail ("Number " <> show scientific <> " is out of Int bounds")
+                            else fail ("Number " <> show scientific <> " is not an integer")
+                        case Special.specialize int of
+                          Right result -> pure result
+                          Left text -> fail (Text.unpack text)
                   |]
 
       describe "Reexports" do

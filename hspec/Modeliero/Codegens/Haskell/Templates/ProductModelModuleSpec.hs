@@ -51,7 +51,7 @@ spec = do
             import Data.Aeson qualified as Aeson
             import Data.Aeson.KeyMap qualified as Aeson.KeyMap
             import Data.Aeson.Types qualified as Aeson.Types
-            import GHC.Generics qualified
+            import GHC.Generics qualified as Generics
             import Test.QuickCheck.Arbitrary qualified as QuickCheck.Arbitrary
             
             -- | Docs on artist
@@ -60,7 +60,7 @@ spec = do
                 name :: Text,
                 genreName :: Text
               }
-              deriving (Show, Eq, Ord, GHC.Generics.Generic)
+              deriving (Show, Eq, Ord, Generics.Generic)
             
             instance Aeson.ToJSON Artist where
               toJSON value =

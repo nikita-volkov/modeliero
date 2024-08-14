@@ -49,8 +49,8 @@ aesonKey = fromAeson "Data.Aeson.Key"
 aesonTypes :: Import
 aesonTypes = fromAeson "Data.Aeson.Types"
 
-modelieroBaseSpecial :: Import
-modelieroBaseSpecial =
+special :: Import
+special =
   Import
     { dependency = Just Dependencies.modelieroBase,
       name = "ModelieroBase.Classes.Special"
@@ -68,3 +68,10 @@ basePrelude = fromBase "Prelude"
 
 baseGenerics :: Import
 baseGenerics = fromBase "GHC.Generics"
+
+scientific :: Import
+scientific =
+  Import
+    { dependency = Just Dependencies.scientific,
+      name = "Data.Scientific"
+    }

@@ -39,7 +39,7 @@ spec = do
             module Z.V where
             
             import Prelude
-            import GHC.Generics qualified
+            import GHC.Generics qualified as Generics
 
             -- |
             -- Some docs
@@ -49,5 +49,5 @@ spec = do
                 -- | Some docs
                 genreName :: Text
               }
-              deriving (Show, Eq, Ord, GHC.Generics.Generic)
+              deriving (Show, Eq, Ord, Generics.Generic)
           |]

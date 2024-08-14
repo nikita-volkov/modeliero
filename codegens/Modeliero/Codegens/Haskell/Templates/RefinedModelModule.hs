@@ -15,6 +15,7 @@ import Modeliero.Codegens.Haskell.Imports qualified as Imports
 import Modeliero.Codegens.Haskell.Params qualified as Params
 import Modeliero.Codegens.Haskell.Templates.RefinedModelModule.Templates.ArbitraryInstance qualified as Templates.ArbitraryInstance
 import Modeliero.Codegens.Haskell.Templates.RefinedModelModule.Templates.DataTypeDeclaration qualified as Templates.DataTypeDeclaration
+import Modeliero.Codegens.Haskell.Templates.RefinedModelModule.Templates.FromJsonInstance qualified as Templates.FromJsonInstance
 import Modeliero.Codegens.Haskell.Templates.RefinedModelModule.Templates.SpecialInstance qualified as Templates.SpecialInstance
 import Modeliero.Codegens.Haskell.Templates.RefinedModelModule.Templates.ToJsonInstance qualified as Templates.ToJsonInstance
 
@@ -58,6 +59,17 @@ compile params = do
           Templates.ToJsonInstance.compile
             Templates.ToJsonInstance.Params
               { name = params.name & Slug.toUpperCamelCaseText
+              },
+        params.instances.aeson <&> \_ ->
+          Templates.FromJsonInstance.compile
+            Templates.FromJsonInstance.Params
+              { name = params.name & Slug.toUpperCamelCaseText,
+                type_ = case params.refinement of
+                  Params.IntegerRefinement _ ->
+                    -- TODO: Add analysis on the bounds to determine whether it should be Integer or Int.
+                    Templates.FromJsonInstance.IntType
+                  _ ->
+                    error "TODO"
               }
       ]
   pure (TextBlock.intercalate "\n\n" decls)
@@ -101,5 +113,5 @@ compileSpecial params =
               Templates.SpecialInstance.TextType textRestrictions.minLength textRestrictions.maxLength
             Params.IntegerRefinement integerRestrictions ->
               Templates.SpecialInstance.IntType integerRestrictions.min integerRestrictions.max,
-        specialClassImport = Imports.modelieroBaseSpecial
+        specialClassImport = Imports.special
       }

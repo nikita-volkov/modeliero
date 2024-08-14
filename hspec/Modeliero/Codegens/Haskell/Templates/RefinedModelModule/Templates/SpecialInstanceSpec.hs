@@ -14,7 +14,7 @@ spec = do
             Subject.Params
               { typeName = "Month",
                 type_ = Subject.IntType 1 12,
-                specialClassImport = Imports.modelieroBaseSpecial
+                specialClassImport = Imports.special
               }
 
       compilingProducesExpectedContent Subject.compile params
@@ -22,9 +22,9 @@ spec = do
             module Z.V where
             
             import Data.Text qualified as Text
-            import ModelieroBase.Classes.Special qualified
+            import ModelieroBase.Classes.Special qualified as Special
             
-            instance ModelieroBase.Classes.Special.Special Month where
+            instance Special.Special Month where
               type GeneralizationOf Month = Int
               type SpecializationError Month = Text.Text
               specialize value = do
@@ -41,7 +41,7 @@ spec = do
             Subject.Params
               { typeName = "Phone",
                 type_ = Subject.TextType 5 10,
-                specialClassImport = Imports.modelieroBaseSpecial
+                specialClassImport = Imports.special
               }
 
       compilingProducesExpectedContent Subject.compile params
@@ -49,9 +49,9 @@ spec = do
             module Z.V where
             
             import Data.Text qualified as Text
-            import ModelieroBase.Classes.Special qualified
+            import ModelieroBase.Classes.Special qualified as Special
             
-            instance ModelieroBase.Classes.Special.Special Phone where
+            instance Special.Special Phone where
               type GeneralizationOf Phone = Text.Text
               type SpecializationError Phone = Text.Text
               specialize value = do
