@@ -42,21 +42,34 @@ compile params = do
                   haddock = variant.docs,
                   type_
                 }
-          Templates.DataTypeDeclaration.compile
-            Templates.DataTypeDeclaration.Params
-              { name = params.name & Slug.toUpperCamelCaseText & to,
-                haddock = params.docs,
-                variants,
-                derivings =
-                  Templates.DataTypeDeclaration.Derivings
-                    { show = params.instances.show,
-                      eq = params.instances.eq,
-                      ord = params.instances.ord,
-                      generic = params.instances.generic
-                    }
-              }
+          derivings <- compileDerivings params
+          pure
+            ( Templates.DataTypeDeclaration.compile
+                Templates.DataTypeDeclaration.Params
+                  { name = params.name & Slug.toUpperCamelCaseText & to,
+                    haddock = params.docs,
+                    variants,
+                    derivings
+                  }
+            )
       ]
   pure (TextBlock.intercalate "\n\n" decls)
+
+compileDerivings :: Params -> InModule [TextBlock]
+compileDerivings params = do
+  sequence
+    $ catMaybes
+      [ compileDeriving params.instances.show "Show" Imports.basePrelude,
+        compileDeriving params.instances.eq "Eq" Imports.basePrelude,
+        compileDeriving params.instances.ord "Ord" Imports.basePrelude,
+        compileDeriving params.instances.generic "Generic" Imports.baseGenerics
+      ]
+  where
+    compileDeriving :: Bool -> Text -> Import -> Maybe (InModule TextBlock)
+    compileDeriving enabled name import_ =
+      if enabled
+        then Just (requestImport import_ <&> \qfr -> to qfr <> to name)
+        else Nothing
 
 compileValueType :: [Text] -> Params.ValueType -> InModule TextBlock
 compileValueType modelsNamespace = \case
