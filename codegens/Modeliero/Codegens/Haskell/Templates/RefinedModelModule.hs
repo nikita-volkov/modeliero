@@ -1,6 +1,11 @@
 {-# OPTIONS_GHC -Wno-unused-binds -Wno-unused-imports -Wno-name-shadowing -Wno-incomplete-patterns #-}
 
-module Modeliero.Codegens.Haskell.Templates.RefinedModelModule where
+module Modeliero.Codegens.Haskell.Templates.RefinedModelModule
+  ( Params (..),
+    Result,
+    compile,
+  )
+where
 
 import Coalmine.MultilineTextBuilder qualified as TextBlock
 import Coalmine.Prelude
