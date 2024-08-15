@@ -25,7 +25,7 @@ spec = do
             import Test.QuickCheck.Arbitrary qualified as QuickCheck.Arbitrary
 
             instance QuickCheck.Arbitrary.Arbitrary Artist where
-              arbitrary Artist{..} = do
+              arbitrary = do
                 name <- QuickCheck.Arbitrary.arbitrary
                 genre <- QuickCheck.Arbitrary.arbitrary
                 pure Artist{..}

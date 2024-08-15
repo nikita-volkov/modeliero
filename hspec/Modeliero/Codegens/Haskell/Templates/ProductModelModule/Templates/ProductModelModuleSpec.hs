@@ -78,7 +78,7 @@ spec = do
                 json -> Aeson.Types.typeMismatch "Object" json
             
             instance QuickCheck.Arbitrary.Arbitrary Artist where
-              arbitrary Artist{..} = do
+              arbitrary = do
                 name <- QuickCheck.Arbitrary.arbitrary
                 genreName <- QuickCheck.Arbitrary.arbitrary
                 pure Artist{..}

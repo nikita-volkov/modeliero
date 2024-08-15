@@ -35,7 +35,7 @@ compile params = do
   pure
     [j|
       instance ${arbitraryQualifier}Arbitrary ${params.name} where
-        arbitrary ${params.name}{..} = do
+        arbitrary = do
           ${arbitraryAssignments}pure ${params.name}{..}
         shrink value = do
           ${shrinkAssignments}pure ${params.name}{..}

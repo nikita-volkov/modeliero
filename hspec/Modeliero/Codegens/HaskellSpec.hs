@@ -173,6 +173,7 @@ spec = do
                     { show = True,
                       eq = True,
                       ord = True,
+                      hashable = True,
                       generic = True,
                       aeson =
                         Just
@@ -231,6 +232,7 @@ spec = do
                         QuickCheck >=2.15 && <3,
                         aeson >=2 && <3,
                         base >=4.14 && <5,
+                        hashable >=1.4 && <2,
                         modeliero-base >=1 && <1.1,
                         scientific >=0.3 && <0.4,
                         text >=2 && <3
@@ -330,6 +332,7 @@ spec = do
                     import Prelude
                     import Data.Aeson qualified as Aeson
                     import Data.Aeson.Types qualified as Aeson.Types
+                    import Data.Hashable qualified as Hashable
                     import Data.Scientific qualified as Scientific
                     import Data.Text qualified as Text
                     import GHC.Generics qualified as Generics
@@ -395,6 +398,7 @@ spec = do
                     where
                  
                     import Prelude
+                    import Data.Hashable qualified as Hashable
                     import GHC.Generics qualified as Generics
                     import ModelieroArtifacts.Iso8601.Types.Md qualified as Local
                     import ModelieroArtifacts.Iso8601.Types.Ym qualified as Local
@@ -412,18 +416,18 @@ spec = do
                     
                     instance Hashable.Hashable CalendarDate where
                       hashWithSalt salt = \case
-                        YmdCalendarDate a ->
+                        YmdCalendarDate ymd ->
                           salt
                             & flip Hashable.hashWithSalt (0 :: Int)
-                            & flip Hashable.hashWithSalt a
-                        YmCalendarDate a ->
+                            & flip Hashable.hashWithSalt ymd
+                        YmCalendarDate ym ->
                           salt
                             & flip Hashable.hashWithSalt (1 :: Int)
-                            & flip Hashable.hashWithSalt a
-                        MdCalendarDate a ->
+                            & flip Hashable.hashWithSalt ym
+                        MdCalendarDate md ->
                           salt
                             & flip Hashable.hashWithSalt (2 :: Int)
-                            & flip Hashable.hashWithSalt a
+                            & flip Hashable.hashWithSalt md
 
                     instance Aeson.ToJSON CalendarDate where
                       toJSON = \case
@@ -455,7 +459,7 @@ spec = do
                                 & Aeson.KeyMap.lookup (fromString name)
                                 & fmap 
                                   ( \ymdJson -> 
-                                    constructor <$>
+                                    constructor <$$>
                                       Aeson.parseJSON ymdJson Aeson.<?> fromString name
                                   )
                             noTagFoundMessage =
@@ -465,14 +469,14 @@ spec = do
                     instance QuickCheck.Arbitrary.Arbitrary CalendarDate where
                       arbitrary =
                         QuickCheck.Gens.oneof
-                          [ YmdCalendarDate <$> QuickCheck.Arbitrary.arbitrary,
-                            YmCalendarDate <$> QuickCheck.Arbitrary.arbitrary,
-                            MdCalendarDate <$> QuickCheck.Arbitrary.arbitrary
+                          [ YmdCalendarDate <$$> QuickCheck.Arbitrary.arbitrary,
+                            YmCalendarDate <$$> QuickCheck.Arbitrary.arbitrary,
+                            MdCalendarDate <$$> QuickCheck.Arbitrary.arbitrary
                           ]
                       shrink = \case
-                        YmdCalendarDate ymd -> YmdCalendarDate <$> QuickCheck.Arbitrary.shrink ymd
-                        YmCalendarDate ym -> YmCalendarDate <$> QuickCheck.Arbitrary.shrink ym
-                        MdCalendarDate md -> MdCalendarDate <$> QuickCheck.Arbitrary.shrink md
+                        YmdCalendarDate ymd -> YmdCalendarDate <$$> QuickCheck.Arbitrary.shrink ymd
+                        YmCalendarDate ym -> YmCalendarDate <$$> QuickCheck.Arbitrary.shrink ym
+                        MdCalendarDate md -> MdCalendarDate <$$> QuickCheck.Arbitrary.shrink md
                     
                     instance Anonymizable.Anonymizable CalendarDate where
                       anonymize = \case

@@ -75,3 +75,10 @@ scientific =
     { dependency = Just Dependencies.scientific,
       name = "Data.Scientific"
     }
+
+hashable :: Import
+hashable =
+  Import
+    { dependency = Just Dependencies.hashable,
+      name = "Data.Hashable"
+    }

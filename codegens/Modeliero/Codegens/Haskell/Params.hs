@@ -107,6 +107,7 @@ data Instances = Instances
   { show :: Bool,
     eq :: Bool,
     ord :: Bool,
+    hashable :: Bool,
     generic :: Bool,
     aeson :: Maybe Aeson,
     arbitrary :: Bool

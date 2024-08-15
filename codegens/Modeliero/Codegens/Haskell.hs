@@ -47,17 +47,18 @@ compile params =
       stdAliases <> modelAliases
       where
         stdAliases =
-          [ ("Test.QuickCheck.Gen", "QuickCheck.Gen"),
-            ("Test.QuickCheck.Arbitrary", "QuickCheck.Arbitrary"),
-            ("Data.Text", "Text"),
-            ("Data.Aeson", "Aeson"),
-            ("Data.Aeson.Key", "Aeson.Key"),
+          [ ("Data.Aeson.Key", "Aeson.Key"),
             ("Data.Aeson.KeyMap", "Aeson.KeyMap"),
             ("Data.Aeson.Types", "Aeson.Types"),
+            ("Data.Aeson", "Aeson"),
+            ("Data.Hashable", "Hashable"),
             ("Data.Scientific", "Scientific"),
+            ("Data.Text", "Text"),
             ("GHC.Generics", "Generics"),
             ("ModelieroBase.Classes.Special", "Special"),
-            ("Prelude", "")
+            ("Prelude", ""),
+            ("Test.QuickCheck.Arbitrary", "QuickCheck.Arbitrary"),
+            ("Test.QuickCheck.Gen", "QuickCheck.Gen")
           ]
         modelAliases =
           params.types

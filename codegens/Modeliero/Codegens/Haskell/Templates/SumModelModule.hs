@@ -14,6 +14,7 @@ import Modeliero.Codegens.Haskell.Dsls.InModule
 import Modeliero.Codegens.Haskell.Imports qualified as Imports
 import Modeliero.Codegens.Haskell.Params qualified as Params
 import Modeliero.Codegens.Haskell.Templates.SumModelModule.Templates.DataTypeDeclaration qualified as Templates.DataTypeDeclaration
+import Modeliero.Codegens.Haskell.Templates.SumModelModule.Templates.HashableInstance qualified as Templates.HashableInstance
 
 data Params = Params
   { modelsNamespace :: [Text],
@@ -51,7 +52,35 @@ compile params = do
                     variants,
                     derivings
                   }
-            )
+            ),
+        if params.instances.hashable
+          then Just do
+            hashableQfr <- requestImport Imports.hashable
+            pure
+              ( Templates.HashableInstance.compile
+                  Templates.HashableInstance.Params
+                    { name = params.name & Slug.toUpperCamelCaseText & to,
+                      variants =
+                        params.variants
+                          & fmap
+                            ( \variant ->
+                                Templates.HashableInstance.Variant
+                                  { name =
+                                      variant.name
+                                        & Slug.toUpperCamelCaseTextBuilder
+                                        & to,
+                                    memberNames =
+                                      variant.name
+                                        & Slug.toLowerCamelCaseTextBuilder
+                                        & to
+                                        & pure
+                                  }
+                            ),
+                      hashableQfr =
+                        hashableQfr & to
+                    }
+              )
+          else Nothing
       ]
   pure (TextBlock.intercalate "\n\n" decls)
 

@@ -20,7 +20,8 @@ data Derivings = Derivings
   { show :: Bool,
     eq :: Bool,
     ord :: Bool,
-    generic :: Bool
+    generic :: Bool,
+    hashable :: Bool
   }
 
 compile :: Params -> Result
@@ -47,7 +48,8 @@ compileDerivings derivings = do
       [ compileDeriving derivings.show "Show" (requestImport Imports.basePrelude),
         compileDeriving derivings.eq "Eq" (requestImport Imports.basePrelude),
         compileDeriving derivings.ord "Ord" (requestImport Imports.basePrelude),
-        compileDeriving derivings.generic "Generic" (requestImport Imports.baseGenerics)
+        compileDeriving derivings.generic "Generic" (requestImport Imports.baseGenerics),
+        compileDeriving derivings.hashable "Hashable" (requestImport Imports.hashable)
       ]
 
 compileDeriving :: Bool -> Text -> InModule Text -> Maybe (InModule TextBlock)

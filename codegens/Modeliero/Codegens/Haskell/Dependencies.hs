@@ -50,3 +50,11 @@ scientific =
       minVersion = $$(l "0.3"),
       maxVersion = $$(l "0.4")
     }
+
+hashable :: Dependency
+hashable =
+  Dependency
+    { name = "hashable",
+      minVersion = $$(l "1.4"),
+      maxVersion = $$(l "2")
+    }

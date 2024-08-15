@@ -50,7 +50,8 @@ compile params = do
                     { show = params.instances.show,
                       eq = params.instances.eq,
                       ord = params.instances.ord,
-                      generic = params.instances.generic
+                      generic = params.instances.generic,
+                      hashable = params.instances.hashable
                     }
               },
         Just (compileSpecial params),
