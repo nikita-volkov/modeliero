@@ -113,6 +113,7 @@ library codegens
     Modeliero.Codegens.Haskell.Templates.SumModelModule
     Modeliero.Codegens.Haskell.Templates.SumModelModule.Templates.DataTypeDeclaration
     Modeliero.Codegens.Haskell.Templates.SumModelModule.Templates.HashableInstance
+    Modeliero.Codegens.Haskell.Templates.SumModelModule.Templates.ToJsonInstance
 
   build-depends:
     coalmine,

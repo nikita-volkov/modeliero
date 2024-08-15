@@ -15,6 +15,7 @@ import Modeliero.Codegens.Haskell.Imports qualified as Imports
 import Modeliero.Codegens.Haskell.Params qualified as Params
 import Modeliero.Codegens.Haskell.Templates.SumModelModule.Templates.DataTypeDeclaration qualified as Templates.DataTypeDeclaration
 import Modeliero.Codegens.Haskell.Templates.SumModelModule.Templates.HashableInstance qualified as Templates.HashableInstance
+import Modeliero.Codegens.Haskell.Templates.SumModelModule.Templates.ToJsonInstance qualified as Templates.ToJsonInstance
 
 data Params = Params
   { modelsNamespace :: [Text],
@@ -80,7 +81,48 @@ compile params = do
                         hashableQfr & to
                     }
               )
-          else Nothing
+          else Nothing,
+        params.instances.aeson <&> \aesonParams -> do
+          aesonQfr <- to <$> requestImport Imports.aeson
+          aesonKeyMapQfr <- to <$> requestImport Imports.aesonKeyMap
+          pure
+            ( Templates.ToJsonInstance.compile
+                Templates.ToJsonInstance.Params
+                  { aesonQfr,
+                    aesonKeyMapQfr,
+                    name =
+                      params.name
+                        & Slug.toUpperCamelCaseText
+                        & to,
+                    variants =
+                      params.variants
+                        & fmap
+                          ( \variant ->
+                              Templates.ToJsonInstance.Variant
+                                { constructorName =
+                                    variant.name
+                                      & Slug.toUpperCamelCaseText
+                                      & to,
+                                  varName =
+                                    variant.name
+                                      & Slug.toLowerCamelCaseText
+                                      & to,
+                                  jsonName =
+                                    variant.name
+                                      & case aesonParams.casing of
+                                        Params.CamelCasing -> Slug.toLowerCamelCaseText
+                                        Params.SnakeCasing -> Slug.toSnakeCaseText
+                                        Params.KebabCasing -> Slug.toSpinalCaseText
+                                      & to,
+                                  memberNames =
+                                    variant.name
+                                      & Slug.toLowerCamelCaseTextBuilder
+                                      & to
+                                      & pure
+                                }
+                          )
+                  }
+            )
       ]
   pure (TextBlock.intercalate "\n\n" decls)
 

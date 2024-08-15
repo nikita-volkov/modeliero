@@ -398,6 +398,8 @@ spec = do
                     where
                  
                     import Prelude
+                    import Data.Aeson qualified as Aeson
+                    import Data.Aeson.KeyMap qualified as Aeson.KeyMap
                     import Data.Hashable qualified as Hashable
                     import GHC.Generics qualified as Generics
                     import ModelieroArtifacts.Iso8601.Types.Md qualified as Local
@@ -432,17 +434,17 @@ spec = do
                     instance Aeson.ToJSON CalendarDate where
                       toJSON = \case
                         YmdCalendarDate ymd ->
-                          (Aeson.Object . Aeson.KeyMap.fromList)
-                            [ ("ymd", Aeson.toJSON ymd)
-                            ]
+                          ymd
+                            & Aeson.toJSON
+                            & Aeson.KeyMap.singleton "ymd"
                         YmCalendarDate ym ->
-                          (Aeson.Object . Aeson.KeyMap.fromList)
-                            [ ("ym", Aeson.toJSON ym)
-                            ]
+                          ym
+                            & Aeson.toJSON
+                            & Aeson.KeyMap.singleton "ym"
                         MdCalendarDate md ->
-                          (Aeson.Object . Aeson.KeyMap.fromList)
-                            [ ("md", Aeson.toJSON md)
-                            ]
+                          md
+                            & Aeson.toJSON
+                            & Aeson.KeyMap.singleton "md"
                     
                     instance Aeson.FromJSON CalendarDate where
                       parseJSON = \case
