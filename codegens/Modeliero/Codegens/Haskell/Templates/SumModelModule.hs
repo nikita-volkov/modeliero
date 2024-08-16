@@ -14,6 +14,7 @@ import Modeliero.Codegens.Haskell.Dsls.InModule
 import Modeliero.Codegens.Haskell.Imports qualified as Imports
 import Modeliero.Codegens.Haskell.Params qualified as Params
 import Modeliero.Codegens.Haskell.Templates.SumModelModule.Templates.DataTypeDeclaration qualified as Templates.DataTypeDeclaration
+import Modeliero.Codegens.Haskell.Templates.SumModelModule.Templates.FromJsonInstance qualified as Templates.FromJsonInstance
 import Modeliero.Codegens.Haskell.Templates.SumModelModule.Templates.HashableInstance qualified as Templates.HashableInstance
 import Modeliero.Codegens.Haskell.Templates.SumModelModule.Templates.ToJsonInstance qualified as Templates.ToJsonInstance
 
@@ -118,6 +119,44 @@ compile params = do
                                     variant.name
                                       & Slug.toLowerCamelCaseTextBuilder
                                       & to
+                                      & pure
+                                }
+                          )
+                  }
+            ),
+        params.instances.aeson <&> \aesonParams -> do
+          aesonQfr <- to <$> requestImport Imports.aeson
+          aesonKeyMapQfr <- to <$> requestImport Imports.aesonKeyMap
+          aesonTypesQfr <- to <$> requestImport Imports.aesonTypes
+          pure
+            ( Templates.FromJsonInstance.compile
+                Templates.FromJsonInstance.Params
+                  { aesonQfr,
+                    aesonKeyMapQfr,
+                    aesonTypesQfr,
+                    name =
+                      params.name
+                        & Slug.toUpperCamelCaseText,
+                    variants =
+                      params.variants
+                        & fmap
+                          ( \variant ->
+                              Templates.FromJsonInstance.Variant
+                                { constructorName =
+                                    (variant.name <> params.name)
+                                      & Slug.toUpperCamelCaseText,
+                                  varName =
+                                    variant.name
+                                      & Slug.toLowerCamelCaseText,
+                                  jsonName =
+                                    variant.name
+                                      & case aesonParams.casing of
+                                        Params.CamelCasing -> Slug.toLowerCamelCaseText
+                                        Params.SnakeCasing -> Slug.toSnakeCaseText
+                                        Params.KebabCasing -> Slug.toSpinalCaseText,
+                                  memberNames =
+                                    variant.name
+                                      & Slug.toLowerCamelCaseText
                                       & pure
                                 }
                           )

@@ -400,6 +400,7 @@ spec = do
                     import Prelude
                     import Data.Aeson qualified as Aeson
                     import Data.Aeson.KeyMap qualified as Aeson.KeyMap
+                    import Data.Aeson.Types qualified as Aeson.Types
                     import Data.Hashable qualified as Hashable
                     import GHC.Generics qualified as Generics
                     import ModelieroArtifacts.Iso8601.Types.Md qualified as Local
@@ -452,7 +453,8 @@ spec = do
                           [ variant "ymd" YmdCalendarDate,
                             variant "ym" YmCalendarDate,
                             variant "md" MdCalendarDate
-                          ] & asum
+                          ]
+                            & asum
                             & fmap pure
                             & fromMaybe (Aeson.parseFail noTagFoundMessage)
                           where
@@ -460,9 +462,9 @@ spec = do
                               object
                                 & Aeson.KeyMap.lookup (fromString name)
                                 & fmap 
-                                  ( \ymdJson -> 
+                                  ( \json -> 
                                     constructor <$$>
-                                      Aeson.parseJSON ymdJson Aeson.<?> fromString name
+                                      Aeson.parseJSON json Aeson.<?> fromString name
                                   )
                             noTagFoundMessage =
                               "No expected key found. It should be one of the following: ymd, ym, md"
