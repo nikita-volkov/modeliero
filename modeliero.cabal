@@ -97,6 +97,7 @@ library codegens
     Modeliero.Codegens.Haskell.Dsls.Package
     Modeliero.Codegens.Haskell.Imports
     Modeliero.Codegens.Haskell.Params
+    Modeliero.Codegens.Haskell.Snippets
     Modeliero.Codegens.Haskell.Templates.ProductModelModule
     Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.ArbitraryInstance
     Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.DataTypeDeclaration
@@ -111,6 +112,7 @@ library codegens
     Modeliero.Codegens.Haskell.Templates.RefinedModelModule.Templates.SpecialInstance
     Modeliero.Codegens.Haskell.Templates.RefinedModelModule.Templates.ToJsonInstance
     Modeliero.Codegens.Haskell.Templates.SumModelModule
+    Modeliero.Codegens.Haskell.Templates.SumModelModule.Templates.ArbitraryInstance
     Modeliero.Codegens.Haskell.Templates.SumModelModule.Templates.DataTypeDeclaration
     Modeliero.Codegens.Haskell.Templates.SumModelModule.Templates.FromJsonInstance
     Modeliero.Codegens.Haskell.Templates.SumModelModule.Templates.HashableInstance

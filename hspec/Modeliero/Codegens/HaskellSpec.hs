@@ -406,7 +406,9 @@ spec = do
                     import ModelieroArtifacts.Iso8601.Types.Md qualified as Local
                     import ModelieroArtifacts.Iso8601.Types.Ym qualified as Local
                     import ModelieroArtifacts.Iso8601.Types.Ymd qualified as Local
-                    
+                    import Test.QuickCheck.Arbitrary qualified as QuickCheck.Arbitrary
+                    import Test.QuickCheck.Gen qualified as QuickCheck.Gen
+
                     -- |
                     -- - @YYYY-MM-DD@ or @YYYYMMDD@
                     -- - @YYYY-MM@ (but not @YYYYMM@)
@@ -467,20 +469,28 @@ spec = do
                                       Aeson.parseJSON json Aeson.<?> fromString name
                                   )
                             noTagFoundMessage =
-                              "No expected key found. It should be one of the following: ymd, ym, md"
-                        json -> Aeson.Types.typeMismatch "Object" json
+                              "No expected key found. \
+                              \It should be one of the following: \
+                              \ymd, ym, md"
+                        json -> Aeson.Types.typeMismatch "Object|String" json
 
                     instance QuickCheck.Arbitrary.Arbitrary CalendarDate where
                       arbitrary =
-                        QuickCheck.Gens.oneof
+                        QuickCheck.Gen.oneof
                           [ YmdCalendarDate <$$> QuickCheck.Arbitrary.arbitrary,
                             YmCalendarDate <$$> QuickCheck.Arbitrary.arbitrary,
                             MdCalendarDate <$$> QuickCheck.Arbitrary.arbitrary
                           ]
                       shrink = \case
-                        YmdCalendarDate ymd -> YmdCalendarDate <$$> QuickCheck.Arbitrary.shrink ymd
-                        YmCalendarDate ym -> YmCalendarDate <$$> QuickCheck.Arbitrary.shrink ym
-                        MdCalendarDate md -> MdCalendarDate <$$> QuickCheck.Arbitrary.shrink md
+                        YmdCalendarDate ymd ->
+                          YmdCalendarDate
+                            <$$> QuickCheck.Arbitrary.shrink ymd
+                        YmCalendarDate ym ->
+                          YmCalendarDate
+                            <$$> QuickCheck.Arbitrary.shrink ym
+                        MdCalendarDate md ->
+                          MdCalendarDate
+                            <$$> QuickCheck.Arbitrary.shrink md
                     
                     instance Anonymizable.Anonymizable CalendarDate where
                       anonymize = \case
