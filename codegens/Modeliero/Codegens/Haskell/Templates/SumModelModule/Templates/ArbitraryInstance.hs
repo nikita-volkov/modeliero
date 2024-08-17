@@ -7,7 +7,7 @@ where
 
 import Coalmine.MultilineTextBuilder
 import Coalmine.Prelude hiding (intercalate)
-import Modeliero.Codegens.Haskell.Snippets qualified as MoreSnippets
+import Modeliero.Codegens.Haskell.Snippets qualified as Snippets
 
 data Params = Params
   { name :: TextBlock,
@@ -31,21 +31,26 @@ compile params =
           ]
       shrink = \case
         $shrinkMatches
-      
   |]
   where
     arbitraryExps =
       params.variants
         & fmap
           ( \variant ->
-              mconcat
-                [ variant.constructorName,
-                  " <$> ",
-                  params.quickCheckArbitraryQfr,
-                  "arbitrary"
-                ]
+              variant.memberNames
+                & fmap
+                  ( \_ ->
+                      mconcat
+                        [ params.quickCheckArbitraryQfr,
+                          "arbitrary"
+                        ]
+                  )
+                & Snippets.multilineApOr
+                  (mconcat ["pure ", variant.constructorName])
+                  variant.constructorName
           )
-        & intercalate ",\n  "
+        & intercalate ",\n"
+        & indent 2
 
     shrinkMatches =
       params.variants
@@ -67,14 +72,9 @@ compile params =
                                       memberName
                                     ]
                               )
-                            & nonEmpty
-                            & \case
-                              Just members ->
-                                MoreSnippets.multilineAp
-                                  variant.constructorName
-                                  members
-                              Nothing ->
-                                "[]"
+                            & Snippets.multilineApOr
+                              "[]"
+                              variant.constructorName
                         ]
                     )
                 ]

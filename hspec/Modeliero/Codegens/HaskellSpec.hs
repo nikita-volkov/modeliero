@@ -477,9 +477,12 @@ spec = do
                     instance QuickCheck.Arbitrary.Arbitrary CalendarDate where
                       arbitrary =
                         QuickCheck.Gen.oneof
-                          [ YmdCalendarDate <$$> QuickCheck.Arbitrary.arbitrary,
-                            YmCalendarDate <$$> QuickCheck.Arbitrary.arbitrary,
-                            MdCalendarDate <$$> QuickCheck.Arbitrary.arbitrary
+                          [ YmdCalendarDate
+                              <$$> QuickCheck.Arbitrary.arbitrary,
+                            YmCalendarDate
+                              <$$> QuickCheck.Arbitrary.arbitrary,
+                            MdCalendarDate
+                              <$$> QuickCheck.Arbitrary.arbitrary
                           ]
                       shrink = \case
                         YmdCalendarDate ymd ->
@@ -494,9 +497,15 @@ spec = do
                     
                     instance Anonymizable.Anonymizable CalendarDate where
                       anonymize = \case
-                        YmdCalendarDate ymd -> YmdCalendarDate (Anonymizable.anonymize ymd)
-                        YmCalendarDate ym -> YmCalendarDate (Anonymizable.anonymize ym)
-                        MdCalendarDate md -> MdCalendarDate (Anonymizable.anonymize md)
+                        YmdCalendarDate ymd ->
+                          YmdCalendarDate
+                            (Anonymizable.anonymize ymd)
+                        YmCalendarDate ym ->
+                          YmCalendarDate
+                            (Anonymizable.anonymize ym)
+                        MdCalendarDate md ->
+                          MdCalendarDate
+                            (Anonymizable.anonymize md)
                   |]
 
       describe "Reexports" do
