@@ -55,6 +55,7 @@ compile params =
             ("Data.Scientific", "Scientific"),
             ("Data.Text", "Text"),
             ("GHC.Generics", "Generics"),
+            ("ModelieroBase.Classes.Anonymizable", "Anonymizable"),
             ("ModelieroBase.Classes.Special", "Special"),
             ("Prelude", ""),
             ("Test.QuickCheck.Arbitrary", "QuickCheck.Arbitrary"),

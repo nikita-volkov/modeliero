@@ -153,17 +153,20 @@ spec = do
                             [ Subject.Variant
                                 { name = "ymd",
                                   docs = "",
-                                  type_ = Subject.PlainValueType (Subject.LocalPlainType "ymd")
+                                  type_ = Subject.PlainValueType (Subject.LocalPlainType "ymd"),
+                                  anonymizable = True
                                 },
                               Subject.Variant
                                 { name = "ym",
                                   docs = "",
-                                  type_ = Subject.PlainValueType (Subject.LocalPlainType "ym")
+                                  type_ = Subject.PlainValueType (Subject.LocalPlainType "ym"),
+                                  anonymizable = False
                                 },
                               Subject.Variant
                                 { name = "md",
                                   docs = "",
-                                  type_ = Subject.PlainValueType (Subject.LocalPlainType "md")
+                                  type_ = Subject.PlainValueType (Subject.LocalPlainType "md"),
+                                  anonymizable = True
                                 }
                             ]
                       }
@@ -180,7 +183,8 @@ spec = do
                           Subject.Aeson
                             { casing = Subject.KebabCasing
                             },
-                      arbitrary = True
+                      arbitrary = True,
+                      anonymizable = True
                     }
               }
           result = Subject.compile params
@@ -406,6 +410,7 @@ spec = do
                     import ModelieroArtifacts.Iso8601.Types.Md qualified as Local
                     import ModelieroArtifacts.Iso8601.Types.Ym qualified as Local
                     import ModelieroArtifacts.Iso8601.Types.Ymd qualified as Local
+                    import ModelieroBase.Classes.Anonymizable qualified as Anonymizable
                     import Test.QuickCheck.Arbitrary qualified as QuickCheck.Arbitrary
                     import Test.QuickCheck.Gen qualified as QuickCheck.Gen
 
@@ -502,7 +507,7 @@ spec = do
                             (Anonymizable.anonymize ymd)
                         YmCalendarDate ym ->
                           YmCalendarDate
-                            (Anonymizable.anonymize ym)
+                            ym
                         MdCalendarDate md ->
                           MdCalendarDate
                             (Anonymizable.anonymize md)

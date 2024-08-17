@@ -56,6 +56,13 @@ special =
       name = "ModelieroBase.Classes.Special"
     }
 
+anonymizable :: Import
+anonymizable =
+  Import
+    { dependency = Just Dependencies.modelieroBase,
+      name = "ModelieroBase.Classes.Anonymizable"
+    }
+
 fromBase :: Text -> Import
 fromBase name =
   Import

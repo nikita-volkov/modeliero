@@ -13,6 +13,7 @@ import Coalmine.Slug qualified as Slug
 import Modeliero.Codegens.Haskell.Dsls.InModule
 import Modeliero.Codegens.Haskell.Imports qualified as Imports
 import Modeliero.Codegens.Haskell.Params qualified as Params
+import Modeliero.Codegens.Haskell.Templates.SumModelModule.Templates.AnonymizableInstance qualified as Templates.AnonymizableInstance
 import Modeliero.Codegens.Haskell.Templates.SumModelModule.Templates.ArbitraryInstance qualified as Templates.ArbitraryInstance
 import Modeliero.Codegens.Haskell.Templates.SumModelModule.Templates.DataTypeDeclaration qualified as Templates.DataTypeDeclaration
 import Modeliero.Codegens.Haskell.Templates.SumModelModule.Templates.FromJsonInstance qualified as Templates.FromJsonInstance
@@ -190,6 +191,40 @@ compile params = do
                                         & Slug.toLowerCamelCaseText
                                         & to
                                         & pure
+                                  }
+                            )
+                    }
+              )
+          else Nothing,
+        if params.instances.anonymizable
+          then Just do
+            anonymizableQfr <- to <$> requestImport Imports.anonymizable
+            pure
+              ( Templates.AnonymizableInstance.compile
+                  Templates.AnonymizableInstance.Params
+                    { anonymizableQfr,
+                      name =
+                        params.name
+                          & Slug.toUpperCamelCaseText
+                          & to,
+                      variants =
+                        params.variants
+                          & fmap
+                            ( \variant ->
+                                Templates.AnonymizableInstance.Variant
+                                  { constructorName =
+                                      (variant.name <> params.name)
+                                        & Slug.toUpperCamelCaseText
+                                        & to,
+                                    fields =
+                                      [ Templates.AnonymizableInstance.VariantField
+                                          { name =
+                                              variant.name
+                                                & Slug.toLowerCamelCaseText
+                                                & to,
+                                            anonymizable = variant.anonymizable
+                                          }
+                                      ]
                                   }
                             )
                     }

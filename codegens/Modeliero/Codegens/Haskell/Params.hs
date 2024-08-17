@@ -74,7 +74,8 @@ data Variant
   = Variant
   { name :: Slug,
     type_ :: ValueType,
-    docs :: Text
+    docs :: Text,
+    anonymizable :: Bool
   }
 
 -- *** Refinement
@@ -110,7 +111,8 @@ data Instances = Instances
     hashable :: Bool,
     generic :: Bool,
     aeson :: Maybe Aeson,
-    arbitrary :: Bool
+    arbitrary :: Bool,
+    anonymizable :: Bool
   }
 
 data Aeson = Aeson
