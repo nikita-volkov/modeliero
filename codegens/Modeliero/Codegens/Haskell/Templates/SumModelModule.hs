@@ -35,64 +35,162 @@ compile params = do
   registerExport (Slug.toUpperCamelCaseText params.name <> " (..)")
   decls <-
     (sequence . catMaybes)
-      [ Just do
-          variants <- for params.variants \variant -> do
-            type_ <- compileValueType params.modelsNamespace variant.type_
-            pure
-              Templates.DataTypeDeclaration.Variant
-                { name =
-                    variant.name
-                      & Slug.toUpperCamelCaseTextBuilder
-                      & to,
-                  haddock = variant.docs,
-                  type_
+      [ dataTypeDecl,
+        hashableDecl,
+        toJsonDecl,
+        fromJsonDecl,
+        arbitraryDecl,
+        anonymizableDecl
+      ]
+  pure (TextBlock.intercalate "\n\n" decls)
+  where
+    dataTypeDecl =
+      Just do
+        variants <- for params.variants \variant -> do
+          type_ <- compileValueType params.modelsNamespace variant.type_
+          pure
+            Templates.DataTypeDeclaration.Variant
+              { name =
+                  variant.name
+                    & Slug.toUpperCamelCaseTextBuilder
+                    & to,
+                haddock = variant.docs,
+                type_
+              }
+        derivings <- compileDerivings params
+        pure
+          ( Templates.DataTypeDeclaration.compile
+              Templates.DataTypeDeclaration.Params
+                { name = params.name & Slug.toUpperCamelCaseText & to,
+                  haddock = params.docs,
+                  variants,
+                  derivings
                 }
-          derivings <- compileDerivings params
+          )
+
+    hashableDecl =
+      if params.instances.hashable
+        then Just do
+          hashableQfr <- requestImport Imports.hashable
           pure
-            ( Templates.DataTypeDeclaration.compile
-                Templates.DataTypeDeclaration.Params
+            ( Templates.HashableInstance.compile
+                Templates.HashableInstance.Params
                   { name = params.name & Slug.toUpperCamelCaseText & to,
-                    haddock = params.docs,
-                    variants,
-                    derivings
+                    variants =
+                      params.variants
+                        & fmap
+                          ( \variant ->
+                              Templates.HashableInstance.Variant
+                                { name =
+                                    variant.name
+                                      & Slug.toUpperCamelCaseTextBuilder
+                                      & to,
+                                  memberNames =
+                                    variant.name
+                                      & Slug.toLowerCamelCaseTextBuilder
+                                      & to
+                                      & pure
+                                }
+                          ),
+                    hashableQfr =
+                      hashableQfr & to
                   }
-            ),
-        if params.instances.hashable
-          then Just do
-            hashableQfr <- requestImport Imports.hashable
-            pure
-              ( Templates.HashableInstance.compile
-                  Templates.HashableInstance.Params
-                    { name = params.name & Slug.toUpperCamelCaseText & to,
-                      variants =
-                        params.variants
-                          & fmap
-                            ( \variant ->
-                                Templates.HashableInstance.Variant
-                                  { name =
-                                      variant.name
-                                        & Slug.toUpperCamelCaseTextBuilder
-                                        & to,
-                                    memberNames =
-                                      variant.name
-                                        & Slug.toLowerCamelCaseTextBuilder
-                                        & to
-                                        & pure
-                                  }
-                            ),
-                      hashableQfr =
-                        hashableQfr & to
-                    }
-              )
-          else Nothing,
-        params.instances.aeson <&> \aesonParams -> do
-          aesonQfr <- to <$> requestImport Imports.aeson
-          aesonKeyMapQfr <- to <$> requestImport Imports.aesonKeyMap
+            )
+        else Nothing
+
+    toJsonDecl =
+      params.instances.aeson <&> \aesonParams -> do
+        aesonQfr <- to <$> requestImport Imports.aeson
+        aesonKeyMapQfr <- to <$> requestImport Imports.aesonKeyMap
+        pure
+          ( Templates.ToJsonInstance.compile
+              Templates.ToJsonInstance.Params
+                { aesonQfr,
+                  aesonKeyMapQfr,
+                  name =
+                    params.name
+                      & Slug.toUpperCamelCaseText
+                      & to,
+                  variants =
+                    params.variants
+                      & fmap
+                        ( \variant ->
+                            Templates.ToJsonInstance.Variant
+                              { constructorName =
+                                  variant.name
+                                    & Slug.toUpperCamelCaseText
+                                    & to,
+                                varName =
+                                  variant.name
+                                    & Slug.toLowerCamelCaseText
+                                    & to,
+                                jsonName =
+                                  variant.name
+                                    & case aesonParams.casing of
+                                      Params.CamelCasing -> Slug.toLowerCamelCaseText
+                                      Params.SnakeCasing -> Slug.toSnakeCaseText
+                                      Params.KebabCasing -> Slug.toSpinalCaseText
+                                    & to,
+                                memberNames =
+                                  variant.name
+                                    & Slug.toLowerCamelCaseTextBuilder
+                                    & to
+                                    & pure
+                              }
+                        )
+                }
+          )
+
+    fromJsonDecl =
+      params.instances.aeson <&> \aesonParams -> do
+        aesonQfr <- to <$> requestImport Imports.aeson
+        aesonKeyMapQfr <- to <$> requestImport Imports.aesonKeyMap
+        aesonTypesQfr <- to <$> requestImport Imports.aesonTypes
+        pure
+          ( Templates.FromJsonInstance.compile
+              Templates.FromJsonInstance.Params
+                { aesonQfr,
+                  aesonKeyMapQfr,
+                  aesonTypesQfr,
+                  name =
+                    params.name
+                      & Slug.toUpperCamelCaseText,
+                  variants =
+                    params.variants
+                      & fmap
+                        ( \variant ->
+                            Templates.FromJsonInstance.Variant
+                              { constructorName =
+                                  (variant.name <> params.name)
+                                    & Slug.toUpperCamelCaseText,
+                                varName =
+                                  variant.name
+                                    & Slug.toLowerCamelCaseText,
+                                jsonName =
+                                  variant.name
+                                    & case aesonParams.casing of
+                                      Params.CamelCasing -> Slug.toLowerCamelCaseText
+                                      Params.SnakeCasing -> Slug.toSnakeCaseText
+                                      Params.KebabCasing -> Slug.toSpinalCaseText,
+                                memberNames =
+                                  variant.name
+                                    & Slug.toLowerCamelCaseText
+                                    & pure
+                              }
+                        )
+                }
+          )
+
+    arbitraryDecl =
+      if params.instances.arbitrary
+        then Just do
+          quickCheckArbitraryQfr <- to <$> requestImport Imports.quickCheckArbitrary
+          quickCheckGenQfr <- to <$> requestImport Imports.quickCheckGen
           pure
-            ( Templates.ToJsonInstance.compile
-                Templates.ToJsonInstance.Params
-                  { aesonQfr,
-                    aesonKeyMapQfr,
+            ( Templates.ArbitraryInstance.compile
+                Templates.ArbitraryInstance.Params
+                  { quickCheckArbitraryQfr,
+                    quickCheckGenQfr,
                     name =
                       params.name
                         & Slug.toUpperCamelCaseText
@@ -101,137 +199,57 @@ compile params = do
                       params.variants
                         & fmap
                           ( \variant ->
-                              Templates.ToJsonInstance.Variant
+                              Templates.ArbitraryInstance.Variant
                                 { constructorName =
-                                    variant.name
+                                    (variant.name <> params.name)
                                       & Slug.toUpperCamelCaseText
-                                      & to,
-                                  varName =
-                                    variant.name
-                                      & Slug.toLowerCamelCaseText
-                                      & to,
-                                  jsonName =
-                                    variant.name
-                                      & case aesonParams.casing of
-                                        Params.CamelCasing -> Slug.toLowerCamelCaseText
-                                        Params.SnakeCasing -> Slug.toSnakeCaseText
-                                        Params.KebabCasing -> Slug.toSpinalCaseText
                                       & to,
                                   memberNames =
                                     variant.name
-                                      & Slug.toLowerCamelCaseTextBuilder
+                                      & Slug.toLowerCamelCaseText
                                       & to
                                       & pure
                                 }
                           )
                   }
-            ),
-        params.instances.aeson <&> \aesonParams -> do
-          aesonQfr <- to <$> requestImport Imports.aeson
-          aesonKeyMapQfr <- to <$> requestImport Imports.aesonKeyMap
-          aesonTypesQfr <- to <$> requestImport Imports.aesonTypes
+            )
+        else Nothing
+
+    anonymizableDecl =
+      if params.instances.anonymizable
+        then Just do
+          anonymizableQfr <- to <$> requestImport Imports.anonymizable
           pure
-            ( Templates.FromJsonInstance.compile
-                Templates.FromJsonInstance.Params
-                  { aesonQfr,
-                    aesonKeyMapQfr,
-                    aesonTypesQfr,
+            ( Templates.AnonymizableInstance.compile
+                Templates.AnonymizableInstance.Params
+                  { anonymizableQfr,
                     name =
                       params.name
-                        & Slug.toUpperCamelCaseText,
+                        & Slug.toUpperCamelCaseText
+                        & to,
                     variants =
                       params.variants
                         & fmap
                           ( \variant ->
-                              Templates.FromJsonInstance.Variant
+                              Templates.AnonymizableInstance.Variant
                                 { constructorName =
                                     (variant.name <> params.name)
-                                      & Slug.toUpperCamelCaseText,
-                                  varName =
-                                    variant.name
-                                      & Slug.toLowerCamelCaseText,
-                                  jsonName =
-                                    variant.name
-                                      & case aesonParams.casing of
-                                        Params.CamelCasing -> Slug.toLowerCamelCaseText
-                                        Params.SnakeCasing -> Slug.toSnakeCaseText
-                                        Params.KebabCasing -> Slug.toSpinalCaseText,
-                                  memberNames =
-                                    variant.name
-                                      & Slug.toLowerCamelCaseText
-                                      & pure
+                                      & Slug.toUpperCamelCaseText
+                                      & to,
+                                  fields =
+                                    [ Templates.AnonymizableInstance.VariantField
+                                        { name =
+                                            variant.name
+                                              & Slug.toLowerCamelCaseText
+                                              & to,
+                                          anonymizable = variant.anonymizable
+                                        }
+                                    ]
                                 }
                           )
                   }
-            ),
-        if params.instances.arbitrary
-          then Just do
-            quickCheckArbitraryQfr <- to <$> requestImport Imports.quickCheckArbitrary
-            quickCheckGenQfr <- to <$> requestImport Imports.quickCheckGen
-            pure
-              ( Templates.ArbitraryInstance.compile
-                  Templates.ArbitraryInstance.Params
-                    { quickCheckArbitraryQfr,
-                      quickCheckGenQfr,
-                      name =
-                        params.name
-                          & Slug.toUpperCamelCaseText
-                          & to,
-                      variants =
-                        params.variants
-                          & fmap
-                            ( \variant ->
-                                Templates.ArbitraryInstance.Variant
-                                  { constructorName =
-                                      (variant.name <> params.name)
-                                        & Slug.toUpperCamelCaseText
-                                        & to,
-                                    memberNames =
-                                      variant.name
-                                        & Slug.toLowerCamelCaseText
-                                        & to
-                                        & pure
-                                  }
-                            )
-                    }
-              )
-          else Nothing,
-        if params.instances.anonymizable
-          then Just do
-            anonymizableQfr <- to <$> requestImport Imports.anonymizable
-            pure
-              ( Templates.AnonymizableInstance.compile
-                  Templates.AnonymizableInstance.Params
-                    { anonymizableQfr,
-                      name =
-                        params.name
-                          & Slug.toUpperCamelCaseText
-                          & to,
-                      variants =
-                        params.variants
-                          & fmap
-                            ( \variant ->
-                                Templates.AnonymizableInstance.Variant
-                                  { constructorName =
-                                      (variant.name <> params.name)
-                                        & Slug.toUpperCamelCaseText
-                                        & to,
-                                    fields =
-                                      [ Templates.AnonymizableInstance.VariantField
-                                          { name =
-                                              variant.name
-                                                & Slug.toLowerCamelCaseText
-                                                & to,
-                                            anonymizable = variant.anonymizable
-                                          }
-                                      ]
-                                  }
-                            )
-                    }
-              )
-          else Nothing
-      ]
-  pure (TextBlock.intercalate "\n\n" decls)
+            )
+        else Nothing
 
 compileDerivings :: Params -> InModule [TextBlock]
 compileDerivings params = do
