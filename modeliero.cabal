@@ -85,6 +85,30 @@ common test
     -threaded
     "-with-rtsopts=-N -I0 -qg"
 
+library sources
+  import: base
+  hs-source-dirs: sources
+  exposed-modules:
+    Modeliero.Sources.AsyncApi
+
+  build-depends:
+    coalmine,
+    modeliero:codegens,
+    openapi3,
+
+library async-api
+  import: base
+  hs-source-dirs: async-api
+  exposed-modules:
+    Modeliero.AsyncApi
+
+  build-depends:
+    aeson,
+    aeson-value-parser,
+    coalmine,
+    openapi3,
+    yaml,
+
 library codegens
   import: base
   hs-source-dirs: codegens
@@ -133,6 +157,7 @@ test-suite hspec
   hs-source-dirs: hspec
   main-is: Main.hs
   other-modules:
+    Modeliero.AsyncApiSpec
     Modeliero.Codegens.Haskell.ExtrasFor.Hspec
     Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.ArbitraryInstanceSpec
     Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.DataTypeDeclarationSpec
@@ -152,5 +177,6 @@ test-suite hspec
     containers,
     hspec,
     hspec-expectations,
+    modeliero:async-api,
     modeliero:codegens,
     text,
