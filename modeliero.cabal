@@ -91,10 +91,19 @@ library sources
   exposed-modules:
     Modeliero.Sources.AsyncApi
 
+  other-modules:
+    Modeliero.Sources.AsyncApi.Parsers.PropertySchema
+    Modeliero.Sources.AsyncApi.Parsers.ReferencedSchema
+    Modeliero.Sources.AsyncApi.Parsers.SchemaProperties
+    Modeliero.Sources.AsyncApi.Preludes.Parser
+
   build-depends:
     coalmine,
+    insert-ordered-containers,
+    modeliero:async-api,
     modeliero:codegens,
     openapi3,
+    unordered-containers,
 
 library async-api
   import: base
