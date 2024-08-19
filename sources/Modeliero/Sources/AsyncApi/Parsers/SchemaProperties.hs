@@ -49,6 +49,7 @@ parse schemaContext input =
           pure
             Field
               { name,
+                jsonName = nameInput,
                 docs = propertySchema.docs,
                 type_ = propertySchema.type_
               }

@@ -24,6 +24,7 @@ spec = do
                           Subject.ProductTypeDefinition
                             [ Subject.Field
                                 { name = "separated",
+                                  jsonName = "contains_dash",
                                   docs = "Whether the format contains dashes.",
                                   type_ =
                                     Subject.PlainValueType
@@ -33,6 +34,7 @@ spec = do
                                 },
                               Subject.Field
                                 { name = "year",
+                                  jsonName = "year",
                                   docs = "Year.",
                                   type_ =
                                     Subject.PlainValueType
@@ -40,6 +42,7 @@ spec = do
                                 },
                               Subject.Field
                                 { name = "month",
+                                  jsonName = "month",
                                   docs = "Month.",
                                   type_ =
                                     Subject.PlainValueType
@@ -47,6 +50,7 @@ spec = do
                                 },
                               Subject.Field
                                 { name = "day",
+                                  jsonName = "day",
                                   docs = "Day.",
                                   type_ =
                                     Subject.PlainValueType
@@ -66,6 +70,7 @@ spec = do
                           Subject.ProductTypeDefinition
                             [ Subject.Field
                                 { name = "year",
+                                  jsonName = "year",
                                   docs = "Year.",
                                   type_ =
                                     Subject.PlainValueType
@@ -73,6 +78,7 @@ spec = do
                                 },
                               Subject.Field
                                 { name = "month",
+                                  jsonName = "month",
                                   docs = "Month.",
                                   type_ =
                                     Subject.PlainValueType
@@ -93,6 +99,7 @@ spec = do
                           Subject.ProductTypeDefinition
                             [ Subject.Field
                                 { name = "month",
+                                  jsonName = "month",
                                   docs = "Month.",
                                   type_ =
                                     Subject.PlainValueType
@@ -100,6 +107,7 @@ spec = do
                                 },
                               Subject.Field
                                 { name = "day",
+                                  jsonName = "day",
                                   docs = "Day.",
                                   type_ =
                                     Subject.PlainValueType
@@ -152,18 +160,21 @@ spec = do
                           Subject.SumTypeDefinition
                             [ Subject.Variant
                                 { name = "ymd",
+                                  jsonName = "yearMonthDay",
                                   docs = "",
                                   type_ = Subject.PlainValueType (Subject.LocalPlainType "ymd"),
                                   anonymizable = True
                                 },
                               Subject.Variant
                                 { name = "ym",
+                                  jsonName = "ym",
                                   docs = "",
                                   type_ = Subject.PlainValueType (Subject.LocalPlainType "ym"),
                                   anonymizable = False
                                 },
                               Subject.Variant
                                 { name = "md",
+                                  jsonName = "md",
                                   docs = "",
                                   type_ = Subject.PlainValueType (Subject.LocalPlainType "md"),
                                   anonymizable = True
@@ -285,7 +296,7 @@ spec = do
                       instance Aeson.ToJSON Ymd where
                         toJSON value =
                           (Aeson.Object . Aeson.KeyMap.fromList)
-                            [ ("separated", Aeson.toJSON value.separated),
+                            [ ("contains_dash", Aeson.toJSON value.separated),
                               ("year", Aeson.toJSON value.year),
                               ("month", Aeson.toJSON value.month),
                               ("day", Aeson.toJSON value.day)
@@ -294,7 +305,7 @@ spec = do
                       instance Aeson.FromJSON Ymd where
                         parseJSON = \case
                           Aeson.Object object -> do
-                            separated <- Aeson.Types.parseField object "separated"
+                            separated <- Aeson.Types.parseField object "contains_dash"
                             year <- Aeson.Types.parseField object "year"
                             month <- Aeson.Types.parseField object "month"
                             day <- Aeson.Types.parseField object "day"
@@ -444,7 +455,7 @@ spec = do
                         YmdCalendarDate ymd ->
                           ymd
                             & Aeson.toJSON
-                            & Aeson.KeyMap.singleton "ymd"
+                            & Aeson.KeyMap.singleton "yearMonthDay"
                         YmCalendarDate ym ->
                           ym
                             & Aeson.toJSON
@@ -457,7 +468,7 @@ spec = do
                     instance Aeson.FromJSON CalendarDate where
                       parseJSON = \case
                         Aeson.Object object ->
-                          [ variant "ymd" YmdCalendarDate,
+                          [ variant "yearMonthDay" YmdCalendarDate,
                             variant "ym" YmCalendarDate,
                             variant "md" MdCalendarDate
                           ]

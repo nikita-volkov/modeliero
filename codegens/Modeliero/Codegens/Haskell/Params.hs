@@ -27,6 +27,7 @@ data TypeDefinition
 
 data Field = Field
   { name :: Slug,
+    jsonName :: Text,
     docs :: Text,
     type_ :: ValueType
   }
@@ -73,6 +74,7 @@ data CustomType = CustomType
 data Variant
   = Variant
   { name :: Slug,
+    jsonName :: Text,
     type_ :: ValueType,
     docs :: Text,
     anonymizable :: Bool
