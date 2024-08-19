@@ -93,8 +93,14 @@ library sources
 
   other-modules:
     Modeliero.Sources.AsyncApi.Parsers.PropertySchema
-    Modeliero.Sources.AsyncApi.Parsers.ReferencedSchema
     Modeliero.Sources.AsyncApi.Parsers.SchemaProperties
+    Modeliero.Sources.AsyncApi.Parsers.SchemaReferencedSchema
+    Modeliero.Sources.AsyncApi.Parsers.SumOneOf
+    Modeliero.Sources.AsyncApi.Parsers.SumSchema
+    Modeliero.Sources.AsyncApi.Parsers.SumVariantSchema
+    Modeliero.Sources.AsyncApi.Parsers.TypeDeclarationSchema
+    Modeliero.Sources.AsyncApi.Parsers.TypeDeclarationsComponents
+    Modeliero.Sources.AsyncApi.Parsers.ValueTypeSchema
     Modeliero.Sources.AsyncApi.Preludes.Parser
 
   build-depends:

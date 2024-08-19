@@ -1,6 +1,4 @@
-{-# OPTIONS_GHC -Wno-unused-binds -Wno-unused-imports -Wno-name-shadowing -Wno-incomplete-patterns #-}
-
-module Modeliero.Sources.AsyncApi.Parsers.ReferencedSchema where
+module Modeliero.Sources.AsyncApi.Parsers.SchemaReferencedSchema where
 
 import Data.HashMap.Strict qualified as HashMap
 import Data.OpenApi qualified as Input
@@ -20,3 +18,4 @@ parse schemaContext = \case
       Left (NotFoundError ref.getReference)
     Just schema ->
       Right schema
+  Input.Inline schema -> pure schema

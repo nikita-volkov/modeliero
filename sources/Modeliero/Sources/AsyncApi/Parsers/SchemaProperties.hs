@@ -3,7 +3,7 @@ module Modeliero.Sources.AsyncApi.Parsers.SchemaProperties where
 import Data.HashMap.Strict.InsOrd qualified as InsOrd
 import Data.OpenApi qualified as OpenApi
 import Modeliero.Sources.AsyncApi.Parsers.PropertySchema qualified as Parsers.PropertySchema
-import Modeliero.Sources.AsyncApi.Parsers.ReferencedSchema qualified as Parsers.ReferencedSchema
+import Modeliero.Sources.AsyncApi.Parsers.SchemaReferencedSchema qualified as Parsers.SchemaReferencedSchema
 import Modeliero.Sources.AsyncApi.Preludes.Parser
 
 type Input = InsOrd.InsOrdHashMap Text (OpenApi.Referenced OpenApi.Schema)
@@ -21,7 +21,7 @@ data Error
   | PropertyDereferencingError
       -- | Property name.
       Text
-      Parsers.ReferencedSchema.Error
+      Parsers.SchemaReferencedSchema.Error
   | PropertyKeyError
       -- | Property name
       Text
@@ -40,7 +40,7 @@ parse schemaContext input =
               & first (PropertyKeyError nameInput)
           schema <-
             referencedSchemaInput
-              & Parsers.ReferencedSchema.parse schemaContext
+              & Parsers.SchemaReferencedSchema.parse schemaContext
               & first (PropertyDereferencingError nameInput)
           propertySchema <-
             schema
