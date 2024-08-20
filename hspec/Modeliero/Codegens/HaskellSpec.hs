@@ -487,7 +487,7 @@ spec = do
                             noTagFoundMessage =
                               "No expected key found. \
                               \It should be one of the following: \
-                              \ymd, ym, md"
+                              \yearMonthDay, ym, md"
                         json -> Aeson.Types.typeMismatch "Object|String" json
 
                     instance QuickCheck.Arbitrary.Arbitrary CalendarDate where

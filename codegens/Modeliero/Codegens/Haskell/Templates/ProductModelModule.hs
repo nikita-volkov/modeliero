@@ -65,10 +65,14 @@ compileField modelsNamespace jsonCasing field = do
         type_,
         haddock = field.docs,
         jsonName =
-          field.name & case jsonCasing of
-            CamelCasing -> Slug.toLowerCamelCaseText
-            SnakeCasing -> Slug.toSnakeCaseText
-            KebabCasing -> Slug.toSpinalCaseText,
+          if field.jsonName == ""
+            then
+              field.name & case jsonCasing of
+                CamelCasing -> Slug.toLowerCamelCaseText
+                SnakeCasing -> Slug.toSnakeCaseText
+                KebabCasing -> Slug.toSpinalCaseText
+            else
+              field.jsonName,
         nullable = case field.type_ of
           MaybeValueType _ -> True
           _ -> False

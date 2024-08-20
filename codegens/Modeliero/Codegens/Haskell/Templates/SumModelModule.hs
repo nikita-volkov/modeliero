@@ -10,6 +10,7 @@ where
 import Coalmine.MultilineTextBuilder qualified as TextBlock
 import Coalmine.Prelude
 import Coalmine.Slug qualified as Slug
+import Data.Text qualified as Text
 import Modeliero.Codegens.Haskell.Dsls.InModule
 import Modeliero.Codegens.Haskell.Imports qualified as Imports
 import Modeliero.Codegens.Haskell.Params qualified as Params
@@ -125,12 +126,15 @@ compile params = do
                                     & Slug.toLowerCamelCaseText
                                     & to,
                                 jsonName =
-                                  variant.name
-                                    & case aesonParams.casing of
-                                      Params.CamelCasing -> Slug.toLowerCamelCaseText
-                                      Params.SnakeCasing -> Slug.toSnakeCaseText
-                                      Params.KebabCasing -> Slug.toSpinalCaseText
-                                    & to,
+                                  if Text.null variant.jsonName
+                                    then
+                                      variant.name
+                                        & case aesonParams.casing of
+                                          Params.CamelCasing -> Slug.toLowerCamelCaseText
+                                          Params.SnakeCasing -> Slug.toSnakeCaseText
+                                          Params.KebabCasing -> Slug.toSpinalCaseText
+                                        & to
+                                    else variant.jsonName,
                                 memberNames =
                                   variant.name
                                     & Slug.toLowerCamelCaseTextBuilder
@@ -167,11 +171,15 @@ compile params = do
                                   variant.name
                                     & Slug.toLowerCamelCaseText,
                                 jsonName =
-                                  variant.name
-                                    & case aesonParams.casing of
-                                      Params.CamelCasing -> Slug.toLowerCamelCaseText
-                                      Params.SnakeCasing -> Slug.toSnakeCaseText
-                                      Params.KebabCasing -> Slug.toSpinalCaseText,
+                                  if Text.null variant.jsonName
+                                    then
+                                      variant.name
+                                        & case aesonParams.casing of
+                                          Params.CamelCasing -> Slug.toLowerCamelCaseText
+                                          Params.SnakeCasing -> Slug.toSnakeCaseText
+                                          Params.KebabCasing -> Slug.toSpinalCaseText
+                                    else
+                                      variant.jsonName,
                                 memberNames =
                                   variant.name
                                     & Slug.toLowerCamelCaseText

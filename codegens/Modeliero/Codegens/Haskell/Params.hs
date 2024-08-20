@@ -27,6 +27,8 @@ data TypeDefinition
 
 data Field = Field
   { name :: Slug,
+    -- | An override for the automatically generated name from the slug.
+    -- When it\'s empty the automatically generated value will be used.
     jsonName :: Text,
     docs :: Text,
     type_ :: ValueType
@@ -74,6 +76,8 @@ data CustomType = CustomType
 data Variant
   = Variant
   { name :: Slug,
+    -- | An override for the automatically generated name from the slug.
+    -- When it\'s empty the automatically generated value will be used.
     jsonName :: Text,
     type_ :: ValueType,
     docs :: Text,
