@@ -36,7 +36,7 @@ parse schemaContext input =
       ( \(nameInput, referencedSchemaInput) -> do
           name <-
             nameInput
-              & specializeTo
+              & specialize
               & first (PropertyKeyError nameInput)
           schema <-
             referencedSchemaInput

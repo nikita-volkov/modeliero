@@ -9,6 +9,7 @@ data Model = Model
     types :: [TypeDeclaration],
     instances :: Instances
   }
+  deriving (Eq, Ord, Show, Generic, ToJSON, FromJSON)
 
 -- ** TypeDeclaration
 
@@ -17,11 +18,13 @@ data TypeDeclaration = TypeDeclaration
     docs :: Text,
     definition :: TypeDefinition
   }
+  deriving (Eq, Ord, Show, Generic, ToJSON, FromJSON)
 
 data TypeDefinition
   = ProductTypeDefinition [Field]
   | RefinedTypeDefinition Refinement
   | SumTypeDefinition [Variant]
+  deriving (Eq, Ord, Show, Generic, ToJSON, FromJSON)
 
 -- *** Product
 
@@ -33,12 +36,14 @@ data Field = Field
     docs :: Text,
     type_ :: ValueType
   }
+  deriving (Eq, Ord, Show, Generic, ToJSON, FromJSON)
 
 data ValueType
   = PlainValueType PlainType
   | MaybeValueType PlainType
   | VectorValueType PlainType
   | HashMapValueType PlainType PlainType
+  deriving (Eq, Ord, Show, Generic, ToJSON, FromJSON)
 
 data PlainType
   = -- | Reference to a type defined in this model.
@@ -47,6 +52,7 @@ data PlainType
     StandardPlainType StandardType
   | -- | Any type from any package with a limited support.
     CustomPlainType CustomType
+  deriving (Eq, Ord, Show, Generic, ToJSON, FromJSON)
 
 data StandardType
   = BoolStandardType
@@ -62,6 +68,7 @@ data StandardType
   | TimeZoneStandardType
   | EmailStandardType
   | UrlStandardType
+  deriving (Eq, Ord, Show, Generic, ToJSON, FromJSON)
 
 data CustomType = CustomType
   { packageName :: Text,
@@ -70,6 +77,7 @@ data CustomType = CustomType
     module_ :: Text,
     name :: Text
   }
+  deriving (Eq, Ord, Show, Generic, ToJSON, FromJSON)
 
 -- *** Sum
 
@@ -83,6 +91,7 @@ data Variant
     docs :: Text,
     anonymizable :: Bool
   }
+  deriving (Eq, Ord, Show, Generic, ToJSON, FromJSON)
 
 -- *** Refinement
 
@@ -90,6 +99,7 @@ data Refinement
   = TextRefinement TextRestrictions
   | IntegerRefinement IntegerRestrictions
   | DoubleRefinement DoubleRestrictions
+  deriving (Eq, Ord, Show, Generic, ToJSON, FromJSON)
 
 data TextRestrictions = TextRestrictions
   { minLength :: Int,
@@ -97,16 +107,19 @@ data TextRestrictions = TextRestrictions
     charsetRangeList :: Maybe [(Char, Char)],
     regexp :: Maybe Text
   }
+  deriving (Eq, Ord, Show, Generic, ToJSON, FromJSON)
 
 data IntegerRestrictions = IntegerRestrictions
   { min :: Integer,
     max :: Integer
   }
+  deriving (Eq, Ord, Show, Generic, ToJSON, FromJSON)
 
 data DoubleRestrictions = DoubleRestrictions
   { min :: Double,
     max :: Double
   }
+  deriving (Eq, Ord, Show, Generic, ToJSON, FromJSON)
 
 -- ** Instances
 
@@ -120,12 +133,15 @@ data Instances = Instances
     arbitrary :: Bool,
     anonymizable :: Bool
   }
+  deriving (Eq, Ord, Show, Generic, ToJSON, FromJSON)
 
 data Aeson = Aeson
   { casing :: Casing
   }
+  deriving (Eq, Ord, Show, Generic, ToJSON, FromJSON)
 
 data Casing
   = CamelCasing
   | SnakeCasing
   | KebabCasing
+  deriving (Eq, Ord, Show, Generic, ToJSON, FromJSON)

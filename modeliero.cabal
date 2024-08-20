@@ -92,6 +92,7 @@ library sources
     Modeliero.Sources.AsyncApi
 
   other-modules:
+    Modeliero.Sources.AsyncApi.LegacyParsers
     Modeliero.Sources.AsyncApi.Parsers.PropertySchema
     Modeliero.Sources.AsyncApi.Parsers.SchemaProperties
     Modeliero.Sources.AsyncApi.Parsers.SchemaReferencedSchema
@@ -183,6 +184,7 @@ test-suite hspec
     Modeliero.Codegens.Haskell.Templates.RefinedModelModule.Templates.ArbitraryInstanceSpec
     Modeliero.Codegens.Haskell.Templates.RefinedModelModule.Templates.SpecialInstanceSpec
     Modeliero.Codegens.HaskellSpec
+    Modeliero.Sources.AsyncApiSpec
 
   build-tool-depends:
     hspec-discover:hspec-discover >=2 && <3
@@ -194,4 +196,5 @@ test-suite hspec
     hspec-expectations,
     modeliero:async-api,
     modeliero:codegens,
+    modeliero:sources,
     text,

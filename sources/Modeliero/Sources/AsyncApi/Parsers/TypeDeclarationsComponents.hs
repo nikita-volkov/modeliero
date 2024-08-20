@@ -25,7 +25,7 @@ parse schemaContext input = do
       & traverse
         ( \(name, schemaInput) -> do
             nameSlug <-
-              specializeTo name
+              specialize name
                 & first (SlugParsingError name)
             typeDeclarationSchemaOutput <-
               Parsers.TypeDeclarationSchema.parse schemaContext schemaInput

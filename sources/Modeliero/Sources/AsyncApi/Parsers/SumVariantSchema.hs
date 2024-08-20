@@ -36,7 +36,7 @@ parse schemaContext input = do
       [] -> Left NoPropertiesError
       [(tag, taggedReferencedSchemaInput)] -> do
         slug <-
-          specializeTo tag
+          specialize tag
             & first SlugParsingError
         schema <-
           Parsers.SchemaReferencedSchema.parse schemaContext taggedReferencedSchemaInput
