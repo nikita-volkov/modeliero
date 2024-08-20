@@ -9,18 +9,22 @@ import Modeliero.AsyncApi qualified as AsyncApi
 import Modeliero.Codegens.Haskell.Params qualified as Codegen
 
 -- | Lib API error.
-data Error = Error
-  { code :: Int,
-    message :: Text,
-    details :: [(Text, Json)]
-  }
-  deriving stock (Generic)
-  deriving anyclass (ToJSON, FromJSON)
+data Error
+  = YamlLoadingError SomeException
+  | ParsingError
+      -- | Message.
+      Text
+      -- | Details.
+      [(Text, Json)]
+  deriving stock (Show, Generic)
+  deriving anyclass (Exception)
 
 load :: FilePath -> IO (Either Error Codegen.Model)
-load =
-  error "TODO"
+load path =
+  AsyncApi.load path
+    & fmap parseAsyncApi
+    & handle (pure . Left . YamlLoadingError)
 
-parseYamlText :: Text -> Either Error Codegen.Model
-parseYamlText =
+parseAsyncApi :: AsyncApi.AsyncApi -> Either Error Codegen.Model
+parseAsyncApi =
   error "TODO"
