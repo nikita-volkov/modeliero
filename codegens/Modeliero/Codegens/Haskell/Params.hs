@@ -24,6 +24,7 @@ data TypeDefinition
   = ProductTypeDefinition [Field]
   | RefinedTypeDefinition Refinement
   | SumTypeDefinition [Variant]
+  | ValueTypeDefinition ValueType
   deriving (Eq, Ord, Show, Generic, ToJSON, FromJSON)
 
 -- *** Product

@@ -93,18 +93,21 @@ library sources
 
   other-modules:
     Modeliero.Sources.AsyncApi.LegacyParsers
+    Modeliero.Sources.AsyncApi.ParserOf.AsyncApi
+    Modeliero.Sources.AsyncApi.ParserOf.Components
+    Modeliero.Sources.AsyncApi.ParserOf.ExtendedComponents
+    Modeliero.Sources.AsyncApi.ParserOf.Properties
+    Modeliero.Sources.AsyncApi.ParserOf.Schema
     Modeliero.Sources.AsyncApi.Parsers.PropertySchema
-    Modeliero.Sources.AsyncApi.Parsers.SchemaProperties
     Modeliero.Sources.AsyncApi.Parsers.SchemaReferencedSchema
     Modeliero.Sources.AsyncApi.Parsers.SumOneOf
     Modeliero.Sources.AsyncApi.Parsers.SumSchema
     Modeliero.Sources.AsyncApi.Parsers.SumVariantSchema
-    Modeliero.Sources.AsyncApi.Parsers.TypeDeclarationSchema
-    Modeliero.Sources.AsyncApi.Parsers.TypeDeclarationsComponents
     Modeliero.Sources.AsyncApi.Parsers.ValueTypeSchema
     Modeliero.Sources.AsyncApi.Preludes.Parser
 
   build-depends:
+    cases,
     coalmine,
     insert-ordered-containers,
     modeliero:async-api,

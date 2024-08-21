@@ -22,6 +22,7 @@ data Error
       Input.Schema
       OneOfError
   | NoDefinitionError
+  deriving (Eq, Show, Generic, ToJSON, FromJSON)
 
 data OneOfError
   = -- | The sum one-of pattern was recognized, but there is an error parsing the sum.
@@ -30,8 +31,11 @@ data OneOfError
       Text
       -- | Reason.
       SumError
+  deriving (Eq, Show, Generic, ToJSON, FromJSON)
 
 data SumError
+  = SumError
+  deriving (Eq, Show, Generic, ToJSON, FromJSON)
 
 parse :: SchemaContext -> Input -> Either Error Output
 parse schemaContext = parseSchema

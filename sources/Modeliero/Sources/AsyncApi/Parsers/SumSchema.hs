@@ -11,6 +11,7 @@ type Output = Parsers.SumOneOf.Output
 data Error
   = NoOneOfError
   | SumOneOfError Parsers.SumOneOf.Error
+  deriving (Eq, Show, Generic, ToJSON, FromJSON)
 
 parse :: SchemaContext -> Input -> Either Error Output
 parse schemaContext input = do

@@ -14,5 +14,10 @@ type SchemaParser i e o =
 
 data SchemaContext = SchemaContext
   { anonymizable :: Bool,
-    dict :: HashMap Text OpenApi.Schema
+    dict :: HashMap Text OpenApi.Schema,
+    config :: Config
+  }
+
+data Config = Config
+  { defaultTextMaxLength :: Int
   }

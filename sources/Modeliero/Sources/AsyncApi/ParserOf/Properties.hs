@@ -1,4 +1,4 @@
-module Modeliero.Sources.AsyncApi.Parsers.SchemaProperties where
+module Modeliero.Sources.AsyncApi.ParserOf.Properties where
 
 import Data.HashMap.Strict.InsOrd qualified as InsOrd
 import Data.OpenApi qualified as OpenApi
@@ -27,6 +27,7 @@ data Error
       Text
       -- | Reason.
       Text
+  deriving (Eq, Show, Generic, ToJSON, FromJSON)
 
 parse :: SchemaContext -> Input -> Either Error Output
 parse schemaContext input =

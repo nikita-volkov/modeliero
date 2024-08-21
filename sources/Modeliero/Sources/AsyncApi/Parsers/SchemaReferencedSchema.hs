@@ -10,6 +10,7 @@ type Output = Input.Schema
 
 data Error
   = NotFoundError Text
+  deriving (Eq, Show, Generic, ToJSON, FromJSON)
 
 parse :: SchemaContext -> Input -> Either Error Output
 parse schemaContext = \case

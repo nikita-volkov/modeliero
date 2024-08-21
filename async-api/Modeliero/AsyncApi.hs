@@ -13,7 +13,7 @@ import Data.Yaml qualified as Yaml
 
 data AsyncApi = AsyncApi
   { info :: Info,
-    components :: Components
+    components :: ExtendedComponents
   }
   deriving (Show, Eq)
 
@@ -24,7 +24,7 @@ data Info = Info
   }
   deriving (Show, Eq)
 
-data Components = Components
+data ExtendedComponents = ExtendedComponents
   { schemas :: HashMap Text ExtendedSchema
   }
   deriving (Show, Eq)
@@ -52,11 +52,11 @@ instance Aeson.FromJSON Info where
       description <- Avp.field "description" Avp.fromJSON
       pure Info {..}
 
-instance Aeson.FromJSON Components where
+instance Aeson.FromJSON ExtendedComponents where
   parseJSON = Avp.runAsValueParser do
     Avp.object do
       schemas <- Avp.field "schemas" Avp.fromJSON
-      pure Components {..}
+      pure ExtendedComponents {..}
 
 instance Aeson.FromJSON ExtendedSchema where
   parseJSON json = do

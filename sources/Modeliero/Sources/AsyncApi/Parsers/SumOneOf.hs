@@ -12,6 +12,7 @@ data Error
   = VariantError
       Int
       Parsers.SumVariantSchema.Error
+  deriving (Eq, Show, Generic, ToJSON, FromJSON)
 
 parse :: SchemaContext -> Input -> Either Error Output
 parse schemaContext input =

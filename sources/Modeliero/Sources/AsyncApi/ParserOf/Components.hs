@@ -1,11 +1,11 @@
 {-# OPTIONS_GHC -Wno-unused-binds -Wno-unused-imports -Wno-name-shadowing -Wno-incomplete-patterns #-}
 
-module Modeliero.Sources.AsyncApi.Parsers.TypeDeclarationsComponents where
+module Modeliero.Sources.AsyncApi.ParserOf.Components where
 
 import Data.OpenApi qualified as Input
+import Modeliero.Sources.AsyncApi.ParserOf.Schema qualified as Parsers.TypeDeclarationSchema
 import Modeliero.Sources.AsyncApi.Parsers.SumSchema qualified as Parsers.SumSchema
 import Modeliero.Sources.AsyncApi.Parsers.SumVariantSchema qualified as Parsers.SumVariantSchema
-import Modeliero.Sources.AsyncApi.Parsers.TypeDeclarationSchema qualified as Parsers.TypeDeclarationSchema
 import Modeliero.Sources.AsyncApi.Preludes.Parser
 
 type Input = Input.Components

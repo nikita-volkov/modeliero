@@ -24,6 +24,7 @@ data Error
       -- | Tag.
       Text
       Parsers.SchemaReferencedSchema.Error
+  deriving (Eq, Show, Generic, ToJSON, FromJSON)
 
 parse :: SchemaContext -> Input -> Either Error Output
 parse schemaContext input = do

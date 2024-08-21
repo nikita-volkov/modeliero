@@ -12,5 +12,6 @@ spec :: Spec
 spec = do
   describe "asyncapi-1" do
     it "Loads fine" do
-      AsyncApi.load "fixtures/asyncapi-1.yaml" >>= 
-        Text.putStrLn . renderAsYamlText . fmap (.base) . (.components.schemas)
+      asyncApi <- AsyncApi.load "fixtures/asyncapi-1.yaml"
+      forM_ asyncApi.components.schemas \schema ->
+        print schema

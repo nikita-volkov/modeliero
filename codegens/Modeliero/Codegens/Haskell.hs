@@ -104,6 +104,8 @@ compile params =
                           variants,
                           instances = params.instances
                         }
+                  Params.ValueTypeDefinition valueType ->
+                    error "TODO"
           )
     reexportsModule =
       InModule.compileToModule rootNamespace importAliases
