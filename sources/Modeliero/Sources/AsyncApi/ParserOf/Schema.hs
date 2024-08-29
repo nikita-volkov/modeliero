@@ -27,28 +27,25 @@ parse :: SchemaContext -> Input -> Either Error Output
 parse schemaContext input = do
   definition <-
     case input._schemaType of
+      Nothing ->
+        asum
+          [ input._schemaOneOf <&> \oneOf ->
+              do
+                sumOneOfOutput <-
+                  Parsers.SumOneOf.parse schemaContext oneOf
+                    & first SumOneOfError
+
+                variants <- for sumOneOfOutput \sumVariantSchemaOutput -> do
+                  error "TODO"
+                pure (SumTypeDefinition variants)
+          ]
+          & fromMaybe (Left NoTypeDefinitionError)
       Just schemaType -> case schemaType of
         Input.OpenApiObject ->
-          asum
-            [ input._schemaProperties
-                & filtered InsOrdHashMap.null Just
-                & fmap
-                  ( \properties ->
-                      ParserOf.Properties.parse schemaContext properties
-                        & first PropertiesError
-                        & fmap ProductTypeDefinition
-                  ),
-              input._schemaOneOf <&> \oneOf ->
-                do
-                  sumOneOfOutput <-
-                    Parsers.SumOneOf.parse schemaContext oneOf
-                      & first SumOneOfError
-
-                  variants <- for sumOneOfOutput \sumVariantSchemaOutput -> do
-                    error "TODO"
-                  pure (SumTypeDefinition variants)
-            ]
-            & fromMaybe (Left NoTypeDefinitionError)
+          input._schemaProperties
+            & ParserOf.Properties.parse schemaContext
+            & first PropertiesError
+            & fmap ProductTypeDefinition
         Input.OpenApiString ->
           case input._schemaFormat of
             Just format -> case format of
