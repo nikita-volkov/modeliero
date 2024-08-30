@@ -4,6 +4,7 @@ module Modeliero.Sources.AsyncApi.Parsers.PropertySchema where
 
 import Data.HashMap.Strict qualified as HashMap
 import Data.OpenApi qualified as Input
+import Modeliero.AesonUtil.Values qualified as Json
 import Modeliero.Sources.AsyncApi.Parsers.SchemaReferencedSchema qualified as Parsers.SchemaReferencedSchema
 import Modeliero.Sources.AsyncApi.Preludes.Parser
 
@@ -14,28 +15,7 @@ data Output = Output
     type_ :: ValueType
   }
 
-data Error
-  = OneOfError
-      -- | Offset.
-      Int
-      -- | Input.
-      Input.Schema
-      OneOfError
-  | NoDefinitionError
-  deriving (Eq, Show, Generic, ToJSON, FromJSON)
-
-data OneOfError
-  = -- | The sum one-of pattern was recognized, but there is an error parsing the sum.
-    SumPatternOneOfError
-      -- | Sum tag name.
-      Text
-      -- | Reason.
-      SumError
-  deriving (Eq, Show, Generic, ToJSON, FromJSON)
-
-data SumError
-  = SumError
-  deriving (Eq, Show, Generic, ToJSON, FromJSON)
+type Error = Json
 
 parse :: SchemaContext -> Input -> Either Error Output
 parse schemaContext = parseSchema
@@ -45,8 +25,9 @@ parse schemaContext = parseSchema
         asum
           [ schema._schemaOneOf
               & fmap parseSchemaOneOf
+              & (fmap . first) (Json.tagged "one-of")
           ]
-          & fromMaybe (Left NoDefinitionError)
+          & fromMaybe (Left "no-definition")
       pure
         Output
           { docs = error "TODO",
@@ -58,6 +39,7 @@ parse schemaContext = parseSchema
       for oneOf \referencedSchemaInput -> do
         variantSchemaInput <-
           Parsers.SchemaReferencedSchema.parse schemaContext referencedSchemaInput
-            & first (error "TODO: Adapt error")
+            & first toJSON
+            & first (Json.tagged "variant")
         error "TODO"
       error "TODO"
