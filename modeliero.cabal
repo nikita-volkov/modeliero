@@ -110,6 +110,7 @@ library sources
     cases,
     coalmine,
     insert-ordered-containers,
+    modeliero:aeson-util,
     modeliero:async-api,
     modeliero:codegens,
     openapi3,
@@ -127,6 +128,16 @@ library async-api
     coalmine,
     openapi3,
     yaml,
+
+library aeson-util
+  import: base
+  hs-source-dirs: aeson-util
+  exposed-modules:
+    Modeliero.AesonUtil.Values
+
+  build-depends:
+    aeson,
+    coalmine,
 
 library codegens
   import: base

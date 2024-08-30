@@ -13,7 +13,11 @@ spec = do
   describe "asyncapi-1" do
     it "Loads fine" do
       Source.load config "fixtures/asyncapi-1.yaml" >>= \case
-        Left err -> expectationFailure (show err)
+        Left err ->
+          err
+            & renderAsYamlText
+            & toList
+            & expectationFailure
         Right model -> do
           Text.putStrLn . renderAsYamlText $ model
           error "TODO"

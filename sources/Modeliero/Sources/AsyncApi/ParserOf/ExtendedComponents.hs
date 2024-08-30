@@ -3,7 +3,10 @@
 module Modeliero.Sources.AsyncApi.ParserOf.ExtendedComponents where
 
 import Cases qualified
+import Coalmine.ErrorReport qualified as ErrorReport
+import Coalmine.Prelude
 import Data.OpenApi qualified as Input
+import Modeliero.AesonUtil.Values qualified as Json
 import Modeliero.AsyncApi qualified as Input
 import Modeliero.Sources.AsyncApi.ParserOf.Schema qualified as Parsers.TypeDeclarationSchema
 import Modeliero.Sources.AsyncApi.Parsers.SumSchema qualified as Parsers.SumSchema
@@ -18,7 +21,26 @@ data Error
   = SumSchemaError Parsers.SumSchema.Error
   | SlugParsingError Text Text
   | TypeDeclarationSchemaError Text Parsers.TypeDeclarationSchema.Error
-  deriving (Eq, Show, Generic, ToJSON, FromJSON)
+  deriving (Eq, Show, Generic)
+
+instance ToJSON Error where
+  toJSON = \case
+    SumSchemaError sumSchemaError ->
+      sumSchemaError
+        & toJSON
+        & Json.tagged "sum-schema"
+    SlugParsingError input message ->
+      [ ("input", toJSON input),
+        ("message", toJSON message)
+      ]
+        & Json.assocList
+        & Json.tagged "slug-parsing"
+    TypeDeclarationSchemaError name reason ->
+      [ ("name", toJSON name),
+        ("reason", toJSON reason)
+      ]
+        & Json.assocList
+        & Json.tagged "type-declaration-schema"
 
 parse :: Config -> Input -> Either Error Output
 parse config input = do

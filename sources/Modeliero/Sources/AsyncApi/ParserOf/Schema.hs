@@ -4,6 +4,7 @@ module Modeliero.Sources.AsyncApi.ParserOf.Schema where
 
 import Data.HashMap.Strict.InsOrd qualified as InsOrdHashMap
 import Data.OpenApi qualified as Input
+import Modeliero.AesonUtil.Values qualified as Json
 import Modeliero.Sources.AsyncApi.ParserOf.Properties qualified as ParserOf.Properties
 import Modeliero.Sources.AsyncApi.Parsers.SumOneOf qualified as Parsers.SumOneOf
 import Modeliero.Sources.AsyncApi.Parsers.SumSchema qualified as Parsers.SumSchema
@@ -21,7 +22,20 @@ data Error
   = NoTypeDefinitionError
   | SumOneOfError Parsers.SumOneOf.Error
   | PropertiesError ParserOf.Properties.Error
-  deriving (Eq, Show, Generic, ToJSON, FromJSON)
+  deriving (Eq, Show, Generic)
+
+instance ToJSON Error where
+  toJSON = \case
+    NoTypeDefinitionError ->
+      "no-type-definition"
+    SumOneOfError someOneOfError ->
+      someOneOfError
+        & toJSON
+        & Json.tagged "some-one-of"
+    PropertiesError propertiesError ->
+      propertiesError
+        & toJSON
+        & Json.tagged "properties"
 
 parse :: SchemaContext -> Input -> Either Error Output
 parse schemaContext input = do

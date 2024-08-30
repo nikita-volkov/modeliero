@@ -2,9 +2,11 @@ module Modeliero.Sources.AsyncApi.Preludes.Parser
   ( module Modeliero.Sources.AsyncApi.Preludes.Parser,
     module Modeliero.Codegens.Haskell.Params,
     module Coalmine.Prelude,
+    module Coalmine.ErrorReport,
   )
 where
 
+import Coalmine.ErrorReport (ConvertsToErrorReport (..), ErrorReport)
 import Coalmine.Prelude
 import Data.OpenApi qualified as OpenApi
 import Modeliero.Codegens.Haskell.Params
