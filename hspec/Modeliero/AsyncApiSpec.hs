@@ -1,17 +1,13 @@
-{-# OPTIONS_GHC -Wno-unused-binds -Wno-unused-imports -Wno-name-shadowing -Wno-incomplete-patterns #-}
-
 module Modeliero.AsyncApiSpec where
 
 import Coalmine.Prelude
-import Data.Text.IO qualified as Text
 import Modeliero.AsyncApi qualified as AsyncApi
 import Test.Hspec
-import Test.Hspec.Expectations.Contrib
 
 spec :: Spec
 spec = do
   describe "asyncapi-1" do
     it "Loads fine" do
-      asyncApi <- AsyncApi.load "fixtures/asyncapi-1.yaml"
+      asyncApi <- AsyncApi.load "hspec/Modeliero/AsyncApiSpec/fixtures/email-service.yaml"
       forM_ asyncApi.components.schemas \schema ->
         print schema

@@ -68,7 +68,12 @@ data StandardType
   | ZonedTimeStandardType
   | TimeZoneStandardType
   | EmailStandardType
-  | UrlStandardType
+  | UriStandardType
+  | IriStandardType
+  | HostnameStandardType
+  | IpStandardType
+  | IpV4StandardType
+  | IpV6StandardType
   deriving (Eq, Ord, Show, Generic, ToJSON, FromJSON)
 
 data CustomType = CustomType

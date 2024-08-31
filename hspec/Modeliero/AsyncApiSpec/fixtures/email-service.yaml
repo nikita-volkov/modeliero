@@ -1,7 +1,7 @@
 asyncapi: 2.0.0
 info:
   title: Email Service
-  version: '1.0.0'
+  version: "1.0.0"
   description: |
     Sends emails upon certain events
   license:
@@ -19,7 +19,7 @@ channels:
     publish:
       operationId: onUserSignUp
       message:
-        $ref : '#/components/messages/UserSignedUp'
+        $ref: "#/components/messages/UserSignedUp"
 
 components:
   messages:
@@ -29,11 +29,12 @@ components:
       summary: Inform about a new user registration in the system
       contentType: application/json
       payload:
-        $ref: '#/components/schemas/userSignedUpPayload'
+        $ref: "#/components/schemas/userSignedUpPayload"
 
   schemas:
     userSignedUpPayload:
       type: object
+      required: [email, createdAt]
       properties:
         firstName:
           type: string
@@ -42,11 +43,12 @@ components:
           type: string
           description: "bar"
         email:
-          $ref: '#/components/schemas/email'
+          $ref: "#/components/schemas/email"
         createdAt:
           type: string
           format: date-time
           description: "foo"
+
     email:
       type: string
       format: email

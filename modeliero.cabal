@@ -10,6 +10,8 @@ maintainer: Nikita Volkov <nikita.y.volkov@mail.ru>
 copyright: (c) 2024, Nikita Volkov
 license: MIT
 license-file: LICENSE
+extra-source-files:
+  **/*.yaml
 
 source-repository head
   type: git
@@ -94,16 +96,12 @@ library sources
   other-modules:
     Modeliero.Sources.AsyncApi.LegacyParsers
     Modeliero.Sources.AsyncApi.ParserOf.AsyncApi
-    Modeliero.Sources.AsyncApi.ParserOf.Components
     Modeliero.Sources.AsyncApi.ParserOf.ExtendedComponents
-    Modeliero.Sources.AsyncApi.ParserOf.Properties
-    Modeliero.Sources.AsyncApi.ParserOf.Schema
-    Modeliero.Sources.AsyncApi.Parsers.PropertySchema
+    Modeliero.Sources.AsyncApi.ParserOf.InlineSchema
+    Modeliero.Sources.AsyncApi.ParserOf.OutlineSchema
     Modeliero.Sources.AsyncApi.Parsers.SchemaReferencedSchema
     Modeliero.Sources.AsyncApi.Parsers.SumOneOf
-    Modeliero.Sources.AsyncApi.Parsers.SumSchema
     Modeliero.Sources.AsyncApi.Parsers.SumVariantSchema
-    Modeliero.Sources.AsyncApi.Parsers.ValueTypeSchema
     Modeliero.Sources.AsyncApi.Preludes.Parser
 
   build-depends:
@@ -199,6 +197,7 @@ test-suite hspec
     Modeliero.Codegens.Haskell.Templates.RefinedModelModule.Templates.SpecialInstanceSpec
     Modeliero.Codegens.HaskellSpec
     Modeliero.Sources.AsyncApiSpec
+    Modeliero.Util.Specs
 
   build-tool-depends:
     hspec-discover:hspec-discover >=2 && <3
@@ -206,6 +205,7 @@ test-suite hspec
   build-depends:
     coalmine,
     containers,
+    directory,
     hspec,
     hspec-expectations,
     modeliero:async-api,

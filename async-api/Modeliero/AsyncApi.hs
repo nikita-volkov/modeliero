@@ -49,7 +49,7 @@ instance Aeson.FromJSON Info where
     Avp.object do
       title <- Avp.field "title" Avp.fromJSON
       version <- Avp.field "version" (Avp.string (Avp.attoparsedText literalParser))
-      description <- Avp.field "description" Avp.fromJSON
+      description <- Avp.field "description" Avp.fromJSON <|> pure ""
       pure Info {..}
 
 instance Aeson.FromJSON ExtendedComponents where

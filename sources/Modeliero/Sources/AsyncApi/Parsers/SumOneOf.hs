@@ -8,11 +8,7 @@ type Input = [Input.Referenced Input.Schema]
 
 type Output = [Parsers.SumVariantSchema.Output]
 
-data Error
-  = VariantError
-      Int
-      Parsers.SumVariantSchema.Error
-  deriving (Eq, Show, Generic, ToJSON, FromJSON)
+type Error = Json
 
 parse :: SchemaContext -> Input -> Either Error Output
 parse schemaContext input =
@@ -21,5 +17,5 @@ parse schemaContext input =
     & traverse
       ( \(index, referencedSchemaInput) ->
           Parsers.SumVariantSchema.parse schemaContext referencedSchemaInput
-            & first (VariantError index)
+            & label (fromString (show index))
       )

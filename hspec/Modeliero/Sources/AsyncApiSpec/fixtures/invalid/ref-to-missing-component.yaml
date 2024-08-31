@@ -1,0 +1,37 @@
+asyncapi: 2.0.0
+info:
+  title: Network address
+  version: "1.0.0"
+
+components:
+  schemas:
+    hostAddress:
+      oneOf:
+        - type: object
+          required: [ip]
+          properties:
+            ip:
+              $ref: "#/components/schemas/ip"
+        - type: object
+          required: [name]
+          properties:
+            name:
+              type: string
+              format: hostname
+
+    ip:
+      oneOf:
+        - type: object
+          required: [v4]
+          properties:
+            v4:
+              $ref: "#/components/schemas/ipV4"
+        - type: object
+          required: [v6]
+          properties:
+            v6:
+              $ref: "#/components/schemas/ipV6"
+
+    ipV4:
+      type: string
+      format: ipv4

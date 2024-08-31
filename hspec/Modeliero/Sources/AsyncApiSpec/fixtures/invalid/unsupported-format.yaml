@@ -1,0 +1,10 @@
+asyncapi: 2.0.0
+info:
+  title: Network address
+  version: "1.0.0"
+
+components:
+  schemas:
+    ipV6:
+      type: string
+      format: ipv8
