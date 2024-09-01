@@ -27,7 +27,7 @@ data TypeDefinition
   deriving (Eq, Ord, Show, Generic, ToJSON, FromJSON)
 
 data NewtypeDefinition = NewtypeDefinition
-  { anonymized :: Bool,
+  { anonymizable :: Bool,
     wrappedType :: Either Refinement ValueType
   }
   deriving (Eq, Ord, Show, Generic, ToJSON, FromJSON)

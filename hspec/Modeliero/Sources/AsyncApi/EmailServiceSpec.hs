@@ -54,7 +54,7 @@ spec = do
           describe "Definition" case typeDeclaration.definition of
             NewtypeTypeDefinition newtypeDefinition -> do
               it "Is Anonymized" do
-                shouldBe newtypeDefinition.anonymized True
+                shouldBe newtypeDefinition.anonymizable True
 
               case newtypeDefinition.wrappedType of
                 Right valueType -> case valueType of

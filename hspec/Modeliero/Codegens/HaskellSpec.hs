@@ -121,7 +121,7 @@ spec = do
                         definition =
                           Subject.NewtypeTypeDefinition
                             Subject.NewtypeDefinition
-                              { anonymized = False,
+                              { anonymizable = False,
                                 wrappedType =
                                   Left
                                     $ Subject.IntegerRefinement
@@ -137,7 +137,7 @@ spec = do
                         definition =
                           Subject.NewtypeTypeDefinition
                             Subject.NewtypeDefinition
-                              { anonymized = False,
+                              { anonymizable = False,
                                 wrappedType =
                                   Left
                                     $ Subject.IntegerRefinement
@@ -153,7 +153,7 @@ spec = do
                         definition =
                           Subject.NewtypeTypeDefinition
                             Subject.NewtypeDefinition
-                              { anonymized = False,
+                              { anonymizable = False,
                                 wrappedType =
                                   Left
                                     $ Subject.IntegerRefinement

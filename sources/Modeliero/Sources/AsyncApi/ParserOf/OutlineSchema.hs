@@ -102,7 +102,7 @@ parse schemaContext input = do
                   & ( \wrappedType ->
                         NewtypeDefinition
                           { wrappedType,
-                            anonymized = schemaContext.anonymizable
+                            anonymizable = schemaContext.anonymizable
                           }
                     )
                   & NewtypeTypeDefinition
@@ -121,7 +121,7 @@ parse schemaContext input = do
             ( \wrappedType ->
                 NewtypeDefinition
                   { wrappedType,
-                    anonymized = schemaContext.anonymizable
+                    anonymizable = schemaContext.anonymizable
                   }
             )
           & fmap NewtypeTypeDefinition

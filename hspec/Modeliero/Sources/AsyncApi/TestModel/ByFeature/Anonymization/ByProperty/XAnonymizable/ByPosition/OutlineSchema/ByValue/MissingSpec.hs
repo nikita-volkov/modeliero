@@ -25,6 +25,6 @@ spec = do
             Nothing -> expectationFailure "Not found"
             Just typeDeclaration -> case typeDeclaration.definition of
               NewtypeTypeDefinition newtypeDefinition ->
-                shouldBe newtypeDefinition.anonymized False
+                shouldBe newtypeDefinition.anonymizable False
               _ ->
                 expectationFailure "Unexpected type definition"
