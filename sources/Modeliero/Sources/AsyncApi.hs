@@ -33,20 +33,28 @@ instance ToJSON Error where
         ]
         & ObjectJson
 
-load :: ParserPrelude.Config -> FilePath -> IO (Either Error [Codegen.TypeDeclaration])
+type Result = [Codegen.TypeDeclaration]
+
+load :: ParserPrelude.Config -> FilePath -> IO (Either Error Result)
 load config path =
   AsyncApi.load path
     & fmap (extractFromAsyncApi config)
     & handle (pure . Left . YamlLoadingError)
 
-parse :: ParserPrelude.Config -> Text -> Either Error [Codegen.TypeDeclaration]
+parse :: ParserPrelude.Config -> Text -> Either Error Result
 parse config text = do
   asyncApi <-
     AsyncApi.parse text
       & first (ParsingError . toJSON)
   extractFromAsyncApi config asyncApi
 
-extractFromAsyncApi :: ParserPrelude.Config -> AsyncApi.AsyncApi -> Either Error [Codegen.TypeDeclaration]
+extractFromAsyncApi :: ParserPrelude.Config -> AsyncApi.AsyncApi -> Either Error Result
 extractFromAsyncApi config =
   first (ParsingError . toJSON)
     . ParserOf.AsyncApi.parse config
+
+defaultConfig :: ParserPrelude.Config
+defaultConfig =
+  ParserPrelude.Config
+    { defaultTextMaxLength = 10000
+    }

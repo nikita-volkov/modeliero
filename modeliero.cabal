@@ -197,6 +197,10 @@ test-suite hspec
     Modeliero.Codegens.HaskellSpec
     Modeliero.Preludes.Spec
     Modeliero.Sources.AsyncApi.EmailServiceSpec
+    Modeliero.Sources.AsyncApi.TestModel.ByFeature.Anonymization.ByProperty.XAnonymizable.ByPosition.OutlineSchema.ByValue.DisabledSpec
+    Modeliero.Sources.AsyncApi.TestModel.ByFeature.Anonymization.ByProperty.XAnonymizable.ByPosition.OutlineSchema.ByValue.EnabledSpec
+    Modeliero.Sources.AsyncApi.TestModel.ByFeature.Anonymization.ByProperty.XAnonymizable.ByPosition.OutlineSchema.ByValue.MissingSpec
+    Modeliero.Sources.AsyncApi.TestModel.Preludes.Spec
     Modeliero.Sources.AsyncApi.ValidInvalidFixturesSpec
     Modeliero.Sources.AsyncApiSpec
 
