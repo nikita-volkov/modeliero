@@ -27,11 +27,11 @@ parseExtendedSchema extendedSchema = do
       & pure
   definition <-
     asum
-      [ extendedSchema.base._schemaAllOf <&> \spec ->
+      [ extendedSchema.base._schemaAllOf <&> \_spec ->
           pure (error "TODO" :: TypeDefinition),
-        extendedSchema.base._schemaOneOf <&> \spec ->
+        extendedSchema.base._schemaOneOf <&> \_spec ->
           pure (error "TODO" :: TypeDefinition),
-        extendedSchema.base._schemaAnyOf <&> \spec ->
+        extendedSchema.base._schemaAnyOf <&> \_spec ->
           pure (error "TODO" :: TypeDefinition)
       ]
       & fromMaybe (Left NoDefinitionExtendedSchemaError)
@@ -77,7 +77,7 @@ parseAllOfReferencedSchema ::
   OpenApi.Referenced OpenApi.Schema ->
   Either AllOfReferencedSchemaError ValueType
 parseAllOfReferencedSchema anonymizable schemaDict = \case
-  OpenApi.Ref ref ->
+  OpenApi.Ref _ref ->
     error "TODO"
   OpenApi.Inline schema -> do
     parseValueSchema

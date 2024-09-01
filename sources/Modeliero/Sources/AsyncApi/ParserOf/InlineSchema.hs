@@ -22,7 +22,7 @@ data Output = Output
 type Error = Json
 
 parse :: SchemaContext -> Input -> Either Error Output
-parse schemaContext input =
+parse _schemaContext input =
   case input._schemaType of
     Nothing ->
       Left "No schema type"

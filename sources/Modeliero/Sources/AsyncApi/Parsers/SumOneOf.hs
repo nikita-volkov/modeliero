@@ -13,7 +13,7 @@ type Error = Json
 parse :: SchemaContext -> Input -> Either Error Output
 parse schemaContext input =
   input
-    & zip (enumFrom 0)
+    & zip (enumFrom @Int 0)
     & traverse
       ( \(index, referencedSchemaInput) ->
           Parsers.SumVariantSchema.parse schemaContext referencedSchemaInput

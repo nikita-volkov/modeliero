@@ -24,7 +24,7 @@ parse schemaContext = \case
   Input.Ref ref -> case HashMap.lookup ref.getReference schemaContext.dict of
     Nothing ->
       Left (Json.tagged "not-found" (toJSON ref.getReference))
-    Just schema -> do
+    Just _schema -> do
       slug <-
         ref.getReference
           & Cases.spinalize
