@@ -98,7 +98,14 @@ parse schemaContext input = do
                     charsetRangeList = Nothing
                   }
                   & TextRefinement
-                  & RefinedTypeDefinition
+                  & Left
+                  & ( \wrappedType ->
+                        NewtypeDefinition
+                          { wrappedType,
+                            anonymized = schemaContext.anonymizable
+                          }
+                    )
+                  & NewtypeTypeDefinition
                   & pure
                   & fmap Just
               _ -> pure Nothing
@@ -109,7 +116,15 @@ parse schemaContext input = do
         InlineSchemaParser.parse schemaContext input
           & fmap (.plainType)
           & fmap PlainValueType
-          & fmap ValueTypeDefinition
+          & fmap Right
+          & fmap
+            ( \wrappedType ->
+                NewtypeDefinition
+                  { wrappedType,
+                    anonymized = schemaContext.anonymizable
+                  }
+            )
+          & fmap NewtypeTypeDefinition
   pure
     Output
       { docs =

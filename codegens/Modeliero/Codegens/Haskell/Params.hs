@@ -22,9 +22,14 @@ data TypeDeclaration = TypeDeclaration
 
 data TypeDefinition
   = ProductTypeDefinition [Field]
-  | RefinedTypeDefinition Refinement
   | SumTypeDefinition [Variant]
-  | ValueTypeDefinition ValueType
+  | NewtypeTypeDefinition NewtypeDefinition
+  deriving (Eq, Ord, Show, Generic, ToJSON, FromJSON)
+
+data NewtypeDefinition = NewtypeDefinition
+  { anonymized :: Bool,
+    wrappedType :: Either Refinement ValueType
+  }
   deriving (Eq, Ord, Show, Generic, ToJSON, FromJSON)
 
 -- *** Product

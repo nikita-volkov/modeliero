@@ -119,34 +119,49 @@ spec = do
                       { name = "year",
                         docs = "",
                         definition =
-                          Subject.RefinedTypeDefinition
-                            $ Subject.IntegerRefinement
-                              Subject.IntegerRestrictions
-                                { min = (-9999),
-                                  max = 9999
-                                }
+                          Subject.NewtypeTypeDefinition
+                            Subject.NewtypeDefinition
+                              { anonymized = False,
+                                wrappedType =
+                                  Left
+                                    $ Subject.IntegerRefinement
+                                      Subject.IntegerRestrictions
+                                        { min = (-9999),
+                                          max = 9999
+                                        }
+                              }
                       },
                     Subject.TypeDeclaration
                       { name = "month",
                         docs = "",
                         definition =
-                          Subject.RefinedTypeDefinition
-                            $ Subject.IntegerRefinement
-                              Subject.IntegerRestrictions
-                                { min = 1,
-                                  max = 12
-                                }
+                          Subject.NewtypeTypeDefinition
+                            Subject.NewtypeDefinition
+                              { anonymized = False,
+                                wrappedType =
+                                  Left
+                                    $ Subject.IntegerRefinement
+                                      Subject.IntegerRestrictions
+                                        { min = 1,
+                                          max = 12
+                                        }
+                              }
                       },
                     Subject.TypeDeclaration
                       { name = "day",
                         docs = "",
                         definition =
-                          Subject.RefinedTypeDefinition
-                            $ Subject.IntegerRefinement
-                              Subject.IntegerRestrictions
-                                { min = 1,
-                                  max = 31
-                                }
+                          Subject.NewtypeTypeDefinition
+                            Subject.NewtypeDefinition
+                              { anonymized = False,
+                                wrappedType =
+                                  Left
+                                    $ Subject.IntegerRefinement
+                                      Subject.IntegerRestrictions
+                                        { min = 1,
+                                          max = 31
+                                        }
+                              }
                       },
                     Subject.TypeDeclaration
                       { name = "calendar-date",

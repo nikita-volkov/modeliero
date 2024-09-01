@@ -87,14 +87,6 @@ compile params =
                           docs = type_.docs,
                           fields
                         }
-                  Params.RefinedTypeDefinition refinement ->
-                    Templates.RefinedModelModule.compile
-                      Templates.RefinedModelModule.Params
-                        { name = type_.name,
-                          docs = type_.docs,
-                          refinement,
-                          instances = params.instances
-                        }
                   Params.SumTypeDefinition variants ->
                     Templates.SumModelModule.compile
                       Templates.SumModelModule.Params
@@ -104,8 +96,18 @@ compile params =
                           variants,
                           instances = params.instances
                         }
-                  Params.ValueTypeDefinition valueType ->
-                    error "TODO"
+                  Params.NewtypeTypeDefinition newtypeDefinition ->
+                    case newtypeDefinition.wrappedType of
+                      Right _valueType ->
+                        error "TODO: Handle Value Type"
+                      Left refinement ->
+                        Templates.RefinedModelModule.compile
+                          Templates.RefinedModelModule.Params
+                            { name = type_.name,
+                              docs = type_.docs,
+                              refinement,
+                              instances = params.instances
+                            }
           )
     reexportsModule =
       InModule.compileToModule rootNamespace importAliases

@@ -37,20 +37,27 @@ components:
       required: [email, createdAt]
       properties:
         firstName:
-          type: string
-          description: "foo"
+          $ref: "#/components/schemas/firstName"
         lastName:
-          type: string
-          description: "bar"
+          $ref: "#/components/schemas/lastName"
         email:
           $ref: "#/components/schemas/email"
         createdAt:
           type: string
           format: date-time
-          description: "foo"
 
     email:
       type: string
       format: email
-      description: "baz"
+      description: Email address
+      x-anonymizable: true
+
+    firstName:
+      type: string
+      description: Personal name
+      x-anonymizable: true
+
+    lastName:
+      type: string
+      description: Personal last name
       x-anonymizable: true

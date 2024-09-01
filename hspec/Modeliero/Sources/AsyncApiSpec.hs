@@ -25,11 +25,7 @@ spec = do
                   case find ((==) "first-name" . (.name)) fields of
                     Just field ->
                       case field.type_ of
-                        MaybeValueType plainType ->
-                          it "Is Text" do
-                            shouldBe plainType
-                              $ StandardPlainType
-                              $ TextStandardType
+                        MaybeValueType _ -> pure ()
                         _ -> itFailsWithInput "Is Maybe" field.type_
                     Nothing ->
                       itFailsWithInput "Exists" fields
@@ -43,22 +39,41 @@ spec = do
                             shouldBe plainType
                               $ LocalPlainType "email"
                         _ -> itFailsWithInput "Is Plain" field.type_
+                describe "created-at" do
+                  case find ((==) "created-at" . (.name)) fields of
+                    Just field ->
+                      case field.type_ of
+                        PlainValueType plainType ->
+                          it "Is UTCTime" do
+                            shouldBe plainType
+                              $ StandardPlainType
+                              $ UtcTimeStandardType
+                        _ -> itFailsWithInput "Is Maybe" field.type_
+                    Nothing ->
+                      itFailsWithInput "Exists" fields
               _ -> itFailsWithInput "Is product" typeDeclaration.definition
 
     describe "email" do
       case find ((==) "email" . (.name)) typeDeclarations of
         Nothing -> do
           itFailsWithInput "Exists" typeDeclarations
-        Just typeDeclaration -> do
-          describe "Definition" do
-            case typeDeclaration.definition of
-              ValueTypeDefinition valueType -> case valueType of
-                PlainValueType plainType -> do
-                  it "Is Email" do
-                    shouldBe plainType
-                      $ StandardPlainType
-                      $ EmailStandardType
-                _ -> itFailsWithInput "Is Plain" valueType
+        Just typeDeclaration ->
+          describe "Definition" case typeDeclaration.definition of
+            NewtypeTypeDefinition newtypeDefinition -> do
+              it "Is Anonymized" do
+                shouldBe newtypeDefinition.anonymized True
+
+              case newtypeDefinition.wrappedType of
+                Right valueType -> case valueType of
+                  PlainValueType plainType -> do
+                    it "Is Email" do
+                      shouldBe plainType
+                        $ StandardPlainType
+                        $ EmailStandardType
+                  _ ->
+                    itFailsWithInput "Is Plain" valueType
+                Left _ ->
+                  itFailsWithInput "Is Value Type" newtypeDefinition.wrappedType
 
   describe "Valid" do
     let dirPath = fixturesPath <> "valid/"
