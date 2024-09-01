@@ -196,6 +196,8 @@ test-suite hspec
     Modeliero.Codegens.Haskell.Templates.RefinedModelModule.Templates.ArbitraryInstanceSpec
     Modeliero.Codegens.Haskell.Templates.RefinedModelModule.Templates.SpecialInstanceSpec
     Modeliero.Codegens.HaskellSpec
+    Modeliero.Sources.AsyncApi.EmailServiceSpec
+    Modeliero.Sources.AsyncApi.ValidInvalidFixturesSpec
     Modeliero.Sources.AsyncApiSpec
     Modeliero.Util.Specs
 

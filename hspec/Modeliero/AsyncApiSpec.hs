@@ -8,6 +8,12 @@ spec :: Spec
 spec = do
   describe "asyncapi-1" do
     it "Loads fine" do
-      asyncApi <- AsyncApi.load "hspec/Modeliero/AsyncApiSpec/fixtures/email-service.yaml"
-      forM_ asyncApi.components.schemas \schema ->
-        print schema
+      asyncApiLoaded <-
+        AsyncApi.load "hspec/Modeliero/AsyncApiSpec/fixtures/email-service.yaml"
+          & try @SomeException
+      case asyncApiLoaded of
+        Left exception ->
+          exception
+            & displayException
+            & expectationFailure
+        Right _ -> pure ()
