@@ -69,3 +69,7 @@ instance Aeson.FromJSON ExtendedSchema where
 load :: FilePath -> IO AsyncApi
 load =
   Yaml.decodeFileThrow
+
+parse :: Text -> Either Text AsyncApi
+parse =
+  first (fromString . displayException) . Yaml.decodeEither' . encodeUtf8

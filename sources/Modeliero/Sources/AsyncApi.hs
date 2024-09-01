@@ -36,10 +36,17 @@ instance ToJSON Error where
 load :: ParserPrelude.Config -> FilePath -> IO (Either Error [Codegen.TypeDeclaration])
 load config path =
   AsyncApi.load path
-    & fmap (parseAsyncApi config)
+    & fmap (extractFromAsyncApi config)
     & handle (pure . Left . YamlLoadingError)
 
-parseAsyncApi :: ParserPrelude.Config -> AsyncApi.AsyncApi -> Either Error [Codegen.TypeDeclaration]
-parseAsyncApi config =
+parse :: ParserPrelude.Config -> Text -> Either Error [Codegen.TypeDeclaration]
+parse config text = do
+  asyncApi <-
+    AsyncApi.parse text
+      & first (ParsingError . toJSON)
+  extractFromAsyncApi config asyncApi
+
+extractFromAsyncApi :: ParserPrelude.Config -> AsyncApi.AsyncApi -> Either Error [Codegen.TypeDeclaration]
+extractFromAsyncApi config =
   first (ParsingError . toJSON)
     . ParserOf.AsyncApi.parse config
