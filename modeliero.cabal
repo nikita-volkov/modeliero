@@ -94,7 +94,6 @@ library sources
     Modeliero.Sources.AsyncApi
 
   other-modules:
-    Modeliero.Sources.AsyncApi.LegacyParsers
     Modeliero.Sources.AsyncApi.ParserOf.AsyncApi
     Modeliero.Sources.AsyncApi.ParserOf.ExtendedComponents
     Modeliero.Sources.AsyncApi.ParserOf.InlineSchema
