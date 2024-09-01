@@ -1,9 +1,9 @@
-module Modeliero.Sources.AsyncApi.Parsers.SumVariantSchema where
+module Modeliero.Sources.AsyncApi.ParserOf.OneOfItemSchema where
 
 import Data.OpenApi qualified as Input
 import Modeliero.AesonUtil.Values qualified as Json
 import Modeliero.Sources.AsyncApi.ParserOf.InlineSchema qualified as InlineSchemaParser
-import Modeliero.Sources.AsyncApi.Parsers.SchemaReferencedSchema qualified as Parsers.SchemaReferencedSchema
+import Modeliero.Sources.AsyncApi.ParserOf.ReferencedSchema qualified as ParserOf.ReferencedSchema
 import Modeliero.Sources.AsyncApi.Preludes.Parser
 
 type Input = Input.Referenced Input.Schema
@@ -15,13 +15,13 @@ type Error = Json
 parse :: SchemaContext -> Input -> Either Error Output
 parse schemaContext input = assocWithInput input do
   topReferenceOutput <-
-    Parsers.SchemaReferencedSchema.parse schemaContext input
+    ParserOf.ReferencedSchema.parse schemaContext input
       & first (Json.tagged "top-reference")
 
   variantSchema <- case topReferenceOutput of
-    Parsers.SchemaReferencedSchema.ReferenceOutput _ _ ->
+    ParserOf.ReferencedSchema.ReferenceOutput _ _ ->
       Left "Reference where tagging object is expected"
-    Parsers.SchemaReferencedSchema.InlineOutput schema ->
+    ParserOf.ReferencedSchema.InlineOutput schema ->
       Right schema
 
   (tag, valueSchema) <-
@@ -54,10 +54,10 @@ parse schemaContext input = assocWithInput input do
       & first (branchError "tag-slug" (toJSON tag) . toJSON)
 
   value <- do
-    nest "value" Parsers.SchemaReferencedSchema.parse schemaContext valueSchema >>= \case
-      Parsers.SchemaReferencedSchema.ReferenceOutput _ref slug ->
+    nest "value" ParserOf.ReferencedSchema.parse schemaContext valueSchema >>= \case
+      ParserOf.ReferencedSchema.ReferenceOutput _ref slug ->
         pure (LocalPlainType slug)
-      Parsers.SchemaReferencedSchema.InlineOutput schema ->
+      ParserOf.ReferencedSchema.InlineOutput schema ->
         nest "inline-value" InlineSchemaParser.parse schemaContext schema
           & fmap (.plainType)
 

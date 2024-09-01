@@ -97,10 +97,10 @@ library sources
     Modeliero.Sources.AsyncApi.ParserOf.AsyncApi
     Modeliero.Sources.AsyncApi.ParserOf.ExtendedComponents
     Modeliero.Sources.AsyncApi.ParserOf.InlineSchema
+    Modeliero.Sources.AsyncApi.ParserOf.OneOf
+    Modeliero.Sources.AsyncApi.ParserOf.OneOfItemSchema
     Modeliero.Sources.AsyncApi.ParserOf.OutlineSchema
-    Modeliero.Sources.AsyncApi.Parsers.SchemaReferencedSchema
-    Modeliero.Sources.AsyncApi.Parsers.SumOneOf
-    Modeliero.Sources.AsyncApi.Parsers.SumVariantSchema
+    Modeliero.Sources.AsyncApi.ParserOf.ReferencedSchema
     Modeliero.Sources.AsyncApi.Preludes.Parser
 
   build-depends:

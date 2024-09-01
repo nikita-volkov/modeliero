@@ -8,9 +8,9 @@ import Data.HashMap.Strict.InsOrd qualified as InsOrdHashMap
 import Data.OpenApi qualified as Input
 import Modeliero.AesonUtil.Values qualified as Json
 import Modeliero.Sources.AsyncApi.ParserOf.InlineSchema qualified as InlineSchemaParser
-import Modeliero.Sources.AsyncApi.Parsers.SchemaReferencedSchema qualified as SchemaReferencedSchemaParser
-import Modeliero.Sources.AsyncApi.Parsers.SumOneOf qualified as Parsers.SumOneOf
-import Modeliero.Sources.AsyncApi.Parsers.SumVariantSchema qualified as Parsers.SumVariantSchema
+import Modeliero.Sources.AsyncApi.ParserOf.OneOf qualified as OneOfParser
+import Modeliero.Sources.AsyncApi.ParserOf.OneOfItemSchema qualified as OneOfItemSchemaParser
+import Modeliero.Sources.AsyncApi.ParserOf.ReferencedSchema qualified as ReferencedSchemaParser
 import Modeliero.Sources.AsyncApi.Preludes.Parser
 
 type Input = Input.Schema
@@ -31,7 +31,7 @@ parse schemaContext input = do
           do
             variants <-
               oneOf
-                & nest "one-of" (reportifyErrors Parsers.SumOneOf.parse) schemaContext
+                & nest "one-of" (reportifyErrors OneOfParser.parse) schemaContext
             pure (SumTypeDefinition variants)
       Just schemaType ->
         case schemaType of
@@ -48,9 +48,9 @@ parse schemaContext input = do
                         & assocWithInput nameInput
                         & label "name-slug"
                     referencedSchemaOutput <-
-                      nest "value" SchemaReferencedSchemaParser.parse schemaContext valueReferencedSchema
+                      nest "value" ReferencedSchemaParser.parse schemaContext valueReferencedSchema
                     case referencedSchemaOutput of
-                      SchemaReferencedSchemaParser.ReferenceOutput _ref slug ->
+                      ReferencedSchemaParser.ReferenceOutput _ref slug ->
                         pure
                           Field
                             { name,
@@ -61,7 +61,7 @@ parse schemaContext input = do
                                   $ LocalPlainType
                                   $ slug
                             }
-                      SchemaReferencedSchemaParser.InlineOutput inlineSchema -> do
+                      ReferencedSchemaParser.InlineOutput inlineSchema -> do
                         propertySchema <-
                           nest "inline-value" InlineSchemaParser.parse schemaContext inlineSchema
                         pure

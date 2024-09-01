@@ -1,12 +1,12 @@
-module Modeliero.Sources.AsyncApi.Parsers.SumOneOf where
+module Modeliero.Sources.AsyncApi.ParserOf.OneOf where
 
 import Data.OpenApi qualified as Input
-import Modeliero.Sources.AsyncApi.Parsers.SumVariantSchema qualified as Parsers.SumVariantSchema
+import Modeliero.Sources.AsyncApi.ParserOf.OneOfItemSchema qualified as ParserOf.OneOfItemSchema
 import Modeliero.Sources.AsyncApi.Preludes.Parser
 
 type Input = [Input.Referenced Input.Schema]
 
-type Output = [Parsers.SumVariantSchema.Output]
+type Output = [ParserOf.OneOfItemSchema.Output]
 
 type Error = Json
 
@@ -16,6 +16,6 @@ parse schemaContext input =
     & zip (enumFrom @Int 0)
     & traverse
       ( \(index, referencedSchemaInput) ->
-          Parsers.SumVariantSchema.parse schemaContext referencedSchemaInput
+          ParserOf.OneOfItemSchema.parse schemaContext referencedSchemaInput
             & label (fromString (show index))
       )

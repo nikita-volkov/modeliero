@@ -1,4 +1,4 @@
-module Modeliero.Sources.AsyncApi.Parsers.SchemaReferencedSchema where
+module Modeliero.Sources.AsyncApi.ParserOf.ReferencedSchema where
 
 import Cases qualified
 import Data.HashMap.Strict qualified as HashMap
