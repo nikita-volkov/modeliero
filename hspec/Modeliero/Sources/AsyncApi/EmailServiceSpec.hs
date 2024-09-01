@@ -1,10 +1,8 @@
 module Modeliero.Sources.AsyncApi.EmailServiceSpec (spec) where
 
-import Coalmine.Prelude
 import Modeliero.Codegens.Haskell.Params
+import Modeliero.Preludes.Spec
 import Modeliero.Sources.AsyncApi qualified as Source
-import Modeliero.Util.Specs
-import Test.Hspec
 
 spec :: Spec
 spec = do

@@ -1,9 +1,8 @@
 module Modeliero.Sources.AsyncApi.ValidInvalidFixturesSpec (spec) where
 
-import Coalmine.Prelude
+import Modeliero.Preludes.Spec
 import Modeliero.Sources.AsyncApi qualified as Source
 import System.Directory qualified as Directory
-import Test.Hspec
 
 spec :: Spec
 spec = do

@@ -196,10 +196,10 @@ test-suite hspec
     Modeliero.Codegens.Haskell.Templates.RefinedModelModule.Templates.ArbitraryInstanceSpec
     Modeliero.Codegens.Haskell.Templates.RefinedModelModule.Templates.SpecialInstanceSpec
     Modeliero.Codegens.HaskellSpec
+    Modeliero.Preludes.Spec
     Modeliero.Sources.AsyncApi.EmailServiceSpec
     Modeliero.Sources.AsyncApi.ValidInvalidFixturesSpec
     Modeliero.Sources.AsyncApiSpec
-    Modeliero.Util.Specs
 
   build-tool-depends:
     hspec-discover:hspec-discover >=2 && <3

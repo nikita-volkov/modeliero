@@ -4,14 +4,11 @@
 -- A proper feature-oriented spec.
 module Modeliero.Sources.AsyncApiSpec where
 
-import Coalmine.Prelude
 import Data.Text.IO qualified as Text
 import Modeliero.Codegens.Haskell.Params
+import Modeliero.Preludes.Spec
 import Modeliero.Sources.AsyncApi qualified as Source
-import Modeliero.Util.Specs
 import System.Directory qualified as Directory
-import Test.Hspec
-import Test.Hspec.Expectations.Contrib
 
 spec :: Spec
 spec = do
