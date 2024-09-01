@@ -25,4 +25,4 @@ parsingSchema name content schemaSpec =
           & expectationFailure
           & it "Parses fine"
       Right model ->
-        schemaSpec model
+        schemaSpec model.types

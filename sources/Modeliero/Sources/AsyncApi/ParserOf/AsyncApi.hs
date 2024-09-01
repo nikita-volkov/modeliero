@@ -7,7 +7,10 @@ import Modeliero.Sources.AsyncApi.Preludes.Parser
 
 type Input = Input.AsyncApi
 
-type Output = [TypeDeclaration]
+data Output = Output
+  { version :: NonEmpty Word,
+    types :: [TypeDeclaration]
+  }
 
 data Error
   = ComponentsError ParserOfExtendedComponents.Error
@@ -22,7 +25,11 @@ instance ToJSON Error where
 
 parse :: Config -> Input -> Either Error Output
 parse config input = do
-  componentsOutput <-
+  types <-
     ParserOfExtendedComponents.parse config input.components
       & first ComponentsError
-  pure componentsOutput
+  pure
+    Output
+      { version = input.info.version & to,
+        types
+      }

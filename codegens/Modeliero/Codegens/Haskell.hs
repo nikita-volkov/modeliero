@@ -4,6 +4,7 @@ import Coalmine.NumericVersion qualified as NumericVersion
 import Coalmine.Prelude
 import Coalmine.Slug qualified as Slug
 import Data.Text qualified as Text
+import Data.Text.IO qualified as Text.IO
 import Modeliero.Codegens.Haskell.Dsls.InModule qualified as InModule
 import Modeliero.Codegens.Haskell.Dsls.Package qualified as Package
 import Modeliero.Codegens.Haskell.Params qualified as Params
@@ -118,3 +119,11 @@ compile params =
                   & fmap (.name)
                   & fmap (Text.intercalate ".")
             }
+
+write :: FilePath -> Params -> IO ()
+write dirPath params =
+  compile params
+    & traverse_
+      ( \(filePath, contents) ->
+          Text.IO.writeFile (dirPath <> filePath) contents
+      )

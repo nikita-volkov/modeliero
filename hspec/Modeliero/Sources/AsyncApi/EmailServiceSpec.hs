@@ -80,7 +80,7 @@ fixture name cont =
           & toList
           & expectationFailure
           & it "Loads fine"
-      Right model -> cont model
+      Right model -> cont model.types
   where
     filePath =
       fixturesPath <> name <> ".yaml"

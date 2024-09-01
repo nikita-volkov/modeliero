@@ -14,7 +14,7 @@ source-repository-package
 source-repository-package
   type: git
   location: https://github.com/nikita-volkov/coalmine
-  tag: a7314d913fab6b5b503acbc0f98c64983c576dbd
+  tag: 9fbfaf398e33eb9fbd532962a1ffcb8eb8aceb10
   subdir:
     coalmine
     qq-extras

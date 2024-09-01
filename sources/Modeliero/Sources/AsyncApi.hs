@@ -33,7 +33,11 @@ instance ToJSON Error where
         ]
         & ObjectJson
 
-type Result = [Codegen.TypeDeclaration]
+data Result = Result
+  { version :: NonEmpty Word,
+    types :: [Codegen.TypeDeclaration]
+  }
+  deriving (Eq, Show, Generic, ToJSON)
 
 load :: ParserPrelude.Config -> FilePath -> IO (Either Error Result)
 load config path =
@@ -51,6 +55,7 @@ parse config text = do
 extractFromAsyncApi :: ParserPrelude.Config -> AsyncApi.AsyncApi -> Either Error Result
 extractFromAsyncApi config =
   first (ParsingError . toJSON)
+    . fmap (\ParserOf.AsyncApi.Output {..} -> Result {..})
     . ParserOf.AsyncApi.parse config
 
 defaultConfig :: ParserPrelude.Config

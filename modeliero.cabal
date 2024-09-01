@@ -203,11 +203,13 @@ test-suite hspec
     Modeliero.Sources.AsyncApi.TestModel.Preludes.Spec
     Modeliero.Sources.AsyncApi.ValidInvalidFixturesSpec
     Modeliero.Sources.AsyncApiSpec
+    ModelieroSpec
 
   build-tool-depends:
     hspec-discover:hspec-discover >=2 && <3
 
   build-depends:
+    cases,
     coalmine,
     containers,
     directory,
@@ -217,3 +219,4 @@ test-suite hspec
     modeliero:codegens,
     modeliero:sources,
     text,
+    turtle,
