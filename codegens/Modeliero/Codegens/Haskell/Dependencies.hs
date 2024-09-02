@@ -58,3 +58,11 @@ hashable =
       minVersion = $$(l "1.4"),
       maxVersion = $$(l "2")
     }
+
+iproute :: Dependency
+iproute =
+  Dependency
+    { name = "iproute",
+      minVersion = $$(l "1.7"),
+      maxVersion = $$(l "1.8")
+    }

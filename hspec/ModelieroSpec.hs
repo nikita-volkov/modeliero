@@ -38,7 +38,7 @@ spec = do
                   Path.removeForcibly tempDirPath
                   Path.createDirs tempDirPath
                   HaskellCodegen.write
-                    (generalize tempDirPath)
+                    tempDirPath
                     HaskellCodegen.Model
                       { name =
                           fixturePath
@@ -64,7 +64,7 @@ spec = do
                               anonymizable = True
                             }
                       }
-                  runShellCmd [i|cd ${tempDirPath} && cabal build|]
+                  runShellCmd [i|cd ${tempDirPath} && cabal build --project-dir=.|]
                   pure ()
 
 fixturesPath :: Path
@@ -79,5 +79,8 @@ runShellCmd :: Text -> IO ()
 runShellCmd cmd = do
   putStrLn [i|> ${cmd}|]
   Turtle.inshellWithErr cmd mempty
-    & fmap (Turtle.unsafeTextToLine . mappend "> > " . Turtle.lineToText . either id id)
-    & Turtle.stderr
+    & fmap (either (prefixLine "> ! ") (prefixLine "> . "))
+    & Turtle.stdout
+  where
+    prefixLine prefix =
+      Turtle.unsafeTextToLine . mappend prefix . Turtle.lineToText

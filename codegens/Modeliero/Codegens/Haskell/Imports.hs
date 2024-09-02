@@ -63,6 +63,13 @@ anonymizable =
       name = "ModelieroBase.Classes.Anonymizable"
     }
 
+modelieroBaseTypes :: Import
+modelieroBaseTypes =
+  Import
+    { dependency = Just Dependencies.modelieroBase,
+      name = "ModelieroBase.Types"
+    }
+
 fromBase :: Text -> Import
 fromBase name =
   Import
@@ -88,4 +95,11 @@ hashable =
   Import
     { dependency = Just Dependencies.hashable,
       name = "Data.Hashable"
+    }
+
+iproute :: Import
+iproute =
+  Import
+    { dependency = Just Dependencies.iproute,
+      name = "Data.IP"
     }

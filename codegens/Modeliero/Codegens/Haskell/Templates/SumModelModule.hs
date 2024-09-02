@@ -11,6 +11,7 @@ import Coalmine.MultilineTextBuilder qualified as TextBlock
 import Coalmine.Prelude
 import Coalmine.Slug qualified as Slug
 import Data.Text qualified as Text
+import Modeliero.Codegens.Haskell.CompilersOf.TypeSig qualified as CompilersOf.TypeSig
 import Modeliero.Codegens.Haskell.Dsls.InModule
 import Modeliero.Codegens.Haskell.Imports qualified as Imports
 import Modeliero.Codegens.Haskell.Params qualified as Params
@@ -48,7 +49,9 @@ compile params = do
     dataTypeDecl =
       Just do
         variants <- for params.variants \variant -> do
-          type_ <- compileValueType params.modelsNamespace variant.type_
+          type_ <-
+            CompilersOf.TypeSig.fromValueType params.modelsNamespace variant.type_
+              & fmap to
           pure
             Templates.DataTypeDeclaration.Variant
               { name =
@@ -274,20 +277,3 @@ compileDerivings params = do
       if enabled
         then Just (requestImport import_ <&> \qfr -> to qfr <> to name)
         else Nothing
-
-compileValueType :: [Text] -> Params.ValueType -> InModule TextBlock
-compileValueType modelsNamespace = \case
-  Params.PlainValueType plainType -> case plainType of
-    Params.LocalPlainType nameSlug -> do
-      let typeName = nameSlug & Slug.toUpperCamelCaseTextBuilder & to
-      qfr <-
-        requestImport
-          Import
-            { dependency = Nothing,
-              name = to (foldMap ((<> ".") . to) modelsNamespace <> typeName)
-            }
-      pure (to qfr <> typeName)
-    Params.StandardPlainType standardType -> case standardType of
-      Params.BoolStandardType -> do
-        qfr <- requestImport Imports.basePrelude
-        pure (to qfr <> "Bool")

@@ -141,6 +141,7 @@ library codegens
   hs-source-dirs: codegens
   exposed-modules:
     Modeliero.Codegens.Haskell
+    Modeliero.Codegens.Haskell.CompilersOf.TypeSig
     Modeliero.Codegens.Haskell.Dependencies
     Modeliero.Codegens.Haskell.Dsls.Code
     Modeliero.Codegens.Haskell.Dsls.InModule
@@ -169,6 +170,8 @@ library codegens
     Modeliero.Codegens.Haskell.Templates.SumModelModule.Templates.FromJsonInstance
     Modeliero.Codegens.Haskell.Templates.SumModelModule.Templates.HashableInstance
     Modeliero.Codegens.Haskell.Templates.SumModelModule.Templates.ToJsonInstance
+    Modeliero.Codegens.Haskell.Templates.WrapperModelModule
+    Modeliero.Codegens.Haskell.Templates.WrapperModelModule.Templates.DataTypeDeclaration
 
   build-depends:
     base,

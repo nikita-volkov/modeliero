@@ -1,5 +1,6 @@
 module Modeliero.Codegens.Haskell where
 
+import Coalmine.EvenSimplerPaths qualified as Path
 import Coalmine.NumericVersion qualified as NumericVersion
 import Coalmine.Prelude
 import Coalmine.Slug qualified as Slug
@@ -12,6 +13,7 @@ import Modeliero.Codegens.Haskell.Templates.ProductModelModule qualified as Temp
 import Modeliero.Codegens.Haskell.Templates.ReexportsModule qualified as Templates.ReexportsModule
 import Modeliero.Codegens.Haskell.Templates.RefinedModelModule qualified as Templates.RefinedModelModule
 import Modeliero.Codegens.Haskell.Templates.SumModelModule qualified as Templates.SumModelModule
+import Modeliero.Codegens.Haskell.Templates.WrapperModelModule qualified as Templates.WrapperModelModule
 
 type Params = Params.Model
 
@@ -99,8 +101,15 @@ compile params =
                         }
                   Params.NewtypeTypeDefinition newtypeDefinition ->
                     case newtypeDefinition.wrappedType of
-                      Right _valueType ->
-                        error "TODO: Handle Value Type"
+                      Right baseType ->
+                        Templates.WrapperModelModule.compile
+                          Templates.WrapperModelModule.Params
+                            { modelsNamespace = typesNamespace,
+                              name = type_.name,
+                              docs = type_.docs,
+                              baseType,
+                              instances = params.instances
+                            }
                       Left refinement ->
                         Templates.RefinedModelModule.compile
                           Templates.RefinedModelModule.Params
@@ -120,10 +129,13 @@ compile params =
                   & fmap (Text.intercalate ".")
             }
 
-write :: FilePath -> Params -> IO ()
-write dirPath params =
+write :: Path -> Params -> IO ()
+write dirPath params = do
+  Path.createDirsTo dirPath
   compile params
     & traverse_
-      ( \(filePath, contents) ->
-          Text.IO.writeFile (dirPath <> filePath) contents
+      ( \(filePath, contents) -> do
+          let finalPath = dirPath <> fromString filePath
+          Path.createDirsTo finalPath
+          Text.IO.writeFile (generalize finalPath) contents
       )
