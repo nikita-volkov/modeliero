@@ -23,7 +23,7 @@ spec = do
             import Test.QuickCheck.Gen qualified as QuickCheck.Gen
 
             instance QuickCheck.Arbitrary.Arbitrary Month where
-              arbitrary = Month <$$> QuickCheck.Gen.chooseInt (1, 12)
+              arbitrary = Month <$> QuickCheck.Gen.chooseInt (1, 12)
               shrink = const []
           |]
 

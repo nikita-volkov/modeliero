@@ -27,10 +27,10 @@ compile params =
     instance ${params.quickCheckArbitraryQfr}Arbitrary ${params.name} where
       arbitrary =
         ${params.quickCheckGenQfr}oneof
-          [ $arbitraryExps
+          [ ${arbitraryExps}
           ]
       shrink = \case
-        $shrinkMatches
+        ${shrinkMatches}
   |]
   where
     arbitraryExps =

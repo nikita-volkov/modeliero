@@ -14,7 +14,7 @@ source-repository-package
 source-repository-package
   type: git
   location: https://github.com/nikita-volkov/coalmine
-  tag: 9fbfaf398e33eb9fbd532962a1ffcb8eb8aceb10
+  tag: 94738f89463580e3547817555a0635787b0a2ec1
   subdir:
     coalmine
     qq-extras
@@ -23,7 +23,7 @@ source-repository-package
 source-repository-package
   type: git
   location: https://github.com/nikita-volkov/codegen-kit
-  tag: 0c47aa3f6e78f0d55aa361f00feced7f2bd8a655
+  tag: d5dbe2acddf48b5af1f4bd15365a6b18fc3dce71
   subdir:
     packages/legacy
     packages/haskell-package

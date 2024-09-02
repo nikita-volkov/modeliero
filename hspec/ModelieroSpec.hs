@@ -77,7 +77,7 @@ tempDirRootPath =
 
 runShellCmd :: Text -> IO ()
 runShellCmd cmd = do
-  putStrLn [i|> $cmd|]
+  putStrLn [i|> ${cmd}|]
   Turtle.inshellWithErr cmd mempty
     & fmap (Turtle.unsafeTextToLine . mappend "> > " . Turtle.lineToText . either id id)
     & Turtle.stderr

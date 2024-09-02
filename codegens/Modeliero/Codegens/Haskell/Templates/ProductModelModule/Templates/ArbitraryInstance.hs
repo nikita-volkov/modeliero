@@ -19,7 +19,7 @@ compile params = do
           & foldMap
             ( \fieldName ->
                 [j|
-                  $fieldName <- ${arbitraryQualifier}arbitrary
+                  ${fieldName} <- ${arbitraryQualifier}arbitrary
                 
                 |]
             )
@@ -28,7 +28,7 @@ compile params = do
           & foldMap
             ( \fieldName ->
                 [j|
-                  $fieldName <- ${arbitraryQualifier}shrink value.$fieldName
+                  ${fieldName} <- ${arbitraryQualifier}shrink value.${fieldName}
                 
                 |]
             )

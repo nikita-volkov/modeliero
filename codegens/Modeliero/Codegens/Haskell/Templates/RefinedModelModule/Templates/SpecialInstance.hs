@@ -26,10 +26,10 @@ compile params = do
         ( "Int",
           [j|
             do
-              when (value < $min) $$
-                Left ("Value is smaller than $min: " <> fromString (show value))
-              when (value > $max) $$
-                Left ("Value is larger than $max: " <> fromString (show value))
+              when (value < ${min}) $
+                Left ("Value is smaller than ${min}: " <> fromString (show value))
+              when (value > ${max}) $
+                Left ("Value is larger than ${max}: " <> fromString (show value))
               pure (${params.typeName} value)
           |]
         )
@@ -41,18 +41,18 @@ compile params = do
           [j|
             do
               let length = ${textQfr}length value
-              when (length < $minLength) $$
-                Left ("Length is smaller than $minLength: " <> fromString (show length))
-              when (length > $maxLength) $$
-                Left ("Length is larger than $maxLength: " <> fromString (show length))
+              when (length < ${minLength}) $
+                Left ("Length is smaller than ${minLength}: " <> fromString (show length))
+              when (length > ${maxLength}) $
+                Left ("Length is larger than ${maxLength}: " <> fromString (show length))
               pure (${params.typeName} value)
           |]
         )
   pure
     [j|
       instance ${specialClassQfr}Special ${params.typeName} where
-        type GeneralizationOf ${params.typeName} = $baseType
+        type GeneralizationOf ${params.typeName} = ${baseType}
         type SpecializationError ${params.typeName} = ${textQfr}Text
-        specialize value = $specializeBody
+        specialize value = ${specializeBody}
         generalize (${params.typeName} base) = base
     |]

@@ -24,7 +24,7 @@ compile params =
   [i|
     instance ${params.hashableQfr}Hashable ${params.name} where
       hashWithSalt salt = \case
-        $matches
+        ${matches}
   |]
   where
     matches =
@@ -36,7 +36,7 @@ compile params =
         compileVariant index variant =
           [j|
             ${variant.name}${params.name}${memberPatterns} ->
-              $exp
+              ${exp}
           |]
           where
             memberPatterns =

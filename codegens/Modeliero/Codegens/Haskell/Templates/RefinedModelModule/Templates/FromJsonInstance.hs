@@ -44,5 +44,5 @@ compile params = do
   pure
     [j|
       instance ${aesonQfr}FromJSON ${params.name} where
-        parseJSON json = $body
+        parseJSON json = ${body}
     |]

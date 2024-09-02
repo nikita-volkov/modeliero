@@ -37,6 +37,6 @@ compile params = do
       instance ${aesonQfr}ToJSON ${params.typeName} where
         toJSON value =
           (${aesonQfr}Object . ${aesonKeyMapQfr}fromList)
-            [ $fieldJsonExps
+            [ ${fieldJsonExps}
             ]
     |]

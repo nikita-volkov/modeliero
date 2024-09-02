@@ -30,7 +30,7 @@ compile params =
   [j|
     instance ${params.anonymizableQfr}Anonymizable ${params.name} where
       anonymize = \case
-        $matches
+        ${matches}
   |]
   where
     matches =

@@ -31,7 +31,7 @@ compile params =
     instance ${params.aesonQfr}FromJSON ${params.name} where
       parseJSON = \case
         ${params.aesonQfr}Object object ->
-          [ $variantExps
+          [ ${variantExps}
           ]
             & asum
             & fmap pure
@@ -42,13 +42,13 @@ compile params =
                 & ${params.aesonKeyMapQfr}lookup (fromString name)
                 & fmap 
                   ( \json -> 
-                    constructor <$$>
+                    constructor <$>
                       ${params.aesonQfr}parseJSON json ${params.aesonQfr}<?> fromString name
                   )
             noTagFoundMessage =
               "No expected key found. \
               \It should be one of the following: \
-              \$keyList"
+              \${keyList}"
         ${stringMatch}json -> ${params.aesonTypesQfr}typeMismatch "Object|String" json
   |]
   where
@@ -81,7 +81,7 @@ compile params =
         _ ->
           [j|
             ${params.aesonQfr}String string -> case string of
-                $stringMatches
+                ${stringMatches}
           |]
       where
         stringMatches =

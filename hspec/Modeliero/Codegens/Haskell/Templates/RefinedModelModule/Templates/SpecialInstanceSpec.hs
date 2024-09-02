@@ -28,9 +28,9 @@ spec = do
               type GeneralizationOf Month = Int
               type SpecializationError Month = Text.Text
               specialize value = do
-                when (value < 1) $$
+                when (value < 1) $
                   Left ("Value is smaller than 1: " <> fromString (show value))
-                when (value > 12) $$
+                when (value > 12) $
                   Left ("Value is larger than 12: " <> fromString (show value))
                 pure (Month value)
               generalize (Month base) = base
@@ -56,9 +56,9 @@ spec = do
               type SpecializationError Phone = Text.Text
               specialize value = do
                 let length = Text.length value
-                when (length < 5) $$
+                when (length < 5) $
                   Left ("Length is smaller than 5: " <> fromString (show length))
-                when (length > 10) $$
+                when (length > 10) $
                   Left ("Length is larger than 10: " <> fromString (show length))
                 pure (Phone value)
               generalize (Phone base) = base

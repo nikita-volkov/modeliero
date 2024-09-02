@@ -379,15 +379,15 @@ spec = do
                       type GeneralizationOf Year = Int
                       type SpecializationError Year = Text.Text
                       specialize value = do
-                        when (value < -9999) $$
+                        when (value < -9999) $
                           Left ("Value is smaller than -9999: " <> fromString (show value))
-                        when (value > 9999) $$
+                        when (value > 9999) $
                           Left ("Value is larger than 9999: " <> fromString (show value))
                         pure (Year value)
                       generalize (Year base) = base
                     
                     instance QuickCheck.Arbitrary.Arbitrary Year where
-                      arbitrary = Year <$$> QuickCheck.Gen.chooseInt (-9999, 9999)
+                      arbitrary = Year <$> QuickCheck.Gen.chooseInt (-9999, 9999)
                       shrink = const []
                     
                     instance Aeson.ToJSON Year where
@@ -496,7 +496,7 @@ spec = do
                                 & Aeson.KeyMap.lookup (fromString name)
                                 & fmap 
                                   ( \json -> 
-                                    constructor <$$>
+                                    constructor <$>
                                       Aeson.parseJSON json Aeson.<?> fromString name
                                   )
                             noTagFoundMessage =
@@ -509,22 +509,22 @@ spec = do
                       arbitrary =
                         QuickCheck.Gen.oneof
                           [ YmdCalendarDate
-                              <$$> QuickCheck.Arbitrary.arbitrary,
+                              <$> QuickCheck.Arbitrary.arbitrary,
                             YmCalendarDate
-                              <$$> QuickCheck.Arbitrary.arbitrary,
+                              <$> QuickCheck.Arbitrary.arbitrary,
                             MdCalendarDate
-                              <$$> QuickCheck.Arbitrary.arbitrary
+                              <$> QuickCheck.Arbitrary.arbitrary
                           ]
                       shrink = \case
                         YmdCalendarDate ymd ->
                           YmdCalendarDate
-                            <$$> QuickCheck.Arbitrary.shrink ymd
+                            <$> QuickCheck.Arbitrary.shrink ymd
                         YmCalendarDate ym ->
                           YmCalendarDate
-                            <$$> QuickCheck.Arbitrary.shrink ym
+                            <$> QuickCheck.Arbitrary.shrink ym
                         MdCalendarDate md ->
                           MdCalendarDate
-                            <$$> QuickCheck.Arbitrary.shrink md
+                            <$> QuickCheck.Arbitrary.shrink md
                     
                     instance Anonymizable.Anonymizable CalendarDate where
                       anonymize = \case

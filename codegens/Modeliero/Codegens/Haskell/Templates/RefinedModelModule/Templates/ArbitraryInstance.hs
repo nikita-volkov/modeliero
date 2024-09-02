@@ -36,7 +36,7 @@ compile params = do
     IntType min max ->
       pure
         ( [j|
-            ${params.name} <$$> ${genQualifier}chooseInt ($min, $max)
+            ${params.name} <$> ${genQualifier}chooseInt (${min}, ${max})
           |],
           [j|
             const []
@@ -47,7 +47,7 @@ compile params = do
         Just min -> case max of
           Just max ->
             ( [j|
-                ${params.name} <$$> ${genQualifier}chooseInteger ($min, $max)
+                ${params.name} <$> ${genQualifier}chooseInteger (${min}, ${max})
               |],
               [j|
                 const []
@@ -55,7 +55,7 @@ compile params = do
             )
           Nothing ->
             ( [j|
-                ${params.name} <$$> suchThat (${genQualifier}chooseAny) (\x -> x >= $min)
+                ${params.name} <$> suchThat (${genQualifier}chooseAny) (\x -> x >= ${min})
               |],
               [j|
                 const []
@@ -64,7 +64,7 @@ compile params = do
         Nothing -> case max of
           Just max ->
             ( [j|
-                ${params.name} <$$> suchThat (${genQualifier}chooseAny) (\x -> x <= $max)
+                ${params.name} <$> suchThat (${genQualifier}chooseAny) (\x -> x <= ${max})
               |],
               [j|
                 const []
@@ -72,7 +72,7 @@ compile params = do
             )
           Nothing ->
             ( [j|
-                ${params.name} <$$> ${genQualifier}chooseAny
+                ${params.name} <$> ${genQualifier}chooseAny
               |],
               [j|
                 const []
@@ -83,19 +83,19 @@ compile params = do
       pure
         ( [j|
             do
-              length <- ${genQualifier}chooseInt ($minLength, $maxLength)
+              length <- ${genQualifier}chooseInt (${minLength}, ${maxLength})
               string <- ${genQualifier}vectorOf length ${arbitraryQualifier}arbitrary
               pure (${params.name} (fromString string))
           |],
           [j|
             \(${params.name} text) -> do
-              toTake <- enumFromTo $minLength (${textQualifier}length text)
+              toTake <- enumFromTo ${minLength} (${textQualifier}length text)
               pure (${params.name} (${textQualifier}take toTake text))
           |]
         )
   pure
     [j|
       instance ${arbitraryQualifier}Arbitrary ${params.name} where
-        arbitrary = $arbitraryBody
-        shrink = $shrinkBody
+        arbitrary = ${arbitraryBody}
+        shrink = ${shrinkBody}
     |]
