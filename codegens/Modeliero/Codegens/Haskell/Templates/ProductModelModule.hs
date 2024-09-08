@@ -80,47 +80,60 @@ compileField modelsNamespace jsonCasing field = do
 
 compileValueType :: [Text] -> ValueType -> InModule.InModule Text
 compileValueType modelsNamespace = \case
-  PlainValueType plainType -> case plainType of
-    LocalPlainType nameSlug -> do
-      let typeName = Slug.toUpperCamelCaseText nameSlug
-      qfr <-
-        InModule.requestImport
-          InModule.Import
-            { dependency = Nothing,
-              name = foldMap (<> ".") modelsNamespace <> typeName
-            }
-      pure (qfr <> typeName)
-    StandardPlainType standardType -> case standardType of
-      BoolStandardType ->
-        InModule.requestImport Imports.basePreludeRoot
-          & fmap (<> "Bool")
-      IntStandardType ->
-        InModule.requestImport Imports.basePreludeRoot
-          & fmap (<> "Int")
-      DoubleStandardType ->
-        InModule.requestImport Imports.basePreludeRoot
-          & fmap (<> "Double")
-      TextStandardType ->
-        InModule.requestImport Imports.textRoot
-          & fmap (<> "Text")
-      UuidStandardType ->
-        InModule.requestImport Imports.uuidRoot
-          & fmap (<> "UUID")
-      EmailStandardType ->
-        InModule.requestImport Imports.modelieroBaseRoot
-          & fmap (<> "Email")
-      IriStandardType ->
-        InModule.requestImport Imports.modelieroBaseRoot
-          & fmap (<> "Iri")
-      HostnameStandardType ->
-        InModule.requestImport Imports.modelieroBaseRoot
-          & fmap (<> "Hostname")
-      IpV4StandardType ->
-        InModule.requestImport Imports.modelieroBaseRoot
-          & fmap (<> "IpV4")
-      IpV6StandardType ->
-        InModule.requestImport Imports.modelieroBaseRoot
-          & fmap (<> "IpV6")
-      Iso8601DateTimeStandardType ->
-        InModule.requestImport Imports.modelieroBaseRoot
-          & fmap (<> "Iso8601DateTime")
+  PlainValueType a -> compilePlainType modelsNamespace a
+  MaybeValueType a -> do
+    basePreludeQfr <- InModule.requestImport Imports.basePreludeRoot
+    compilePlainType modelsNamespace a
+      & fmap ((basePreludeQfr <> "Maybe ") <>)
+
+compilePlainType :: [Text] -> PlainType -> InModule.InModule Text
+compilePlainType modelsNamespace = \case
+  LocalPlainType nameSlug -> do
+    let typeName = Slug.toUpperCamelCaseText nameSlug
+    qfr <-
+      InModule.requestImport
+        InModule.Import
+          { dependency = Nothing,
+            name = foldMap (<> ".") modelsNamespace <> typeName
+          }
+    pure (qfr <> typeName)
+  StandardPlainType a -> compileStandardType a
+  CustomPlainType customType ->
+    error ("TODO: " <> show customType)
+
+compileStandardType :: StandardType -> InModule.InModule Text
+compileStandardType standardType =
+  case standardType of
+    BoolStandardType ->
+      InModule.requestImport Imports.basePreludeRoot
+        & fmap (<> "Bool")
+    IntStandardType ->
+      InModule.requestImport Imports.basePreludeRoot
+        & fmap (<> "Int")
+    DoubleStandardType ->
+      InModule.requestImport Imports.basePreludeRoot
+        & fmap (<> "Double")
+    TextStandardType ->
+      InModule.requestImport Imports.textRoot
+        & fmap (<> "Text")
+    UuidStandardType ->
+      InModule.requestImport Imports.uuidRoot
+        & fmap (<> "UUID")
+    EmailStandardType ->
+      InModule.requestImport Imports.modelieroBaseRoot
+        & fmap (<> "Email")
+    IriStandardType ->
+      InModule.requestImport Imports.modelieroBaseRoot
+        & fmap (<> "Iri")
+    HostnameStandardType ->
+      InModule.requestImport Imports.modelieroBaseRoot
+        & fmap (<> "Hostname")
+    IpV4StandardType ->
+      InModule.requestImport Imports.modelieroBaseRoot
+        & fmap (<> "IpV4")
+    IpV6StandardType ->
+      InModule.requestImport Imports.modelieroBaseRoot
+        & fmap (<> "IpV6")
+    Iso8601DateTimeStandardType ->
+      InModule.requestImport Imports.modelieroBaseRoot
+        & fmap (<> "Iso8601DateTime")

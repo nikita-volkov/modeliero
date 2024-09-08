@@ -11,6 +11,9 @@ fromQuickCheck name =
       name
     }
 
+quickCheckRoot :: Import
+quickCheckRoot = fromQuickCheck "Test.QuickCheck"
+
 quickCheckArbitrary :: Import
 quickCheckArbitrary = fromQuickCheck "Test.QuickCheck.Arbitrary"
 
@@ -122,4 +125,11 @@ uuidRoot =
   Import
     { dependency = Just Dependencies.basePrelude,
       name = "Data.UUID"
+    }
+
+attoparsecText :: Import
+attoparsecText =
+  Import
+    { dependency = Just Dependencies.attoparsec,
+      name = "Data.Attoparsec.Text"
     }

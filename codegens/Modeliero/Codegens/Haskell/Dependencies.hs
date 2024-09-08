@@ -90,3 +90,11 @@ isomorphismClass =
       minVersion = $$(l "0.1.0.12"),
       maxVersion = $$(l "0.2")
     }
+
+attoparsec :: Dependency
+attoparsec =
+  Dependency
+    { name = "attoparsec",
+      minVersion = $$(l "0.12"),
+      maxVersion = $$(l "0.15")
+    }

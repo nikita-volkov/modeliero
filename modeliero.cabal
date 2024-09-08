@@ -150,7 +150,15 @@ library codegens
     Modeliero.Codegens.Haskell.Dsls.Package
     Modeliero.Codegens.Haskell.FileTemplates.CabalProject
     Modeliero.Codegens.Haskell.Imports
+    Modeliero.Codegens.Haskell.ModuleTemplates.TextModel
     Modeliero.Codegens.Haskell.Params
+    Modeliero.Codegens.Haskell.Preludes.SnippetTemplate
+    Modeliero.Codegens.Haskell.SnippetTemplates
+    Modeliero.Codegens.Haskell.SnippetTemplates.DataType
+    Modeliero.Codegens.Haskell.SnippetTemplates.DerivingVia
+    Modeliero.Codegens.Haskell.SnippetTemplates.ParensList
+    Modeliero.Codegens.Haskell.SnippetTemplates.RefinedTextArbitraryInstance
+    Modeliero.Codegens.Haskell.SnippetTemplates.RefinedTextLiteralInstance
     Modeliero.Codegens.Haskell.Snippets
     Modeliero.Codegens.Haskell.Templates.ProductModelModule
     Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.ArbitraryInstance

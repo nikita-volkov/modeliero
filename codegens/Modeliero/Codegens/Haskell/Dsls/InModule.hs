@@ -11,11 +11,13 @@ module Modeliero.Codegens.Haskell.Dsls.InModule
     liftCode,
     liftGroupedLegacyExp,
     liftUngroupedLegacyExp,
+    liftDeclarations,
     Import (..),
     Dependency (..),
   )
 where
 
+import Coalmine.MultilineTextBuilder qualified as TextBlock
 import Coalmine.Prelude
 import CodegenKit.HaskellPackage.Contexts.Exp qualified as LegacyExp
 import Modeliero.Codegens.Haskell.Dsls.Code (Import (..))
@@ -72,3 +74,7 @@ liftGroupedLegacyExp =
 liftUngroupedLegacyExp :: LegacyExp.Exp -> InModule TextBlock
 liftUngroupedLegacyExp =
   liftCode . Code.ungroupedLegacyExp
+
+liftDeclarations :: InModule [TextBlock] -> InModule TextBlock
+liftDeclarations =
+  fmap (TextBlock.intercalate "\n\n")

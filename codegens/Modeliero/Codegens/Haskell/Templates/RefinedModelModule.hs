@@ -12,7 +12,9 @@ import Coalmine.Prelude
 import Coalmine.Slug qualified as Slug
 import Modeliero.Codegens.Haskell.Dsls.InModule
 import Modeliero.Codegens.Haskell.Imports qualified as Imports
+import Modeliero.Codegens.Haskell.ModuleTemplates.TextModel qualified as TextModelModule
 import Modeliero.Codegens.Haskell.Params qualified as Params
+import Modeliero.Codegens.Haskell.SnippetTemplates qualified as SnippetTemplates
 import Modeliero.Codegens.Haskell.Templates.RefinedModelModule.Templates.ArbitraryInstance qualified as Templates.ArbitraryInstance
 import Modeliero.Codegens.Haskell.Templates.RefinedModelModule.Templates.DataTypeDeclaration qualified as Templates.DataTypeDeclaration
 import Modeliero.Codegens.Haskell.Templates.RefinedModelModule.Templates.FromJsonInstance qualified as Templates.FromJsonInstance
@@ -31,15 +33,22 @@ type Result = InModule TextBlock
 compile :: Params -> Result
 compile params = do
   registerExport (Slug.toUpperCamelCaseText params.name)
-  decls <-
-    (sequence . catMaybes)
+
+  case params.refinement of
+    Params.TextRefinement restrictions -> do
+      TextModelModule.Params
+        { name = params.name,
+          docs = params.docs,
+          minLength = restrictions.minLength & Just,
+          maxLength = restrictions.maxLength & Just,
+          instances = params.instances
+        }
+        & TextModelModule.compile
+    Params.IntegerRefinement _ ->
       [ Just do
-          baseType <- case params.refinement of
-            Params.TextRefinement _ ->
-              requestImport Imports.textRoot <&> \qfr -> qfr <> "Text"
-            Params.IntegerRefinement _ ->
-              -- TODO: Add analysis on the bounds to determine whether it should be Integer or Int.
-              requestImport Imports.basePreludeRoot <&> \qfr -> qfr <> "Int"
+          baseType <-
+            -- TODO: Add analysis on the bounds to determine whether it should be Integer or Int.
+            requestImport Imports.basePreludeRoot <&> \qfr -> qfr <> "Int"
           Templates.DataTypeDeclaration.compile
             Templates.DataTypeDeclaration.Params
               { name = params.name & Slug.toUpperCamelCaseText & to,
@@ -62,18 +71,16 @@ compile params = do
               { name = params.name & Slug.toUpperCamelCaseText
               },
         params.instances.aeson <&> \_ ->
+          -- TODO: Add analysis on the bounds to determine whether it should be Integer or Int.
           Templates.FromJsonInstance.compile
             Templates.FromJsonInstance.Params
               { name = params.name & Slug.toUpperCamelCaseText,
-                type_ = case params.refinement of
-                  Params.IntegerRefinement _ ->
-                    -- TODO: Add analysis on the bounds to determine whether it should be Integer or Int.
-                    Templates.FromJsonInstance.IntType
-                  _ ->
-                    error "TODO"
+                type_ = Templates.FromJsonInstance.IntType
               }
       ]
-  pure (TextBlock.intercalate "\n\n" decls)
+        & catMaybes
+        & sequence
+        & liftDeclarations
 
 compileArbitrary :: Params -> Maybe (InModule TextBlock)
 compileArbitrary params =
