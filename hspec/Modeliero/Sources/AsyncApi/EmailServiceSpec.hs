@@ -40,7 +40,7 @@ spec = do
                           it "Is UTCTime" do
                             shouldBe plainType
                               $ StandardPlainType
-                              $ UtcTimeStandardType
+                              $ Iso8601DateTimeStandardType
                         _ -> itFailsWithInput "Is Maybe" field.type_
                     Nothing ->
                       itFailsWithInput "Exists" fields

@@ -19,6 +19,14 @@ basePrelude =
       maxVersion = $$(l "1.7")
     }
 
+uuid :: Dependency
+uuid =
+  Dependency
+    { name = "uuid",
+      minVersion = $$(l "1.3"),
+      maxVersion = $$(l "1.4")
+    }
+
 quickCheck :: Dependency
 quickCheck =
   Dependency

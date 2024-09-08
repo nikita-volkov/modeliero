@@ -22,7 +22,7 @@ compile params = do
     IntType -> do
       scientificQfr <- requestImport Imports.scientific
       specialQfr <- requestImport Imports.special
-      textQfr <- requestImport Imports.text
+      textQfr <- requestImport Imports.textRoot
       pure
         [j|
           do

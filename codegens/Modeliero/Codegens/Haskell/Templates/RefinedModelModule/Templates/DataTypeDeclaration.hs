@@ -45,9 +45,9 @@ compileDerivings :: Derivings -> InModule [TextBlock]
 compileDerivings derivings = do
   sequence
     $ catMaybes
-      [ compileDeriving derivings.show "Show" (requestImport Imports.basePreludeBasePrelude),
-        compileDeriving derivings.eq "Eq" (requestImport Imports.basePreludeBasePrelude),
-        compileDeriving derivings.ord "Ord" (requestImport Imports.basePreludeBasePrelude),
+      [ compileDeriving derivings.show "Show" (requestImport Imports.basePreludeRoot),
+        compileDeriving derivings.eq "Eq" (requestImport Imports.basePreludeRoot),
+        compileDeriving derivings.ord "Ord" (requestImport Imports.basePreludeRoot),
         compileDeriving derivings.generic "Generic" (requestImport Imports.baseGenerics),
         compileDeriving derivings.hashable "Hashable" (requestImport Imports.hashable)
       ]

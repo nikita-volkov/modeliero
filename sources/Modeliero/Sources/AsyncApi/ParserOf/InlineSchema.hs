@@ -33,13 +33,12 @@ parse _schemaContext input =
         case input._schemaFormat of
           Just format -> case format of
             "email" -> fromStandardType EmailStandardType
-            "date-time" -> fromStandardType UtcTimeStandardType
+            "date-time" -> fromStandardType Iso8601DateTimeStandardType
             "uuid" -> fromStandardType UuidStandardType
             "ipv4" -> fromStandardType IpV4StandardType
             "ipv6" -> fromStandardType IpV6StandardType
-            "ip" -> fromStandardType IpStandardType
             "hostname" -> fromStandardType HostnameStandardType
-            "uri" -> fromStandardType UriStandardType
+            "uri" -> fromStandardType IriStandardType
             "iri" -> fromStandardType IriStandardType
             _ ->
               -- TODO: go thru the official list: https://json-schema.org/understanding-json-schema/reference/string#built-in-formats

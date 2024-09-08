@@ -36,10 +36,10 @@ compile params = do
       [ Just do
           baseType <- case params.refinement of
             Params.TextRefinement _ ->
-              requestImport Imports.text <&> \qfr -> qfr <> "Text"
+              requestImport Imports.textRoot <&> \qfr -> qfr <> "Text"
             Params.IntegerRefinement _ ->
               -- TODO: Add analysis on the bounds to determine whether it should be Integer or Int.
-              requestImport Imports.basePreludeBasePrelude <&> \qfr -> qfr <> "Int"
+              requestImport Imports.basePreludeRoot <&> \qfr -> qfr <> "Int"
           Templates.DataTypeDeclaration.compile
             Templates.DataTypeDeclaration.Params
               { name = params.name & Slug.toUpperCamelCaseText & to,

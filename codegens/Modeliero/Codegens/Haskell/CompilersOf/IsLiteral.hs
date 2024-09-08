@@ -17,17 +17,11 @@ standardType :: StandardType -> Bool
 standardType =
   [ TextStandardType,
     UuidStandardType,
-    DayStandardType,
-    UtcTimeStandardType,
-    LocalTimeStandardType,
-    ZonedTimeStandardType,
-    TimeZoneStandardType,
     EmailStandardType,
-    UriStandardType,
     IriStandardType,
     HostnameStandardType,
-    IpStandardType,
     IpV4StandardType,
-    IpV6StandardType
+    IpV6StandardType,
+    Iso8601DateTimeStandardType
   ]
     & flip elem

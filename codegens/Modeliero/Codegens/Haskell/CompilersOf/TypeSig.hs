@@ -31,12 +31,12 @@ fromPlainType modelsNamespace = \case
 fromStandardType :: Params.StandardType -> InModule Text
 fromStandardType = \case
   Params.BoolStandardType ->
-    requestImport Imports.basePreludeBasePrelude <&> (<> "Bool")
+    requestImport Imports.basePreludeRoot <&> (<> "Bool")
   Params.EmailStandardType ->
-    requestImport Imports.modelieroBase <&> (<> "Email")
+    requestImport Imports.modelieroBaseRoot <&> (<> "Email")
   Params.HostnameStandardType ->
-    requestImport Imports.modelieroBase <&> (<> "Hostname")
+    requestImport Imports.modelieroBaseRoot <&> (<> "Hostname")
   Params.IpV4StandardType ->
-    requestImport Imports.modelieroBase <&> (<> "IpV4")
+    requestImport Imports.modelieroBaseRoot <&> (<> "IpV4")
   Params.IpV6StandardType ->
-    requestImport Imports.modelieroBase <&> (<> "IpV6")
+    requestImport Imports.modelieroBaseRoot <&> (<> "IpV6")

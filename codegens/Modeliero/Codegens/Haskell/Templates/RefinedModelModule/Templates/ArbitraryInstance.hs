@@ -79,7 +79,7 @@ compile params = do
               |]
             )
     TextType minLength maxLength -> do
-      textQualifier <- requestImport Imports.text
+      textQualifier <- requestImport Imports.textRoot
       pure
         ( [j|
             do

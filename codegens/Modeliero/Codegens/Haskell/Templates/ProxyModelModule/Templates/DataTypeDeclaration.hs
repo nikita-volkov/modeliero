@@ -71,9 +71,9 @@ compileStockDerivings _ =
 
 compileNewtypeDerivings :: Params -> InModule [TextBlock]
 compileNewtypeDerivings params =
-  [ compileDeriving params.derivings.show "Show" Imports.basePreludeBasePrelude,
-    compileDeriving params.derivings.eq "Eq" Imports.basePreludeBasePrelude,
-    compileDeriving params.derivings.ord "Ord" Imports.basePreludeBasePrelude,
+  [ compileDeriving params.derivings.show "Show" Imports.basePreludeRoot,
+    compileDeriving params.derivings.eq "Eq" Imports.basePreludeRoot,
+    compileDeriving params.derivings.ord "Ord" Imports.basePreludeRoot,
     compileDeriving params.derivings.generic "Generic" Imports.baseGenerics,
     compileDeriving params.derivings.hashable "Hashable" Imports.hashable,
     compileDeriving params.derivings.arbitrary "Arbitrary" Imports.quickCheckArbitrary,
@@ -81,8 +81,8 @@ compileNewtypeDerivings params =
     compileDeriving params.derivings.aeson "FromJSON" Imports.aeson,
     compileDeriving params.derivings.aeson "ToJSONKey" Imports.aeson,
     compileDeriving params.derivings.aeson "FromJSONKey" Imports.aeson,
-    compileDeriving params.derivings.literal "Literal" Imports.modelieroBase,
-    compileDeriving params.derivings.anonymizable "Anonymizable" Imports.modelieroBase
+    compileDeriving params.derivings.literal "Literal" Imports.modelieroBaseRoot,
+    compileDeriving params.derivings.anonymizable "Anonymizable" Imports.modelieroBaseRoot
   ]
     & catMaybes
     & sequence

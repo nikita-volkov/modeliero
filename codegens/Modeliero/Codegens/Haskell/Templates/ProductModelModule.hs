@@ -91,6 +91,36 @@ compileValueType modelsNamespace = \case
             }
       pure (qfr <> typeName)
     StandardPlainType standardType -> case standardType of
-      BoolStandardType -> do
-        qfr <- InModule.requestImport Imports.basePreludeBasePrelude
-        pure (qfr <> "Bool")
+      BoolStandardType ->
+        InModule.requestImport Imports.basePreludeRoot
+          & fmap (<> "Bool")
+      IntStandardType ->
+        InModule.requestImport Imports.basePreludeRoot
+          & fmap (<> "Int")
+      DoubleStandardType ->
+        InModule.requestImport Imports.basePreludeRoot
+          & fmap (<> "Double")
+      TextStandardType ->
+        InModule.requestImport Imports.textRoot
+          & fmap (<> "Text")
+      UuidStandardType ->
+        InModule.requestImport Imports.uuidRoot
+          & fmap (<> "UUID")
+      EmailStandardType ->
+        InModule.requestImport Imports.modelieroBaseRoot
+          & fmap (<> "Email")
+      IriStandardType ->
+        InModule.requestImport Imports.modelieroBaseRoot
+          & fmap (<> "Iri")
+      HostnameStandardType ->
+        InModule.requestImport Imports.modelieroBaseRoot
+          & fmap (<> "Hostname")
+      IpV4StandardType ->
+        InModule.requestImport Imports.modelieroBaseRoot
+          & fmap (<> "IpV4")
+      IpV6StandardType ->
+        InModule.requestImport Imports.modelieroBaseRoot
+          & fmap (<> "IpV6")
+      Iso8601DateTimeStandardType ->
+        InModule.requestImport Imports.modelieroBaseRoot
+          & fmap (<> "Iso8601DateTime")

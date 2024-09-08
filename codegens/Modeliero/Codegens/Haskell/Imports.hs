@@ -24,8 +24,8 @@ fromText name =
       name
     }
 
-text :: Import
-text = fromText "Data.Text"
+textRoot :: Import
+textRoot = fromText "Data.Text"
 
 textLazy :: Import
 textLazy = fromText "Data.Text.Lazy"
@@ -50,13 +50,13 @@ aesonTypes :: Import
 aesonTypes = fromAeson "Data.Aeson.Types"
 
 special :: Import
-special = modelieroBase
+special = modelieroBaseRoot
 
 anonymizable :: Import
-anonymizable = modelieroBase
+anonymizable = modelieroBaseRoot
 
-modelieroBase :: Import
-modelieroBase =
+modelieroBaseRoot :: Import
+modelieroBaseRoot =
   Import
     { dependency = Just Dependencies.modelieroBase,
       name = "ModelieroBase"
@@ -110,9 +110,16 @@ dataCoerce =
       name = "Data.Coerce"
     }
 
-basePreludeBasePrelude :: Import
-basePreludeBasePrelude =
+basePreludeRoot :: Import
+basePreludeRoot =
   Import
     { dependency = Just Dependencies.basePrelude,
       name = "BasePrelude"
+    }
+
+uuidRoot :: Import
+uuidRoot =
+  Import
+    { dependency = Just Dependencies.basePrelude,
+      name = "Data.UUID"
     }

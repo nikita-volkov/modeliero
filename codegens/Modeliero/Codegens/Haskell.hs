@@ -83,7 +83,7 @@ compile params =
                 (typesNamespace <> [type_.name & Slug.toUpperCamelCaseText])
                 importAliases
                 do
-                  _ <- InModule.requestImport Imports.basePreludeBasePrelude
+                  _ <- InModule.requestImport Imports.basePreludeRoot
                   case type_.definition of
                     Params.ProductTypeDefinition fields ->
                       Templates.ProductModelModule.compile

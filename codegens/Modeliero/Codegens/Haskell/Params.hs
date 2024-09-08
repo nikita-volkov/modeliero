@@ -67,18 +67,12 @@ data StandardType
   | ScientificStandardType
   | TextStandardType
   | UuidStandardType
-  | DayStandardType
-  | UtcTimeStandardType
-  | LocalTimeStandardType
-  | ZonedTimeStandardType
-  | TimeZoneStandardType
   | EmailStandardType
-  | UriStandardType
   | IriStandardType
   | HostnameStandardType
-  | IpStandardType
   | IpV4StandardType
   | IpV6StandardType
+  | Iso8601DateTimeStandardType
   deriving (Eq, Ord, Show, Generic, ToJSON, FromJSON)
 
 data CustomType = CustomType

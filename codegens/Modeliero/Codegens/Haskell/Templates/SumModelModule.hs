@@ -266,9 +266,9 @@ compileDerivings :: Params -> InModule [TextBlock]
 compileDerivings params = do
   sequence
     $ catMaybes
-      [ compileDeriving params.instances.show "Show" Imports.basePreludeBasePrelude,
-        compileDeriving params.instances.eq "Eq" Imports.basePreludeBasePrelude,
-        compileDeriving params.instances.ord "Ord" Imports.basePreludeBasePrelude
+      [ compileDeriving params.instances.show "Show" Imports.basePreludeRoot,
+        compileDeriving params.instances.eq "Eq" Imports.basePreludeRoot,
+        compileDeriving params.instances.ord "Ord" Imports.basePreludeRoot
       ]
   where
     compileDeriving :: Bool -> Text -> Import -> Maybe (InModule TextBlock)
