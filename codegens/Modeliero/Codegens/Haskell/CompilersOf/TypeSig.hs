@@ -8,7 +8,7 @@ import Coalmine.Slug qualified as Slug
 import Modeliero.Codegens.Haskell.Dsls.InModule
 import Modeliero.Codegens.Haskell.Imports qualified as Imports
 import Modeliero.Codegens.Haskell.Params qualified as Params
-import Modeliero.Codegens.Haskell.Templates.WrapperModelModule.Templates.DataTypeDeclaration qualified as Templates.DataTypeDeclaration
+import Modeliero.Codegens.Haskell.Templates.ProxyModelModule.Templates.DataTypeDeclaration qualified as Templates.DataTypeDeclaration
 
 fromValueType :: [Text] -> Params.ValueType -> InModule Text
 fromValueType modelsNamespace = \case
@@ -31,12 +31,12 @@ fromPlainType modelsNamespace = \case
 fromStandardType :: Params.StandardType -> InModule Text
 fromStandardType = \case
   Params.BoolStandardType ->
-    requestImport Imports.basePrelude <&> (<> "Bool")
+    requestImport Imports.basePreludeBasePrelude <&> (<> "Bool")
   Params.EmailStandardType ->
-    requestImport Imports.modelieroBaseTypes <&> (<> "Email")
+    requestImport Imports.modelieroBase <&> (<> "Email")
   Params.HostnameStandardType ->
-    requestImport Imports.modelieroBaseTypes <&> (<> "Hostname")
+    requestImport Imports.modelieroBase <&> (<> "Hostname")
   Params.IpV4StandardType ->
-    requestImport Imports.iproute <&> (<> "IPv4")
+    requestImport Imports.modelieroBase <&> (<> "IpV4")
   Params.IpV6StandardType ->
-    requestImport Imports.iproute <&> (<> "IPv6")
+    requestImport Imports.modelieroBase <&> (<> "IpV6")

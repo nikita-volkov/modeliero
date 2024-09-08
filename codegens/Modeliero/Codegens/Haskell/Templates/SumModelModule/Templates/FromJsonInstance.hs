@@ -34,22 +34,13 @@ compile params =
           [ ${variantExps}
           ]
             & asum
-            & fmap pure
-            & fromMaybe (${params.aesonQfr}parseFail noTagFoundMessage)
+            & fromMaybe (${params.aesonTypesQfr}parseFail noTagFoundMessage)
           where
-            variant name constructor =
-              object
-                & ${params.aesonKeyMapQfr}lookup (fromString name)
-                & fmap 
-                  ( \json -> 
-                    constructor <$>
-                      ${params.aesonQfr}parseJSON json ${params.aesonQfr}<?> fromString name
-                  )
             noTagFoundMessage =
               "No expected key found. \
               \It should be one of the following: \
               \${keyList}"
-        ${stringMatch}json -> ${params.aesonTypesQfr}typeMismatch "Object|String" json
+        ${stringMatch}json -> ${params.aesonTypesQfr}typeMismatch "Object" json
   |]
   where
     keyList =
@@ -65,15 +56,20 @@ compile params =
       params.variants
         & fmap
           ( \variant ->
-              mconcat
-                [ "variant ",
-                  variant.jsonName
-                    & Snippets.stringLiteral,
-                  " ",
-                  to variant.constructorName
-                ]
+              let nameLiteral = variant.jsonName & Snippets.stringLiteral
+               in [j|
+                    object
+                      & ${params.aesonKeyMapQfr}lookup ${nameLiteral}
+                      & fmap 
+                        ( \json -> 
+                          ${variant.constructorName}
+                            <$> ${params.aesonQfr}parseJSON json
+                            ${params.aesonTypesQfr}<?> ${params.aesonTypesQfr}Key ${nameLiteral}
+                        )
+                  |]
           )
-        & intercalate ",\n  "
+        & intercalate ",\n"
+        & indent 2
 
     stringMatch =
       case stringMatches of

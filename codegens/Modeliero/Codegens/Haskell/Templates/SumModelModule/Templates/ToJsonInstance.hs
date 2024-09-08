@@ -42,6 +42,7 @@ compile params =
               ${variant.varName}
                 & ${params.aesonQfr}toJSON
                 & ${params.aesonKeyMapQfr}singleton ${keyExp}
+                & ${params.aesonQfr}toJSON
           |]
           where
             memberPatterns =

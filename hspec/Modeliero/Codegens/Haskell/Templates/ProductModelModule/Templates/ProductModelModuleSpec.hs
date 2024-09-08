@@ -47,7 +47,7 @@ spec = do
               )
             where
             
-            import Prelude
+            import BasePrelude
             import Data.Aeson qualified as Aeson
             import Data.Aeson.KeyMap qualified as Aeson.KeyMap
             import Data.Aeson.Types qualified as Aeson.Types

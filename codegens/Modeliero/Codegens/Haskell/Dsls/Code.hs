@@ -18,11 +18,7 @@ compileCodeModule ::
   Code ->
   Module
 compileCodeModule name importAliases code =
-  Module
-    { name,
-      dependencies,
-      content = legacyPackageCompiledModule.content
-    }
+  Module {name, dependencies, content}
   where
     legacyPackageCompiledModule =
       Legacy.toPackageCompiledModule
@@ -32,7 +28,7 @@ compileCodeModule name importAliases code =
             importRemappings = []
           }
         Legacy.Preferences
-          { strictData = False,
+          { strictData = True,
             overloadedRecordDot = True,
             importQualifiedPost = True
           }
@@ -58,6 +54,8 @@ compileCodeModule name importAliases code =
                         NumericVersion.NumericVersion 0 []
                 }
           )
+    content =
+      legacyPackageCompiledModule.content
 
 compileCodeDependencies :: Code -> [Dependency]
 compileCodeDependencies code =

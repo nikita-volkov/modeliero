@@ -141,12 +141,14 @@ library codegens
   hs-source-dirs: codegens
   exposed-modules:
     Modeliero.Codegens.Haskell
+    Modeliero.Codegens.Haskell.CompilersOf.IsLiteral
     Modeliero.Codegens.Haskell.CompilersOf.TypeSig
     Modeliero.Codegens.Haskell.Dependencies
     Modeliero.Codegens.Haskell.Dsls.Code
     Modeliero.Codegens.Haskell.Dsls.InModule
     Modeliero.Codegens.Haskell.Dsls.Namespace
     Modeliero.Codegens.Haskell.Dsls.Package
+    Modeliero.Codegens.Haskell.FileTemplates.CabalProject
     Modeliero.Codegens.Haskell.Imports
     Modeliero.Codegens.Haskell.Params
     Modeliero.Codegens.Haskell.Snippets
@@ -156,6 +158,9 @@ library codegens
     Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.FromJsonInstance
     Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.ProductModelModule
     Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.ToJsonInstance
+    Modeliero.Codegens.Haskell.Templates.ProxyModelModule
+    Modeliero.Codegens.Haskell.Templates.ProxyModelModule.Templates.DataTypeDeclaration
+    Modeliero.Codegens.Haskell.Templates.ProxyModelModule.Templates.IsomorpicToInstances
     Modeliero.Codegens.Haskell.Templates.ReexportsModule
     Modeliero.Codegens.Haskell.Templates.RefinedModelModule
     Modeliero.Codegens.Haskell.Templates.RefinedModelModule.Templates.ArbitraryInstance
@@ -170,8 +175,6 @@ library codegens
     Modeliero.Codegens.Haskell.Templates.SumModelModule.Templates.FromJsonInstance
     Modeliero.Codegens.Haskell.Templates.SumModelModule.Templates.HashableInstance
     Modeliero.Codegens.Haskell.Templates.SumModelModule.Templates.ToJsonInstance
-    Modeliero.Codegens.Haskell.Templates.WrapperModelModule
-    Modeliero.Codegens.Haskell.Templates.WrapperModelModule.Templates.DataTypeDeclaration
 
   build-depends:
     base,

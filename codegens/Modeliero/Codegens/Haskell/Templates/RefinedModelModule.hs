@@ -39,7 +39,7 @@ compile params = do
               requestImport Imports.text <&> \qfr -> qfr <> "Text"
             Params.IntegerRefinement _ ->
               -- TODO: Add analysis on the bounds to determine whether it should be Integer or Int.
-              requestImport Imports.basePrelude <&> \qfr -> qfr <> "Int"
+              requestImport Imports.basePreludeBasePrelude <&> \qfr -> qfr <> "Int"
           Templates.DataTypeDeclaration.compile
             Templates.DataTypeDeclaration.Params
               { name = params.name & Slug.toUpperCamelCaseText & to,
@@ -50,7 +50,7 @@ compile params = do
                     { show = params.instances.show,
                       eq = params.instances.eq,
                       ord = params.instances.ord,
-                      generic = params.instances.generic,
+                      generic = False,
                       hashable = params.instances.hashable
                     }
               },

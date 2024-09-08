@@ -8,12 +8,14 @@ import Data.Text qualified as Text
 import Data.Text.IO qualified as Text.IO
 import Modeliero.Codegens.Haskell.Dsls.InModule qualified as InModule
 import Modeliero.Codegens.Haskell.Dsls.Package qualified as Package
+import Modeliero.Codegens.Haskell.FileTemplates.CabalProject qualified as FileTemplates.CabalProject
+import Modeliero.Codegens.Haskell.Imports qualified as Imports
 import Modeliero.Codegens.Haskell.Params qualified as Params
 import Modeliero.Codegens.Haskell.Templates.ProductModelModule qualified as Templates.ProductModelModule
+import Modeliero.Codegens.Haskell.Templates.ProxyModelModule qualified as Templates.ProxyModelModule
 import Modeliero.Codegens.Haskell.Templates.ReexportsModule qualified as Templates.ReexportsModule
 import Modeliero.Codegens.Haskell.Templates.RefinedModelModule qualified as Templates.RefinedModelModule
 import Modeliero.Codegens.Haskell.Templates.SumModelModule qualified as Templates.SumModelModule
-import Modeliero.Codegens.Haskell.Templates.WrapperModelModule qualified as Templates.WrapperModelModule
 
 type Params = Params.Model
 
@@ -24,6 +26,7 @@ compile :: Params -> Result
 compile params =
   Package.compilePackageFiles package
     & fmap (\file -> (file.path, file.content))
+    & ((:) (FileTemplates.CabalProject.filePath, FileTemplates.CabalProject.content))
   where
     package =
       Package.Package
@@ -58,9 +61,8 @@ compile params =
             ("Data.Scientific", "Scientific"),
             ("Data.Text", "Text"),
             ("GHC.Generics", "Generics"),
-            ("ModelieroBase.Classes.Anonymizable", "Anonymizable"),
-            ("ModelieroBase.Classes.Special", "Special"),
             ("Prelude", ""),
+            ("BasePrelude", ""),
             ("Test.QuickCheck.Arbitrary", "QuickCheck.Arbitrary"),
             ("Test.QuickCheck.Gen", "QuickCheck.Gen")
           ]
@@ -80,44 +82,47 @@ compile params =
               InModule.compileToModule
                 (typesNamespace <> [type_.name & Slug.toUpperCamelCaseText])
                 importAliases
-                case type_.definition of
-                  Params.ProductTypeDefinition fields ->
-                    Templates.ProductModelModule.compile
-                      Templates.ProductModelModule.Params
-                        { modelsNamespace = typesNamespace,
-                          instances = params.instances,
-                          name = type_.name,
-                          docs = type_.docs,
-                          fields
-                        }
-                  Params.SumTypeDefinition variants ->
-                    Templates.SumModelModule.compile
-                      Templates.SumModelModule.Params
-                        { modelsNamespace = typesNamespace,
-                          name = type_.name,
-                          docs = type_.docs,
-                          variants,
-                          instances = params.instances
-                        }
-                  Params.NewtypeTypeDefinition newtypeDefinition ->
-                    case newtypeDefinition.wrappedType of
-                      Right baseType ->
-                        Templates.WrapperModelModule.compile
-                          Templates.WrapperModelModule.Params
-                            { modelsNamespace = typesNamespace,
-                              name = type_.name,
-                              docs = type_.docs,
-                              baseType,
-                              instances = params.instances
-                            }
-                      Left refinement ->
-                        Templates.RefinedModelModule.compile
-                          Templates.RefinedModelModule.Params
-                            { name = type_.name,
-                              docs = type_.docs,
-                              refinement,
-                              instances = params.instances
-                            }
+                do
+                  _ <- InModule.requestImport Imports.basePreludeBasePrelude
+                  case type_.definition of
+                    Params.ProductTypeDefinition fields ->
+                      Templates.ProductModelModule.compile
+                        Templates.ProductModelModule.Params
+                          { modelsNamespace = typesNamespace,
+                            instances = params.instances,
+                            name = type_.name,
+                            docs = type_.docs,
+                            fields
+                          }
+                    Params.SumTypeDefinition variants ->
+                      Templates.SumModelModule.compile
+                        Templates.SumModelModule.Params
+                          { modelsNamespace = typesNamespace,
+                            name = type_.name,
+                            docs = type_.docs,
+                            variants,
+                            instances = params.instances
+                          }
+                    Params.NewtypeTypeDefinition newtypeDefinition ->
+                      case newtypeDefinition.wrappedType of
+                        Right baseType ->
+                          Templates.ProxyModelModule.compile
+                            Templates.ProxyModelModule.Params
+                              { modelsNamespace = typesNamespace,
+                                name = type_.name,
+                                docs = type_.docs,
+                                baseType,
+                                instances = params.instances,
+                                forceAnonymization = newtypeDefinition.anonymizable
+                              }
+                        Left refinement ->
+                          Templates.RefinedModelModule.compile
+                            Templates.RefinedModelModule.Params
+                              { name = type_.name,
+                                docs = type_.docs,
+                                refinement,
+                                instances = params.instances
+                              }
           )
     reexportsModule =
       InModule.compileToModule rootNamespace importAliases

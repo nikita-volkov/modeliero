@@ -51,7 +51,7 @@ compileInstances instances =
     { show = instances.show,
       eq = instances.eq,
       ord = instances.ord,
-      generic = instances.generic,
+      generic = False,
       aeson = instances.aeson & isJust,
       arbitrary = instances.arbitrary
     }
@@ -92,5 +92,5 @@ compileValueType modelsNamespace = \case
       pure (qfr <> typeName)
     StandardPlainType standardType -> case standardType of
       BoolStandardType -> do
-        qfr <- InModule.requestImport Imports.basePrelude
+        qfr <- InModule.requestImport Imports.basePreludeBasePrelude
         pure (qfr <> "Bool")

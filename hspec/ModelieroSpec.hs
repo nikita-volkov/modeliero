@@ -54,7 +54,6 @@ spec = do
                               eq = True,
                               ord = True,
                               hashable = True,
-                              generic = True,
                               aeson =
                                 Just
                                   HaskellCodegen.Aeson
@@ -79,7 +78,7 @@ runShellCmd :: Text -> IO ()
 runShellCmd cmd = do
   putStrLn [i|> ${cmd}|]
   Turtle.inshellWithErr cmd mempty
-    & fmap (either (prefixLine "> ! ") (prefixLine "> . "))
+    & fmap (either (prefixLine "E > ") (prefixLine "O > "))
     & Turtle.stdout
   where
     prefixLine prefix =

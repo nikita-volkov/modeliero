@@ -25,8 +25,8 @@ compilingProducesExpectedContent compile params expectedResult = do
               ("Data.Aeson.Types", "Aeson.Types"),
               ("Data.Scientific", "Scientific"),
               ("GHC.Generics", "Generics"),
-              ("ModelieroBase.Classes.Special", "Special"),
-              ("Prelude", "")
+              ("Prelude", ""),
+              ("BasePrelude", "")
             ]
             code
     shouldBe codeText expectedResult

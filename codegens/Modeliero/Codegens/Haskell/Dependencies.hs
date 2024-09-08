@@ -11,6 +11,14 @@ base =
       maxVersion = $$(l "5")
     }
 
+basePrelude :: Dependency
+basePrelude =
+  Dependency
+    { name = "base-prelude",
+      minVersion = $$(l "1.6.1.1"),
+      maxVersion = $$(l "1.7")
+    }
+
 quickCheck :: Dependency
 quickCheck =
   Dependency
@@ -39,8 +47,8 @@ modelieroBase :: Dependency
 modelieroBase =
   Dependency
     { name = "modeliero-base",
-      minVersion = $$(l "1"),
-      maxVersion = $$(l "1.1")
+      minVersion = $$(l "0"),
+      maxVersion = $$(l "0.1")
     }
 
 scientific :: Dependency
@@ -65,4 +73,12 @@ iproute =
     { name = "iproute",
       minVersion = $$(l "1.7"),
       maxVersion = $$(l "1.8")
+    }
+
+isomorphismClass :: Dependency
+isomorphismClass =
+  Dependency
+    { name = "isomorphism-class",
+      minVersion = $$(l "0.1.0.12"),
+      maxVersion = $$(l "0.2")
     }

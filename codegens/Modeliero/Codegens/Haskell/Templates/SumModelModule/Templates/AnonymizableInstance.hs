@@ -29,7 +29,7 @@ compile :: Params -> TextBlock
 compile params =
   [j|
     instance ${params.anonymizableQfr}Anonymizable ${params.name} where
-      anonymize = \case
+      anonymize forced = \case
         ${matches}
   |]
   where
@@ -51,17 +51,17 @@ compile params =
                             ( variant.fields
                                 & foldMap
                                   ( \field ->
-                                      if field.anonymizable
-                                        then
-                                          mconcat
-                                            [ "\n(",
-                                              params.anonymizableQfr,
-                                              "anonymize ",
-                                              field.name,
-                                              ")"
-                                            ]
-                                        else
-                                          "\n" <> field.name
+                                      mconcat
+                                        [ "\n(",
+                                          params.anonymizableQfr,
+                                          "anonymize ",
+                                          if field.anonymizable
+                                            then "True"
+                                            else "forced",
+                                          " ",
+                                          field.name,
+                                          ")"
+                                        ]
                                   )
                             )
                         ]

@@ -139,7 +139,6 @@ data Instances = Instances
     eq :: Bool,
     ord :: Bool,
     hashable :: Bool,
-    generic :: Bool,
     aeson :: Maybe Aeson,
     arbitrary :: Bool,
     anonymizable :: Bool

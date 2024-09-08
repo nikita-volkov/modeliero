@@ -50,24 +50,16 @@ aesonTypes :: Import
 aesonTypes = fromAeson "Data.Aeson.Types"
 
 special :: Import
-special =
-  Import
-    { dependency = Just Dependencies.modelieroBase,
-      name = "ModelieroBase.Classes.Special"
-    }
+special = modelieroBase
 
 anonymizable :: Import
-anonymizable =
-  Import
-    { dependency = Just Dependencies.modelieroBase,
-      name = "ModelieroBase.Classes.Anonymizable"
-    }
+anonymizable = modelieroBase
 
-modelieroBaseTypes :: Import
-modelieroBaseTypes =
+modelieroBase :: Import
+modelieroBase =
   Import
     { dependency = Just Dependencies.modelieroBase,
-      name = "ModelieroBase.Types"
+      name = "ModelieroBase"
     }
 
 fromBase :: Text -> Import
@@ -102,4 +94,25 @@ iproute =
   Import
     { dependency = Just Dependencies.iproute,
       name = "Data.IP"
+    }
+
+isomorphismClass :: Import
+isomorphismClass =
+  Import
+    { dependency = Just Dependencies.isomorphismClass,
+      name = "IsomorphismClass"
+    }
+
+dataCoerce :: Import
+dataCoerce =
+  Import
+    { dependency = Just Dependencies.base,
+      name = "Data.Coerce"
+    }
+
+basePreludeBasePrelude :: Import
+basePreludeBasePrelude =
+  Import
+    { dependency = Just Dependencies.basePrelude,
+      name = "BasePrelude"
     }

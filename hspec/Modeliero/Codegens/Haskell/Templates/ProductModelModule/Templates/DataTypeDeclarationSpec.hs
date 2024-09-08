@@ -38,7 +38,7 @@ spec = do
         $ [i|
             module Z.V where
             
-            import Prelude
+            import BasePrelude
             import GHC.Generics qualified as Generics
 
             -- |

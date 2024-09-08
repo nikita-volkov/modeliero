@@ -203,7 +203,6 @@ spec = do
                       eq = True,
                       ord = True,
                       hashable = True,
-                      generic = True,
                       aeson =
                         Just
                           Subject.Aeson
@@ -225,7 +224,7 @@ spec = do
             shouldBe resultLength (Map.size fileMap)
 
           it "Is as expected" . annotate (show fileNames) $ do
-            shouldBe resultLength 9
+            shouldBe resultLength 10
 
       describe "Cabal file" do
         let lookupResult = Map.lookup "modeliero-artifacts-iso8601.cabal" fileMap
@@ -244,10 +243,65 @@ spec = do
                     synopsis: Generated model package
                     version: 0.1.0
                     
-                    library
-                      hs-source-dirs: library
-                      default-extensions: ApplicativeDo, BangPatterns, BinaryLiterals, BlockArguments, ConstraintKinds, DataKinds, DefaultSignatures, DeriveDataTypeable, DeriveFoldable, DeriveFunctor, DeriveGeneric, DeriveTraversable, DerivingVia, DuplicateRecordFields, EmptyDataDecls, FlexibleContexts, FlexibleInstances, FunctionalDependencies, GADTs, GeneralizedNewtypeDeriving, HexFloatLiterals, LambdaCase, LiberalTypeSynonyms, MultiParamTypeClasses, MultiWayIf, NoFieldSelectors, NoImplicitPrelude, NoMonomorphismRestriction, NumericUnderscores, OverloadedRecordDot, OverloadedStrings, PatternGuards, PatternSynonyms, ParallelListComp, RankNTypes, RecordWildCards, ScopedTypeVariables, StandaloneDeriving, TupleSections, TypeApplications, TypeFamilies, TypeOperators, ViewPatterns
+                    common base
                       default-language: Haskell2010
+                      default-extensions:
+                        ApplicativeDo
+                        BangPatterns
+                        BinaryLiterals
+                        BlockArguments
+                        ConstraintKinds
+                        DataKinds
+                        DefaultSignatures
+                        DeriveAnyClass
+                        DeriveDataTypeable
+                        DeriveFoldable
+                        DeriveFunctor
+                        DeriveGeneric
+                        DeriveTraversable
+                        DerivingVia
+                        DuplicateRecordFields
+                        EmptyCase
+                        EmptyDataDecls
+                        FlexibleContexts
+                        FlexibleInstances
+                        FunctionalDependencies
+                        GADTs
+                        GeneralizedNewtypeDeriving
+                        HexFloatLiterals
+                        ImportQualifiedPost
+                        LambdaCase
+                        LiberalTypeSynonyms
+                        MultiParamTypeClasses
+                        MultiWayIf
+                        NamedFieldPuns
+                        NoFieldSelectors
+                        NoImplicitPrelude
+                        NoMonomorphismRestriction
+                        NumericUnderscores
+                        OverloadedLabels
+                        OverloadedRecordDot
+                        OverloadedStrings
+                        ParallelListComp
+                        PatternGuards
+                        PatternSynonyms
+                        QuasiQuotes
+                        RankNTypes
+                        RecordWildCards
+                        ScopedTypeVariables
+                        StandaloneDeriving
+                        StrictData
+                        TemplateHaskell
+                        TupleSections
+                        TypeApplications
+                        TypeFamilies
+                        TypeOperators
+                        UndecidableInstances
+                        ViewPatterns
+                    
+                    library
+                      import: base
+                      hs-source-dirs: library
                       exposed-modules:
                         ModelieroArtifacts.Iso8601
                       other-modules:
@@ -261,9 +315,9 @@ spec = do
                       build-depends:
                         QuickCheck >=2.15 && <3,
                         aeson >=2 && <3,
-                        base >=4.14 && <5,
+                        base-prelude >=1.6.1.1 && <1.7,
                         hashable >=1.4 && <2,
-                        modeliero-base >=1 && <1.1,
+                        modeliero-base >=0 && <0.1,
                         scientific >=0.3 && <0.4,
                         text >=2 && <3
                   |]
@@ -285,11 +339,10 @@ spec = do
                         )
                       where
                       
-                      import Prelude
+                      import BasePrelude
                       import Data.Aeson qualified as Aeson
                       import Data.Aeson.KeyMap qualified as Aeson.KeyMap
                       import Data.Aeson.Types qualified as Aeson.Types
-                      import GHC.Generics qualified as Generics
                       import ModelieroArtifacts.Iso8601.Types.Day qualified as Local
                       import ModelieroArtifacts.Iso8601.Types.Month qualified as Local
                       import ModelieroArtifacts.Iso8601.Types.Year qualified as Local
@@ -306,7 +359,7 @@ spec = do
                           -- | Day.
                           day :: Local.Day
                         }
-                        deriving (Show, Eq, Ord, Generics.Generic)
+                        deriving (Show, Eq, Ord)
 
                       instance Aeson.ToJSON Ymd where
                         toJSON value =
@@ -359,23 +412,22 @@ spec = do
                       )
                     where
                     
-                    import Prelude
+                    import BasePrelude
                     import Data.Aeson qualified as Aeson
                     import Data.Aeson.Types qualified as Aeson.Types
                     import Data.Hashable qualified as Hashable
                     import Data.Scientific qualified as Scientific
                     import Data.Text qualified as Text
-                    import GHC.Generics qualified as Generics
-                    import ModelieroBase.Classes.Special qualified as Special
+                    import ModelieroBase qualified
                     import Test.QuickCheck.Arbitrary qualified as QuickCheck.Arbitrary
                     import Test.QuickCheck.Gen qualified as QuickCheck.Gen
                     
                     newtype Year = Year
                       { base :: Int
                       }
-                      deriving (Show, Eq, Ord, Generics.Generic, Hashable.Hashable)
+                      deriving (Show, Eq, Ord, Hashable.Hashable)
 
-                    instance Special.Special Year where
+                    instance ModelieroBase.Special Year where
                       type GeneralizationOf Year = Int
                       type SpecializationError Year = Text.Text
                       specialize value = do
@@ -405,7 +457,7 @@ spec = do
                               Just int -> pure int
                               Nothing -> fail ("Number " <> show scientific <> " is out of Int bounds")
                             else fail ("Number " <> show scientific <> " is not an integer")
-                        case Special.specialize int of
+                        case ModelieroBase.specialize int of
                           Right result -> pure result
                           Left text -> fail (Text.unpack text)
                   |]
@@ -427,16 +479,15 @@ spec = do
                       )
                     where
                  
-                    import Prelude
+                    import BasePrelude
                     import Data.Aeson qualified as Aeson
                     import Data.Aeson.KeyMap qualified as Aeson.KeyMap
                     import Data.Aeson.Types qualified as Aeson.Types
                     import Data.Hashable qualified as Hashable
-                    import GHC.Generics qualified as Generics
                     import ModelieroArtifacts.Iso8601.Types.Md qualified as Local
                     import ModelieroArtifacts.Iso8601.Types.Ym qualified as Local
                     import ModelieroArtifacts.Iso8601.Types.Ymd qualified as Local
-                    import ModelieroBase.Classes.Anonymizable qualified as Anonymizable
+                    import ModelieroBase qualified
                     import Test.QuickCheck.Arbitrary qualified as QuickCheck.Arbitrary
                     import Test.QuickCheck.Gen qualified as QuickCheck.Gen
 
@@ -448,7 +499,7 @@ spec = do
                       = YmdCalendarDate Local.Ymd
                       | YmCalendarDate Local.Ym
                       | MdCalendarDate Local.Md
-                      deriving (Show, Eq, Ord, Generics.Generic)
+                      deriving (Show, Eq, Ord)
                     
                     instance Hashable.Hashable CalendarDate where
                       hashWithSalt salt = \case
@@ -471,39 +522,54 @@ spec = do
                           ymd
                             & Aeson.toJSON
                             & Aeson.KeyMap.singleton "yearMonthDay"
+                            & Aeson.toJSON
                         YmCalendarDate ym ->
                           ym
                             & Aeson.toJSON
                             & Aeson.KeyMap.singleton "ym"
+                            & Aeson.toJSON
                         MdCalendarDate md ->
                           md
                             & Aeson.toJSON
                             & Aeson.KeyMap.singleton "md"
+                            & Aeson.toJSON
                     
                     instance Aeson.FromJSON CalendarDate where
                       parseJSON = \case
                         Aeson.Object object ->
-                          [ variant "yearMonthDay" YmdCalendarDate,
-                            variant "ym" YmCalendarDate,
-                            variant "md" MdCalendarDate
+                          [ object
+                              & Aeson.KeyMap.lookup "yearMonthDay"
+                              & fmap 
+                                ( \json -> 
+                                  YmdCalendarDate
+                                    <$> Aeson.parseJSON json
+                                    Aeson.Types.<?> Aeson.Types.Key "yearMonthDay"
+                                ),
+                            object
+                              & Aeson.KeyMap.lookup "ym"
+                              & fmap 
+                                ( \json -> 
+                                  YmCalendarDate
+                                    <$> Aeson.parseJSON json
+                                    Aeson.Types.<?> Aeson.Types.Key "ym"
+                                ),
+                            object
+                              & Aeson.KeyMap.lookup "md"
+                              & fmap 
+                                ( \json -> 
+                                  MdCalendarDate
+                                    <$> Aeson.parseJSON json
+                                    Aeson.Types.<?> Aeson.Types.Key "md"
+                                )
                           ]
                             & asum
-                            & fmap pure
-                            & fromMaybe (Aeson.parseFail noTagFoundMessage)
+                            & fromMaybe (Aeson.Types.parseFail noTagFoundMessage)
                           where
-                            variant name constructor =
-                              object
-                                & Aeson.KeyMap.lookup (fromString name)
-                                & fmap 
-                                  ( \json -> 
-                                    constructor <$>
-                                      Aeson.parseJSON json Aeson.<?> fromString name
-                                  )
                             noTagFoundMessage =
                               "No expected key found. \
                               \It should be one of the following: \
                               \yearMonthDay, ym, md"
-                        json -> Aeson.Types.typeMismatch "Object|String" json
+                        json -> Aeson.Types.typeMismatch "Object" json
 
                     instance QuickCheck.Arbitrary.Arbitrary CalendarDate where
                       arbitrary =
@@ -526,17 +592,17 @@ spec = do
                           MdCalendarDate
                             <$> QuickCheck.Arbitrary.shrink md
                     
-                    instance Anonymizable.Anonymizable CalendarDate where
-                      anonymize = \case
+                    instance ModelieroBase.Anonymizable CalendarDate where
+                      anonymize forced = \case
                         YmdCalendarDate ymd ->
                           YmdCalendarDate
-                            (Anonymizable.anonymize ymd)
+                            (ModelieroBase.anonymize True ymd)
                         YmCalendarDate ym ->
                           YmCalendarDate
-                            ym
+                            (ModelieroBase.anonymize forced ym)
                         MdCalendarDate md ->
                           MdCalendarDate
-                            (Anonymizable.anonymize md)
+                            (ModelieroBase.anonymize True md)
                   |]
 
       describe "Reexports" do
