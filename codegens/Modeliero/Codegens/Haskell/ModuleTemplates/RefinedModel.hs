@@ -24,6 +24,7 @@ import Modeliero.Codegens.Haskell.SnippetTemplates qualified as SnippetTemplates
 data Params = Params
   { name :: Slug,
     docs :: Text,
+    anonymizable :: Bool,
     refinement :: Params.Refinement,
     instances :: Params.Instances
   }
@@ -41,6 +42,7 @@ compile params = do
           docs = params.docs,
           minLength = restrictions.minLength & Just,
           maxLength = restrictions.maxLength & Just,
+          anonymizable = params.anonymizable,
           instances = params.instances
         }
         & TextModelModule.compile

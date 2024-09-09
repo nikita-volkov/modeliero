@@ -18,7 +18,8 @@ data Params = Params
     docs :: Text,
     minLength :: Maybe Int,
     maxLength :: Maybe Int,
-    instances :: Params.Instances
+    instances :: Params.Instances,
+    anonymizable :: Bool
   }
 
 type Result = InModule TextBlock
@@ -28,7 +29,7 @@ compile params =
   [ compileDataTypeDeclaration,
     compileLiteralInstance,
     compileArbitraryInstance,
-    compileRefinedTextForcedAnonymizableInstance
+    compileRefinedTextAnonymizableInstance
   ]
     & traverse ($ params)
     & liftDeclarations
@@ -105,14 +106,15 @@ compileArbitraryInstance params = do
     & toBroadBuilder
     & pure
 
-compileRefinedTextForcedAnonymizableInstance :: Params -> InModule TextBlock
-compileRefinedTextForcedAnonymizableInstance params = do
+compileRefinedTextAnonymizableInstance :: Params -> InModule TextBlock
+compileRefinedTextAnonymizableInstance params = do
   textQfr <- requestImport Imports.textRoot
   modelieroBaseQfr <- requestImport Imports.modelieroBaseRoot
-  RefinedTextForcedAnonymizableInstance
+  RefinedTextAnonymizableInstance
     { name = params.name & Slug.toUpperCamelCaseText & to,
       minLength = params.minLength & fromMaybe 0,
       maxLength = params.maxLength & fromMaybe 10000,
+      anonymizable = params.anonymizable,
       ..
     }
     & toBroadBuilder

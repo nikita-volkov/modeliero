@@ -180,8 +180,8 @@ library codegens
     Modeliero.Codegens.Haskell.SnippetTemplates.DataType
     Modeliero.Codegens.Haskell.SnippetTemplates.DerivingVia
     Modeliero.Codegens.Haskell.SnippetTemplates.ParensList
+    Modeliero.Codegens.Haskell.SnippetTemplates.RefinedTextAnonymizableInstance
     Modeliero.Codegens.Haskell.SnippetTemplates.RefinedTextArbitraryInstance
-    Modeliero.Codegens.Haskell.SnippetTemplates.RefinedTextForcedAnonymizableInstance
     Modeliero.Codegens.Haskell.SnippetTemplates.RefinedTextLiteralInstance
     Modeliero.Codegens.Haskell.Snippets
 

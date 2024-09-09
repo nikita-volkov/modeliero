@@ -120,6 +120,7 @@ compile params =
                             Templates.RefinedModelModule.Params
                               { name = type_.name,
                                 docs = type_.docs,
+                                anonymizable = newtypeDefinition.anonymizable,
                                 refinement,
                                 instances = params.instances
                               }
