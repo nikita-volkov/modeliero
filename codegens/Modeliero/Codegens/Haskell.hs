@@ -85,14 +85,15 @@ compile params =
                 do
                   _ <- InModule.requestImport Imports.basePreludeRoot
                   case type_.definition of
-                    Params.ProductTypeDefinition fields ->
+                    Params.ProductTypeDefinition anonymizable fields ->
                       Templates.ProductModelModule.compile
                         Templates.ProductModelModule.Params
                           { modelsNamespace = typesNamespace,
                             instances = params.instances,
                             name = type_.name,
                             docs = type_.docs,
-                            fields
+                            fields,
+                            anonymizable
                           }
                     Params.SumTypeDefinition variants ->
                       Templates.SumModelModule.compile

@@ -21,7 +21,7 @@ data TypeDeclaration = TypeDeclaration
   deriving (Eq, Ord, Show, Generic, ToJSON, FromJSON)
 
 data TypeDefinition
-  = ProductTypeDefinition [Field]
+  = ProductTypeDefinition Bool [Field]
   | SumTypeDefinition [Variant]
   | NewtypeTypeDefinition NewtypeDefinition
   deriving (Eq, Ord, Show, Generic, ToJSON, FromJSON)

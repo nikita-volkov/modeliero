@@ -23,7 +23,8 @@ data Params = Params
     instances :: Instances,
     name :: Slug,
     docs :: Text,
-    fields :: [Field]
+    fields :: [Field],
+    anonymizable :: Bool
   }
 
 type Result = InModule.InModule TextBlock
@@ -37,7 +38,8 @@ compile params = do
       { name = Slug.toUpperCamelCaseText params.name,
         haddock = params.docs,
         fields = compiledFields,
-        instances = compileInstances params.instances
+        instances = compileInstances params.instances,
+        anonymizable = params.anonymizable
       }
 
 -- * Helpers
@@ -53,7 +55,8 @@ compileInstances instances =
       ord = instances.ord,
       generic = False,
       aeson = instances.aeson & isJust,
-      arbitrary = instances.arbitrary
+      arbitrary = instances.arbitrary,
+      anonymizable = instances.anonymizable
     }
 
 compileField :: [Text] -> Casing -> Field -> InModule.InModule Template.Field

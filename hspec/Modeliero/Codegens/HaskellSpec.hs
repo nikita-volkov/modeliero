@@ -22,6 +22,7 @@ spec = do
                         docs = "ISO-8601 Year Month Day for representing a date.",
                         definition =
                           Subject.ProductTypeDefinition
+                            False
                             [ Subject.Field
                                 { name = "separated",
                                   jsonName = "contains_dash",
@@ -68,6 +69,7 @@ spec = do
                           |],
                         definition =
                           Subject.ProductTypeDefinition
+                            False
                             [ Subject.Field
                                 { name = "year",
                                   jsonName = "year",
@@ -97,6 +99,7 @@ spec = do
                           |],
                         definition =
                           Subject.ProductTypeDefinition
+                            False
                             [ Subject.Field
                                 { name = "month",
                                   jsonName = "month",
@@ -346,6 +349,7 @@ spec = do
                       import ModelieroArtifacts.Iso8601.Types.Day qualified as Local
                       import ModelieroArtifacts.Iso8601.Types.Month qualified as Local
                       import ModelieroArtifacts.Iso8601.Types.Year qualified as Local
+                      import ModelieroBase qualified
                       import Test.QuickCheck.Arbitrary qualified as QuickCheck.Arbitrary
 
                       -- | ISO-8601 Year Month Day for representing a date.
@@ -393,6 +397,15 @@ spec = do
                           month <- QuickCheck.Arbitrary.shrink value.month
                           day <- QuickCheck.Arbitrary.shrink value.day
                           pure Ymd{..}
+                      
+                      instance ModelieroBase.Anonymizable Ymd where
+                        anonymize forced product =
+                          Ymd
+                            { separated = ModelieroBase.anonymize forced product.separated,
+                              year = ModelieroBase.anonymize forced product.year,
+                              month = ModelieroBase.anonymize forced product.month,
+                              day = ModelieroBase.anonymize forced product.day
+                            }
                     |]
 
         describe "Year" do

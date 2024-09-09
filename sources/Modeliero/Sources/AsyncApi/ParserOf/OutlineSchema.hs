@@ -75,7 +75,7 @@ parse schemaContext input = do
                             }
                 )
               & label "properties"
-              & fmap ProductTypeDefinition
+              & fmap (ProductTypeDefinition schemaContext.anonymizable)
               & fmap Just
             where
               packPlainType fieldName =

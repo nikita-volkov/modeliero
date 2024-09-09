@@ -36,8 +36,10 @@ spec = do
                       ord = True,
                       generic = True,
                       aeson = True,
-                      arbitrary = True
-                    }
+                      arbitrary = True,
+                      anonymizable = True
+                    },
+                anonymizable = False
               }
 
       compilingProducesExpectedContent Subject.compile params
@@ -52,6 +54,7 @@ spec = do
             import Data.Aeson.KeyMap qualified as Aeson.KeyMap
             import Data.Aeson.Types qualified as Aeson.Types
             import GHC.Generics qualified as Generics
+            import ModelieroBase qualified
             import Test.QuickCheck.Arbitrary qualified as QuickCheck.Arbitrary
             
             -- | Docs on artist
@@ -86,4 +89,11 @@ spec = do
                 name <- QuickCheck.Arbitrary.shrink value.name
                 genreName <- QuickCheck.Arbitrary.shrink value.genreName
                 pure Artist{..}
+            
+            instance ModelieroBase.Anonymizable Artist where
+              anonymize forced product =
+                Artist
+                  { name = ModelieroBase.anonymize forced product.name,
+                    genreName = ModelieroBase.anonymize forced product.genreName
+                  }
           |]

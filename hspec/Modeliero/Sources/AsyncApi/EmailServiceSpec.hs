@@ -13,7 +13,10 @@ spec = do
         Just typeDeclaration -> do
           describe "Definition" do
             case typeDeclaration.definition of
-              ProductTypeDefinition fields -> do
+              ProductTypeDefinition anonymizable fields -> do
+                describe "anonymizable" do
+                  it "Is False" do
+                    shouldBe anonymizable False
                 describe "first-name" do
                   case find ((==) "first-name" . (.name)) fields of
                     Just field ->

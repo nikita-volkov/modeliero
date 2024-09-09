@@ -3,16 +3,19 @@ module Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.Templates.Product
 import Coalmine.MultilineTextBuilder qualified as TextBlock
 import Coalmine.Prelude
 import Modeliero.Codegens.Haskell.Dsls.InModule
+import Modeliero.Codegens.Haskell.Imports qualified as Imports
 import Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.Templates.ArbitraryInstance qualified as Templates.ProductArbitraryInstance
 import Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.Templates.DataTypeDeclaration qualified as Templates.ProductDataTypeDeclaration
 import Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.Templates.FromJsonInstance qualified as Templates.FromJsonInstance
 import Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.Templates.ToJsonInstance qualified as Templates.ToJsonInstance
+import Modeliero.Codegens.Haskell.SnippetTemplates qualified as SnippetTemplates
 
 data Params = Params
   { name :: Text,
     haddock :: Text,
     fields :: [Field],
-    instances :: Instances
+    instances :: Instances,
+    anonymizable :: Bool
   }
 
 type Result = InModule TextBlock
@@ -31,7 +34,8 @@ data Instances = Instances
     ord :: Bool,
     generic :: Bool,
     aeson :: Bool,
-    arbitrary :: Bool
+    arbitrary :: Bool,
+    anonymizable :: Bool
   }
 
 compile :: Params -> Result
@@ -105,9 +109,22 @@ compile params = do
                   { name = params.name,
                     fields =
                       params.fields
-                        & fmap
-                          (\field -> field.name)
+                        & fmap (\field -> field.name)
                   }
+          else Nothing,
+        if params.instances.anonymizable
+          then Just do
+            modelieroBaseQfr <- requestImport Imports.modelieroBaseRoot
+            SnippetTemplates.ProductAnonymizableInstance
+              { name = params.name & to,
+                fieldNames =
+                  params.fields
+                    & fmap (\field -> field.name & to),
+                anonymizable = params.anonymizable,
+                modelieroBaseQfr
+              }
+              & toBroadBuilder
+              & pure
           else Nothing
       ]
   pure (TextBlock.intercalate "\n\n" decls)
