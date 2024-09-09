@@ -10,12 +10,12 @@ import Modeliero.Codegens.Haskell.Dsls.InModule qualified as InModule
 import Modeliero.Codegens.Haskell.Dsls.Package qualified as Package
 import Modeliero.Codegens.Haskell.FileTemplates.CabalProject qualified as FileTemplates.CabalProject
 import Modeliero.Codegens.Haskell.Imports qualified as Imports
+import Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel qualified as Templates.ProductModelModule
+import Modeliero.Codegens.Haskell.ModuleTemplates.ProxyModel qualified as Templates.ProxyModelModule
+import Modeliero.Codegens.Haskell.ModuleTemplates.Reexports qualified as Templates.ReexportsModule
+import Modeliero.Codegens.Haskell.ModuleTemplates.RefinedModel qualified as Templates.RefinedModelModule
+import Modeliero.Codegens.Haskell.ModuleTemplates.SumModel qualified as Templates.SumModelModule
 import Modeliero.Codegens.Haskell.Params qualified as Params
-import Modeliero.Codegens.Haskell.Templates.ProductModelModule qualified as Templates.ProductModelModule
-import Modeliero.Codegens.Haskell.Templates.ProxyModelModule qualified as Templates.ProxyModelModule
-import Modeliero.Codegens.Haskell.Templates.ReexportsModule qualified as Templates.ReexportsModule
-import Modeliero.Codegens.Haskell.Templates.RefinedModelModule qualified as Templates.RefinedModelModule
-import Modeliero.Codegens.Haskell.Templates.SumModelModule qualified as Templates.SumModelModule
 
 type Params = Params.Model
 

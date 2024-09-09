@@ -150,6 +150,29 @@ library codegens
     Modeliero.Codegens.Haskell.Dsls.Package
     Modeliero.Codegens.Haskell.FileTemplates.CabalProject
     Modeliero.Codegens.Haskell.Imports
+    Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel
+    Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.Templates.ArbitraryInstance
+    Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.Templates.DataTypeDeclaration
+    Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.Templates.FromJsonInstance
+    Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.Templates.ProductModelModule
+    Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.Templates.ToJsonInstance
+    Modeliero.Codegens.Haskell.ModuleTemplates.ProxyModel
+    Modeliero.Codegens.Haskell.ModuleTemplates.ProxyModel.Templates.DataTypeDeclaration
+    Modeliero.Codegens.Haskell.ModuleTemplates.ProxyModel.Templates.IsomorpicToInstances
+    Modeliero.Codegens.Haskell.ModuleTemplates.Reexports
+    Modeliero.Codegens.Haskell.ModuleTemplates.RefinedModel
+    Modeliero.Codegens.Haskell.ModuleTemplates.RefinedModel.Templates.ArbitraryInstance
+    Modeliero.Codegens.Haskell.ModuleTemplates.RefinedModel.Templates.DataTypeDeclaration
+    Modeliero.Codegens.Haskell.ModuleTemplates.RefinedModel.Templates.FromJsonInstance
+    Modeliero.Codegens.Haskell.ModuleTemplates.RefinedModel.Templates.SpecialInstance
+    Modeliero.Codegens.Haskell.ModuleTemplates.RefinedModel.Templates.ToJsonInstance
+    Modeliero.Codegens.Haskell.ModuleTemplates.SumModel
+    Modeliero.Codegens.Haskell.ModuleTemplates.SumModel.Templates.AnonymizableInstance
+    Modeliero.Codegens.Haskell.ModuleTemplates.SumModel.Templates.ArbitraryInstance
+    Modeliero.Codegens.Haskell.ModuleTemplates.SumModel.Templates.DataTypeDeclaration
+    Modeliero.Codegens.Haskell.ModuleTemplates.SumModel.Templates.FromJsonInstance
+    Modeliero.Codegens.Haskell.ModuleTemplates.SumModel.Templates.HashableInstance
+    Modeliero.Codegens.Haskell.ModuleTemplates.SumModel.Templates.ToJsonInstance
     Modeliero.Codegens.Haskell.ModuleTemplates.TextModel
     Modeliero.Codegens.Haskell.Params
     Modeliero.Codegens.Haskell.Preludes.SnippetTemplate
@@ -160,29 +183,6 @@ library codegens
     Modeliero.Codegens.Haskell.SnippetTemplates.RefinedTextArbitraryInstance
     Modeliero.Codegens.Haskell.SnippetTemplates.RefinedTextLiteralInstance
     Modeliero.Codegens.Haskell.Snippets
-    Modeliero.Codegens.Haskell.Templates.ProductModelModule
-    Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.ArbitraryInstance
-    Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.DataTypeDeclaration
-    Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.FromJsonInstance
-    Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.ProductModelModule
-    Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.ToJsonInstance
-    Modeliero.Codegens.Haskell.Templates.ProxyModelModule
-    Modeliero.Codegens.Haskell.Templates.ProxyModelModule.Templates.DataTypeDeclaration
-    Modeliero.Codegens.Haskell.Templates.ProxyModelModule.Templates.IsomorpicToInstances
-    Modeliero.Codegens.Haskell.Templates.ReexportsModule
-    Modeliero.Codegens.Haskell.Templates.RefinedModelModule
-    Modeliero.Codegens.Haskell.Templates.RefinedModelModule.Templates.ArbitraryInstance
-    Modeliero.Codegens.Haskell.Templates.RefinedModelModule.Templates.DataTypeDeclaration
-    Modeliero.Codegens.Haskell.Templates.RefinedModelModule.Templates.FromJsonInstance
-    Modeliero.Codegens.Haskell.Templates.RefinedModelModule.Templates.SpecialInstance
-    Modeliero.Codegens.Haskell.Templates.RefinedModelModule.Templates.ToJsonInstance
-    Modeliero.Codegens.Haskell.Templates.SumModelModule
-    Modeliero.Codegens.Haskell.Templates.SumModelModule.Templates.AnonymizableInstance
-    Modeliero.Codegens.Haskell.Templates.SumModelModule.Templates.ArbitraryInstance
-    Modeliero.Codegens.Haskell.Templates.SumModelModule.Templates.DataTypeDeclaration
-    Modeliero.Codegens.Haskell.Templates.SumModelModule.Templates.FromJsonInstance
-    Modeliero.Codegens.Haskell.Templates.SumModelModule.Templates.HashableInstance
-    Modeliero.Codegens.Haskell.Templates.SumModelModule.Templates.ToJsonInstance
 
   build-depends:
     base,
@@ -200,14 +200,14 @@ test-suite hspec
   other-modules:
     Modeliero.AsyncApiSpec
     Modeliero.Codegens.Haskell.ExtrasFor.Hspec
-    Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.ArbitraryInstanceSpec
-    Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.DataTypeDeclarationSpec
-    Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.FromJsonInstanceSpec
-    Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.ProductModelModuleSpec
-    Modeliero.Codegens.Haskell.Templates.ProductModelModule.Templates.ToJsonInstanceSpec
-    Modeliero.Codegens.Haskell.Templates.ReexportsModuleSpec
-    Modeliero.Codegens.Haskell.Templates.RefinedModelModule.Templates.ArbitraryInstanceSpec
-    Modeliero.Codegens.Haskell.Templates.RefinedModelModule.Templates.SpecialInstanceSpec
+    Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.Templates.ArbitraryInstanceSpec
+    Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.Templates.DataTypeDeclarationSpec
+    Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.Templates.FromJsonInstanceSpec
+    Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.Templates.ProductModelModuleSpec
+    Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.Templates.ToJsonInstanceSpec
+    Modeliero.Codegens.Haskell.ModuleTemplates.ReexportsSpec
+    Modeliero.Codegens.Haskell.ModuleTemplates.RefinedModel.Templates.ArbitraryInstanceSpec
+    Modeliero.Codegens.Haskell.ModuleTemplates.RefinedModel.Templates.SpecialInstanceSpec
     Modeliero.Codegens.HaskellSpec
     Modeliero.Preludes.Spec
     Modeliero.Sources.AsyncApi.EmailServiceSpec

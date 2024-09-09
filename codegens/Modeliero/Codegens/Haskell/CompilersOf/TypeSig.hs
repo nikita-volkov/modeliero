@@ -7,8 +7,8 @@ import Coalmine.Prelude
 import Coalmine.Slug qualified as Slug
 import Modeliero.Codegens.Haskell.Dsls.InModule
 import Modeliero.Codegens.Haskell.Imports qualified as Imports
+import Modeliero.Codegens.Haskell.ModuleTemplates.ProxyModel.Templates.DataTypeDeclaration qualified as Templates.DataTypeDeclaration
 import Modeliero.Codegens.Haskell.Params qualified as Params
-import Modeliero.Codegens.Haskell.Templates.ProxyModelModule.Templates.DataTypeDeclaration qualified as Templates.DataTypeDeclaration
 
 fromValueType :: [Text] -> Params.ValueType -> InModule Text
 fromValueType modelsNamespace = \case
