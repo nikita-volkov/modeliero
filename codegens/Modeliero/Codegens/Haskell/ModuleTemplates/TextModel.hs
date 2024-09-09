@@ -27,7 +27,8 @@ compile :: Params -> Result
 compile params =
   [ compileDataTypeDeclaration,
     compileLiteralInstance,
-    compileArbitraryInstance
+    compileArbitraryInstance,
+    compileRefinedTextForcedAnonymizableInstance
   ]
     & traverse ($ params)
     & liftDeclarations
@@ -96,6 +97,19 @@ compileArbitraryInstance :: Params -> InModule TextBlock
 compileArbitraryInstance params = do
   quickCheckQfr <- requestImport Imports.quickCheckRoot
   RefinedTextArbitraryInstance
+    { name = params.name & Slug.toUpperCamelCaseText & to,
+      minLength = params.minLength & fromMaybe 0,
+      maxLength = params.maxLength & fromMaybe 10000,
+      ..
+    }
+    & toBroadBuilder
+    & pure
+
+compileRefinedTextForcedAnonymizableInstance :: Params -> InModule TextBlock
+compileRefinedTextForcedAnonymizableInstance params = do
+  textQfr <- requestImport Imports.textRoot
+  modelieroBaseQfr <- requestImport Imports.modelieroBaseRoot
+  RefinedTextForcedAnonymizableInstance
     { name = params.name & Slug.toUpperCamelCaseText & to,
       minLength = params.minLength & fromMaybe 0,
       maxLength = params.maxLength & fromMaybe 10000,
