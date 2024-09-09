@@ -15,8 +15,11 @@ instance BroadPrinting RefinedTextAnonymizableInstance where
   toBroadBuilder params =
     [j|
       instance ${params.modelieroBaseQfr}Anonymizable ${params.name} where
-        anonymize forced (${params.name} initial) = 
-          ${params.name} adaptedToMaxLength
+        anonymize forced (${params.name} initial) =
+          ${params.name}
+            if ${forcedSplice}
+              then adaptedToMaxLength
+              else initial
           where
             anonymized =
               ${params.modelieroBaseQfr}anonymize ${forcedSplice} initial
