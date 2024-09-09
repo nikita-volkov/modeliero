@@ -20,7 +20,6 @@ instance BroadPrinting RefinedTextLiteralInstance where
           text <- ${params.attoparsecQfr}takeText
           ${minLengthCheckLines}${maxLengthCheckLines}pure (${params.name} text)
         literalToText (${params.name} text) = text
-          
     |]
     where
       minLengthCheckLines =

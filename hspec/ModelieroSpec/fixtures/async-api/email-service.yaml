@@ -56,8 +56,12 @@ components:
       type: string
       description: Personal name
       x-anonymizable: true
+      minLength: 1
+      maxLength: 100
 
     lastName:
       type: string
       description: Personal last name
       x-anonymizable: true
+      minLength: 1
+      maxLength: 100
