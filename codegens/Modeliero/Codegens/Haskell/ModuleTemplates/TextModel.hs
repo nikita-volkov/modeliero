@@ -67,7 +67,7 @@ compileDataTypeDeclaration params = do
                   & ParensList,
               viaSig =
                 [ modelieroBaseQfr,
-                  "AsLiteral ",
+                  "ViaLiteral ",
                   params.name
                     & Slug.toUpperCamelCaseText
                 ]
