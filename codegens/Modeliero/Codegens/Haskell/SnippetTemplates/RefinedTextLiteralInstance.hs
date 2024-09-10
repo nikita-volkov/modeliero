@@ -37,6 +37,6 @@ instance BroadPrinting RefinedTextLiteralInstance where
           Just maxLength ->
             [j|
               when (${params.textQfr}length text > ${maxLength}) do
-                ${params.basePreludeQfr}fail "Length is smaller than ${maxLength}"
+                ${params.basePreludeQfr}fail "Length is larger than ${maxLength}"
 
             |]
