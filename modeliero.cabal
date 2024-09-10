@@ -151,6 +151,9 @@ library codegens
     Modeliero.Codegens.Haskell.FileTemplates.CabalProject
     Modeliero.Codegens.Haskell.Imports
     Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel
+    Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.SnippetTemplates
+    Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.SnippetTemplates.ToJsonInstance
+    Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.SnippetTemplates.ToJsonInstanceFieldExp
     Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.Templates.ArbitraryInstance
     Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.Templates.DataTypeDeclaration
     Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.Templates.FromJsonInstance
@@ -177,6 +180,7 @@ library codegens
     Modeliero.Codegens.Haskell.Params
     Modeliero.Codegens.Haskell.Preludes.SnippetTemplate
     Modeliero.Codegens.Haskell.SnippetTemplates
+    Modeliero.Codegens.Haskell.SnippetTemplates.CommaSeparated
     Modeliero.Codegens.Haskell.SnippetTemplates.DataType
     Modeliero.Codegens.Haskell.SnippetTemplates.DerivingVia
     Modeliero.Codegens.Haskell.SnippetTemplates.ParensList

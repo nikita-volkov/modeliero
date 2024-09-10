@@ -1,20 +1,22 @@
 module Modeliero.Codegens.Haskell.SnippetTemplates
-  ( module DataType,
-    module DerivingVia,
-    module RefinedTextLiteralInstance,
-    module RefinedTextArbitraryInstance,
-    module RefinedTextAnonymizableInstance,
-    module ProductAnonymizableInstance,
-    module ParensList,
-    module Prelude,
+  ( module Modeliero.Codegens.Haskell.Preludes.SnippetTemplate,
+    module Modeliero.Codegens.Haskell.SnippetTemplates.DataType,
+    module Modeliero.Codegens.Haskell.SnippetTemplates.DerivingVia,
+    module Modeliero.Codegens.Haskell.SnippetTemplates.ParensList,
+    module Modeliero.Codegens.Haskell.SnippetTemplates.ProductAnonymizableInstance,
+    module Modeliero.Codegens.Haskell.SnippetTemplates.RefinedTextAnonymizableInstance,
+    module Modeliero.Codegens.Haskell.SnippetTemplates.RefinedTextArbitraryInstance,
+    module Modeliero.Codegens.Haskell.SnippetTemplates.RefinedTextLiteralInstance,
+    module Modeliero.Codegens.Haskell.SnippetTemplates.CommaSeparated,
   )
 where
 
-import Modeliero.Codegens.Haskell.Preludes.SnippetTemplate as Prelude hiding (DataType)
-import Modeliero.Codegens.Haskell.SnippetTemplates.DataType as DataType
-import Modeliero.Codegens.Haskell.SnippetTemplates.DerivingVia as DerivingVia
-import Modeliero.Codegens.Haskell.SnippetTemplates.ParensList as ParensList
-import Modeliero.Codegens.Haskell.SnippetTemplates.ProductAnonymizableInstance as ProductAnonymizableInstance
-import Modeliero.Codegens.Haskell.SnippetTemplates.RefinedTextAnonymizableInstance as RefinedTextAnonymizableInstance
-import Modeliero.Codegens.Haskell.SnippetTemplates.RefinedTextArbitraryInstance as RefinedTextArbitraryInstance
-import Modeliero.Codegens.Haskell.SnippetTemplates.RefinedTextLiteralInstance as RefinedTextLiteralInstance
+import Modeliero.Codegens.Haskell.Preludes.SnippetTemplate hiding (DataType)
+import Modeliero.Codegens.Haskell.SnippetTemplates.CommaSeparated
+import Modeliero.Codegens.Haskell.SnippetTemplates.DataType
+import Modeliero.Codegens.Haskell.SnippetTemplates.DerivingVia
+import Modeliero.Codegens.Haskell.SnippetTemplates.ParensList
+import Modeliero.Codegens.Haskell.SnippetTemplates.ProductAnonymizableInstance
+import Modeliero.Codegens.Haskell.SnippetTemplates.RefinedTextAnonymizableInstance
+import Modeliero.Codegens.Haskell.SnippetTemplates.RefinedTextArbitraryInstance
+import Modeliero.Codegens.Haskell.SnippetTemplates.RefinedTextLiteralInstance
