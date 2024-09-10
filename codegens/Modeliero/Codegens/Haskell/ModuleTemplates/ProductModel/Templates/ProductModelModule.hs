@@ -4,11 +4,10 @@ import Coalmine.MultilineTextBuilder qualified as TextBlock
 import Coalmine.Prelude
 import Modeliero.Codegens.Haskell.Dsls.InModule
 import Modeliero.Codegens.Haskell.Imports qualified as Imports
+import Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.SnippetTemplates qualified as SnippetTemplates
 import Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.Templates.ArbitraryInstance qualified as Templates.ProductArbitraryInstance
 import Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.Templates.DataTypeDeclaration qualified as Templates.ProductDataTypeDeclaration
 import Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.Templates.FromJsonInstance qualified as Templates.FromJsonInstance
-import Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.Templates.ToJsonInstance qualified as Templates.ToJsonInstance
-import Modeliero.Codegens.Haskell.SnippetTemplates qualified as SnippetTemplates
 
 data Params = Params
   { name :: Text,
@@ -67,21 +66,28 @@ compile params = do
                     }
               },
         if params.instances.aeson
-          then
-            Just
-              $ Templates.ToJsonInstance.compile
-                Templates.ToJsonInstance.Params
-                  { typeName = params.name,
-                    fields =
-                      params.fields
-                        & fmap
-                          ( \field ->
-                              Templates.ToJsonInstance.Field
-                                { haskellName = field.name,
-                                  jsonName = field.jsonName
-                                }
-                          )
-                  }
+          then Just do
+            aesonQfr <- to <$> requestImport Imports.aeson
+            aesonKeyMapQfr <- to <$> requestImport Imports.aesonKeyMap
+            SnippetTemplates.ToJsonInstance
+              { typeName = params.name & to,
+                aesonQfr,
+                aesonKeyMapQfr,
+                fields =
+                  params.fields
+                    & fmap
+                      ( \field ->
+                          SnippetTemplates.ToJsonInstanceFieldExp
+                            { required = not field.nullable,
+                              key = field.jsonName,
+                              valueExp = [j|value.${field.name}|],
+                              aesonQfr
+                            }
+                      )
+                    & SnippetTemplates.CommaSeparated
+              }
+              & toBroadBuilder
+              & pure
           else Nothing,
         if params.instances.aeson
           then

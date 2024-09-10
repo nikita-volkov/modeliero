@@ -67,9 +67,9 @@ spec = do
             
             instance Aeson.ToJSON Artist where
               toJSON value =
-                (Aeson.Object . Aeson.KeyMap.fromList)
-                  [ ("name", Aeson.toJSON value.name),
-                    ("genre-name", Aeson.toJSON value.genreName)
+                (Aeson.Object . Aeson.KeyMap.fromList . catMaybes)
+                  [ Just ("name", Aeson.toJSON value.name),
+                    ("genre-name",) . Aeson.toJSON <$> value.genreName
                   ]
             
             instance Aeson.FromJSON Artist where

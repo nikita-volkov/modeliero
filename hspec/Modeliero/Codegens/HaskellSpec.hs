@@ -367,11 +367,11 @@ spec = do
 
                       instance Aeson.ToJSON Ymd where
                         toJSON value =
-                          (Aeson.Object . Aeson.KeyMap.fromList)
-                            [ ("contains_dash", Aeson.toJSON value.separated),
-                              ("year", Aeson.toJSON value.year),
-                              ("month", Aeson.toJSON value.month),
-                              ("day", Aeson.toJSON value.day)
+                          (Aeson.Object . Aeson.KeyMap.fromList . catMaybes)
+                            [ Just ("contains_dash", Aeson.toJSON value.separated),
+                              Just ("year", Aeson.toJSON value.year),
+                              Just ("month", Aeson.toJSON value.month),
+                              Just ("day", Aeson.toJSON value.day)
                             ]
 
                       instance Aeson.FromJSON Ymd where

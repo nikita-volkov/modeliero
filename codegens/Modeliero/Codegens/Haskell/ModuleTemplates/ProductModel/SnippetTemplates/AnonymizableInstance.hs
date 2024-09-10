@@ -1,4 +1,4 @@
-module Modeliero.Codegens.Haskell.SnippetTemplates.ProductAnonymizableInstance where
+module Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.SnippetTemplates.AnonymizableInstance where
 
 import Modeliero.Codegens.Haskell.Preludes.SnippetTemplate
 

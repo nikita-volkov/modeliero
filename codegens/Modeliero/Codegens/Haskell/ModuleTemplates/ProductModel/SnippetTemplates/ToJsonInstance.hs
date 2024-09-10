@@ -16,7 +16,7 @@ instance BroadPrinting ToJsonInstance where
     [j|
       instance ${aesonQfr}ToJSON ${typeName} where
         toJSON value =
-          (${aesonQfr}Object . ${aesonKeyMapQfr}fromList)
+          (${aesonQfr}Object . ${aesonKeyMapQfr}fromList . catMaybes)
             [ ${fields}
             ]
     |]

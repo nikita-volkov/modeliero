@@ -13,8 +13,8 @@ instance BroadPrinting ToJsonInstanceFieldExp where
   toBroadBuilder ToJsonInstanceFieldExp {..} =
     if required
       then
-        [j|Just (${keyExp}, ${aesonQfr} ${valueExp})|]
+        [j|Just (${keyExp}, ${aesonQfr}toJSON ${valueExp})|]
       else
-        [j|(${keyExp},) <$> ${valueExp}|]
+        [j|(${keyExp},) . ${aesonQfr}toJSON <$> ${valueExp}|]
     where
       keyExp = stringLiteral key
