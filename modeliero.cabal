@@ -153,6 +153,7 @@ library codegens
     Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel
     Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.SnippetTemplates
     Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.SnippetTemplates.AnonymizableInstance
+    Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.SnippetTemplates.DataTypeDeclarationField
     Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.SnippetTemplates.ToJsonInstance
     Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.SnippetTemplates.ToJsonInstanceFieldExp
     Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.Templates.ArbitraryInstance
