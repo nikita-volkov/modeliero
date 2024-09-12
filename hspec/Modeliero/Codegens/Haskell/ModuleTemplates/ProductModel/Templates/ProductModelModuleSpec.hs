@@ -31,11 +31,7 @@ spec = do
                   ],
                 instances =
                   Subject.Instances
-                    { show = True,
-                      eq = True,
-                      ord = True,
-                      generic = True,
-                      aeson = True,
+                    { aeson = True,
                       arbitrary = True,
                       anonymizable = True
                     },
@@ -53,7 +49,6 @@ spec = do
             import Data.Aeson qualified as Aeson
             import Data.Aeson.KeyMap qualified as Aeson.KeyMap
             import Data.Aeson.Types qualified as Aeson.Types
-            import GHC.Generics qualified as Generics
             import ModelieroBase qualified
             import Test.QuickCheck.Arbitrary qualified as QuickCheck.Arbitrary
             
@@ -63,7 +58,7 @@ spec = do
                 name :: Text,
                 genreName :: Text
               }
-              deriving (Show, Eq, Ord, Generics.Generic)
+              deriving stock (Show, Read, Eq, Ord)
             
             instance Aeson.ToJSON Artist where
               toJSON value =

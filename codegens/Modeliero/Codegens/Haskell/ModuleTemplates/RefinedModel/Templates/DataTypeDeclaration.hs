@@ -18,6 +18,7 @@ type Result = InModule TextBlock
 
 data Derivings = Derivings
   { show :: Bool,
+    read :: Bool,
     eq :: Bool,
     ord :: Bool,
     generic :: Bool,
@@ -46,6 +47,7 @@ compileDerivings derivings = do
   sequence
     $ catMaybes
       [ compileDeriving derivings.show "Show" (requestImport Imports.basePreludeRoot),
+        compileDeriving derivings.read "Read" (requestImport Imports.basePreludeRoot),
         compileDeriving derivings.eq "Eq" (requestImport Imports.basePreludeRoot),
         compileDeriving derivings.ord "Ord" (requestImport Imports.basePreludeRoot),
         compileDeriving derivings.generic "Generic" (requestImport Imports.baseGenerics),

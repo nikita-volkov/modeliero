@@ -202,11 +202,7 @@ spec = do
                   ],
                 instances =
                   Subject.Instances
-                    { show = True,
-                      eq = True,
-                      ord = True,
-                      hashable = True,
-                      aeson =
+                    { aeson =
                         Just
                           Subject.Aeson
                             { casing = Subject.KebabCasing
@@ -363,7 +359,7 @@ spec = do
                           -- | Day.
                           day :: Local.Day
                         }
-                        deriving (Show, Eq, Ord)
+                        deriving stock (Show, Read, Eq, Ord)
 
                       instance Aeson.ToJSON Ymd where
                         toJSON value =
@@ -438,7 +434,7 @@ spec = do
                     newtype Year = Year
                       { base :: Int
                       }
-                      deriving (Show, Eq, Ord, Hashable.Hashable)
+                      deriving (Show, Read, Eq, Ord, Hashable.Hashable)
 
                     instance ModelieroBase.Special Year where
                       type GeneralizationOf Year = Int
@@ -512,7 +508,7 @@ spec = do
                       = YmdCalendarDate Local.Ymd
                       | YmCalendarDate Local.Ym
                       | MdCalendarDate Local.Md
-                      deriving (Show, Eq, Ord)
+                      deriving stock (Show, Read, Eq, Ord)
                     
                     instance Hashable.Hashable CalendarDate where
                       hashWithSalt salt = \case

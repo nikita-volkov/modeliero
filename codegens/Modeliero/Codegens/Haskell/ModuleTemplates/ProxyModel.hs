@@ -43,11 +43,12 @@ compile params = do
                 baseType = baseType & to,
                 derivings =
                   Templates.DataTypeDeclaration.Derivings
-                    { show = params.instances.show,
-                      eq = params.instances.eq,
-                      ord = params.instances.ord,
+                    { show = True,
+                      read = True,
+                      eq = True,
+                      ord = True,
                       generic = False,
-                      hashable = params.instances.hashable,
+                      hashable = True,
                       arbitrary = params.instances.arbitrary,
                       aeson = params.instances.aeson & isJust,
                       anonymizable = params.instances.anonymizable,

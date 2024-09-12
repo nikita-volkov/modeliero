@@ -18,6 +18,7 @@ type Result = InModule TextBlock
 
 data Derivings = Derivings
   { show :: Bool,
+    read :: Bool,
     eq :: Bool,
     ord :: Bool,
     generic :: Bool,
@@ -72,6 +73,7 @@ compileStockDerivings _ =
 compileNewtypeDerivings :: Params -> InModule [TextBlock]
 compileNewtypeDerivings params =
   [ compileDeriving params.derivings.show "Show" Imports.basePreludeRoot,
+    compileDeriving params.derivings.read "Read" Imports.basePreludeRoot,
     compileDeriving params.derivings.eq "Eq" Imports.basePreludeRoot,
     compileDeriving params.derivings.ord "Ord" Imports.basePreludeRoot,
     compileDeriving params.derivings.generic "Generic" Imports.baseGenerics,

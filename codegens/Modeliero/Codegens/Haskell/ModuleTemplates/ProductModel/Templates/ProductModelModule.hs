@@ -6,7 +6,6 @@ import Modeliero.Codegens.Haskell.Dsls.InModule
 import Modeliero.Codegens.Haskell.Imports qualified as Imports
 import Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.SnippetTemplates qualified as SnippetTemplates
 import Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.Templates.ArbitraryInstance qualified as Templates.ProductArbitraryInstance
-import Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.Templates.DataTypeDeclaration qualified as Templates.ProductDataTypeDeclaration
 import Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.Templates.FromJsonInstance qualified as Templates.FromJsonInstance
 import Modeliero.Codegens.Haskell.SnippetTemplates qualified as SnippetTemplates
 
@@ -29,11 +28,7 @@ data Field = Field
   }
 
 data Instances = Instances
-  { show :: Bool,
-    eq :: Bool,
-    ord :: Bool,
-    generic :: Bool,
-    aeson :: Bool,
+  { aeson :: Bool,
     arbitrary :: Bool,
     anonymizable :: Bool
   }
@@ -43,29 +38,28 @@ compile params = do
   registerExport [i|${params.name}(..)|]
   decls <-
     (sequence . catMaybes)
-      [ Just
-          $ Templates.ProductDataTypeDeclaration.compile
-            Templates.ProductDataTypeDeclaration.Params
-              { name = params.name & to,
-                haddock = params.haddock,
-                fields =
-                  params.fields
-                    & fmap
-                      ( \field ->
-                          Templates.ProductDataTypeDeclaration.Field
-                            { name = field.name & to,
-                              type_ = field.type_ & to,
-                              haddock = field.haddock
-                            }
-                      ),
-                derivings =
-                  Templates.ProductDataTypeDeclaration.Derivings
-                    { show = params.instances.show,
-                      eq = params.instances.eq,
-                      ord = params.instances.ord,
-                      generic = params.instances.generic
-                    }
-              },
+      [ Just do
+          basePreludeQfr <- requestImport Imports.basePreludeRoot
+          SnippetTemplates.DataTypeDeclaration
+            { name = params.name & to,
+              haddock = params.haddock,
+              fields =
+                params.fields
+                  & fmap
+                    ( \field ->
+                        SnippetTemplates.DataTypeDeclarationField
+                          { name = field.name & to,
+                            -- TODO: Implement Maybe
+                            type_ = field.type_ & to,
+                            haddock = field.haddock
+                          }
+                    ),
+              stockDerivings =
+                ["Show", "Read", "Eq", "Ord"]
+                  & fmap (to basePreludeQfr <>)
+            }
+            & toBroadBuilder
+            & pure,
         if params.instances.aeson
           then Just do
             aesonQfr <- to <$> requestImport Imports.aeson

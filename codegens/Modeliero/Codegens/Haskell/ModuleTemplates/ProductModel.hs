@@ -50,11 +50,7 @@ compile params = do
 compileInstances :: Instances -> Template.Instances
 compileInstances instances =
   Template.Instances
-    { show = instances.show,
-      eq = instances.eq,
-      ord = instances.ord,
-      generic = False,
-      aeson = instances.aeson & isJust,
+    { aeson = instances.aeson & isJust,
       arbitrary = instances.arbitrary,
       anonymizable = instances.anonymizable
     }

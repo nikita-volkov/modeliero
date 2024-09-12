@@ -50,11 +50,7 @@ spec = do
                         types = source.types,
                         instances =
                           HaskellCodegen.Instances
-                            { show = True,
-                              eq = True,
-                              ord = True,
-                              hashable = True,
-                              aeson =
+                            { aeson =
                                 Just
                                   HaskellCodegen.Aeson
                                     { casing = HaskellCodegen.KebabCasing

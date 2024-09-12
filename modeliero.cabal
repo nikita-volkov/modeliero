@@ -158,7 +158,6 @@ library codegens
     Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.SnippetTemplates.ToJsonInstance
     Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.SnippetTemplates.ToJsonInstanceFieldExp
     Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.Templates.ArbitraryInstance
-    Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.Templates.DataTypeDeclaration
     Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.Templates.FromJsonInstance
     Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.Templates.ProductModelModule
     Modeliero.Codegens.Haskell.ModuleTemplates.ProxyModel
@@ -212,7 +211,6 @@ test-suite hspec
     Modeliero.AsyncApiSpec
     Modeliero.Codegens.Haskell.ExtrasFor.Hspec
     Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.Templates.ArbitraryInstanceSpec
-    Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.Templates.DataTypeDeclarationSpec
     Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.Templates.FromJsonInstanceSpec
     Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.Templates.ProductModelModuleSpec
     Modeliero.Codegens.Haskell.ModuleTemplates.ReexportsSpec

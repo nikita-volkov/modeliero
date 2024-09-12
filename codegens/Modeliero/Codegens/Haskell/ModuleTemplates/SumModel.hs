@@ -61,46 +61,44 @@ compile params = do
                 haddock = variant.docs,
                 type_
               }
-        derivings <- compileDerivings params
+        stockDerivings <- compileDerivings params
         pure
           ( Templates.DataTypeDeclaration.compile
               Templates.DataTypeDeclaration.Params
                 { name = params.name & Slug.toUpperCamelCaseText & to,
                   haddock = params.docs,
                   variants,
-                  derivings
+                  stockDerivings
                 }
           )
 
     hashableDecl =
-      if params.instances.hashable
-        then Just do
-          hashableQfr <- requestImport Imports.hashable
-          pure
-            ( Templates.HashableInstance.compile
-                Templates.HashableInstance.Params
-                  { name = params.name & Slug.toUpperCamelCaseText & to,
-                    variants =
-                      params.variants
-                        & fmap
-                          ( \variant ->
-                              Templates.HashableInstance.Variant
-                                { name =
-                                    variant.name
-                                      & Slug.toUpperCamelCaseTextBuilder
-                                      & to,
-                                  memberNames =
-                                    variant.name
-                                      & Slug.toLowerCamelCaseTextBuilder
-                                      & to
-                                      & pure
-                                }
-                          ),
-                    hashableQfr =
-                      hashableQfr & to
-                  }
-            )
-        else Nothing
+      Just do
+        hashableQfr <- requestImport Imports.hashable
+        pure
+          ( Templates.HashableInstance.compile
+              Templates.HashableInstance.Params
+                { name = params.name & Slug.toUpperCamelCaseText & to,
+                  variants =
+                    params.variants
+                      & fmap
+                        ( \variant ->
+                            Templates.HashableInstance.Variant
+                              { name =
+                                  variant.name
+                                    & Slug.toUpperCamelCaseTextBuilder
+                                    & to,
+                                memberNames =
+                                  variant.name
+                                    & Slug.toLowerCamelCaseTextBuilder
+                                    & to
+                                    & pure
+                              }
+                        ),
+                  hashableQfr =
+                    hashableQfr & to
+                }
+          )
 
     toJsonDecl =
       params.instances.aeson <&> \aesonParams -> do
@@ -263,12 +261,13 @@ compile params = do
         else Nothing
 
 compileDerivings :: Params -> InModule [TextBlock]
-compileDerivings params = do
+compileDerivings _params = do
   sequence
     $ catMaybes
-      [ compileDeriving params.instances.show "Show" Imports.basePreludeRoot,
-        compileDeriving params.instances.eq "Eq" Imports.basePreludeRoot,
-        compileDeriving params.instances.ord "Ord" Imports.basePreludeRoot
+      [ compileDeriving True "Show" Imports.basePreludeRoot,
+        compileDeriving True "Read" Imports.basePreludeRoot,
+        compileDeriving True "Eq" Imports.basePreludeRoot,
+        compileDeriving True "Ord" Imports.basePreludeRoot
       ]
   where
     compileDeriving :: Bool -> Text -> Import -> Maybe (InModule TextBlock)

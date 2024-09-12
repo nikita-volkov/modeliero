@@ -129,11 +129,7 @@ data DoubleRestrictions = DoubleRestrictions
 -- ** Instances
 
 data Instances = Instances
-  { show :: Bool,
-    eq :: Bool,
-    ord :: Bool,
-    hashable :: Bool,
-    aeson :: Maybe Aeson,
+  { aeson :: Maybe Aeson,
     arbitrary :: Bool,
     anonymizable :: Bool
   }

@@ -14,7 +14,7 @@ data Params = Params
   { name :: TextBlock,
     haddock :: Text,
     variants :: [Variant],
-    derivings :: [TextBlock]
+    stockDerivings :: [TextBlock]
   }
 
 data Variant = Variant
@@ -35,9 +35,9 @@ compile params =
             [ "\n  = " <> head,
               foldMap ("\n  | " <>) tail
             ],
-      case params.derivings of
+      case params.stockDerivings of
         [] -> mempty
-        derivingSplices -> "\n  deriving (" <> TextBlock.intercalate ", " derivingSplices <> ")"
+        derivingSplices -> "\n  deriving stock (" <> TextBlock.intercalate ", " derivingSplices <> ")"
     ]
 
 compileConstructors :: Params -> [TextBlock]
