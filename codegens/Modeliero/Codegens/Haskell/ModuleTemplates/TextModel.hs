@@ -41,7 +41,7 @@ compileDataTypeDeclaration params = do
   hashableQfr <- requestImport Imports.hashable
   modelieroBaseQfr <- requestImport Imports.modelieroBaseRoot
   aesonQfr <- requestImport Imports.aeson
-  DataType
+  NewtypeDeclaration
     { name = params.name & Slug.toUpperCamelCaseText & to,
       haddock = params.docs,
       baseTypeSig = to (textQfr <> "Text"),

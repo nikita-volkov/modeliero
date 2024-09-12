@@ -1,11 +1,11 @@
-module Modeliero.Codegens.Haskell.SnippetTemplates.DataType where
+module Modeliero.Codegens.Haskell.SnippetTemplates.NewtypeDeclaration where
 
 import CodegenKit.Legacy.ByLanguage.Haskell.Snippets qualified as Snippets
 import Data.Text qualified as Text
-import Modeliero.Codegens.Haskell.Preludes.SnippetTemplate hiding (DataType)
+import Modeliero.Codegens.Haskell.Preludes.SnippetTemplate
 import Modeliero.Codegens.Haskell.SnippetTemplates.DerivingVia
 
-data DataType = DataType
+data NewtypeDeclaration = NewtypeDeclaration
   { name :: TextBlock,
     haddock :: Text,
     baseTypeSig :: TextBlock,
@@ -15,7 +15,7 @@ data DataType = DataType
     derivingVia :: Maybe DerivingVia
   }
 
-instance BroadPrinting DataType where
+instance BroadPrinting NewtypeDeclaration where
   toBroadBuilder params =
     [ filtered (not . Text.null) (flip mappend "\n" . Snippets.prefixHaddock) params.haddock,
       [j|
