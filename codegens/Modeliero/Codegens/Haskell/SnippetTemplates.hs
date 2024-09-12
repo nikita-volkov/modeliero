@@ -7,6 +7,7 @@ module Modeliero.Codegens.Haskell.SnippetTemplates
     module Modeliero.Codegens.Haskell.SnippetTemplates.RefinedTextArbitraryInstance,
     module Modeliero.Codegens.Haskell.SnippetTemplates.RefinedTextLiteralInstance,
     module Modeliero.Codegens.Haskell.SnippetTemplates.CommaSeparated,
+    module Modeliero.Codegens.Haskell.SnippetTemplates.StringLiteral,
   )
 where
 
@@ -18,3 +19,4 @@ import Modeliero.Codegens.Haskell.SnippetTemplates.ParensList
 import Modeliero.Codegens.Haskell.SnippetTemplates.RefinedTextAnonymizableInstance
 import Modeliero.Codegens.Haskell.SnippetTemplates.RefinedTextArbitraryInstance
 import Modeliero.Codegens.Haskell.SnippetTemplates.RefinedTextLiteralInstance
+import Modeliero.Codegens.Haskell.SnippetTemplates.StringLiteral
