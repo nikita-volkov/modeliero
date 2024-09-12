@@ -28,3 +28,6 @@ source-repository-package
     packages/legacy
     packages/haskell-package
     packages/haskell-package-v2
+
+constraints:
+  , autoexporter ^>=2

@@ -190,6 +190,9 @@ library codegens
     Modeliero.Codegens.Haskell.SnippetTemplates.StringLiteral
     Modeliero.Codegens.Haskell.Snippets
 
+  build-tool-depends:
+    autoexporter:autoexporter
+
   build-depends:
     base,
     coalmine,
