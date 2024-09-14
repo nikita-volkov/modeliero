@@ -17,6 +17,7 @@ import Modeliero.Codegens.Haskell.Imports qualified as Imports
 import Modeliero.Codegens.Haskell.ModuleTemplates.ProxyModel.Templates.DataTypeDeclaration qualified as Templates.DataTypeDeclaration
 import Modeliero.Codegens.Haskell.ModuleTemplates.ProxyModel.Templates.IsomorpicToInstances qualified as Templates.IsomorpicToInstances
 import Modeliero.Codegens.Haskell.Params qualified as Params
+import Modeliero.Codegens.Haskell.SnippetTemplates qualified as SnippetTemplates
 
 data Params = Params
   { modelsNamespace :: [Text],
@@ -51,7 +52,7 @@ compile params = do
                       hashable = True,
                       arbitrary = params.instances.arbitrary,
                       aeson = params.instances.aeson & isJust,
-                      anonymizable = params.instances.anonymizable,
+                      anonymizable = params.instances.anonymizable && not params.forceAnonymization,
                       literal = params.baseType & CompilersOf.IsLiteral.valueType
                     }
               },
@@ -60,6 +61,16 @@ compile params = do
             Templates.IsomorpicToInstances.Params
               { name = params.name & Slug.toUpperCamelCaseText & to,
                 baseType = baseType
+              },
+        if params.instances.anonymizable && params.forceAnonymization
+          then Just do
+            modelieroBaseQfr <- requestImport Imports.modelieroBaseRoot
+            SnippetTemplates.ForcedProxyAnonymizableInstance
+              { name = params.name & Slug.toUpperCamelCaseText & to,
+                modelieroBaseQfr
               }
+              & toBroadBuilder
+              & pure
+          else Nothing
       ]
   pure (TextBlock.intercalate "\n\n" decls)

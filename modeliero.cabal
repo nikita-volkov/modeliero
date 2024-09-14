@@ -183,6 +183,7 @@ library codegens
     Modeliero.Codegens.Haskell.SnippetTemplates
     Modeliero.Codegens.Haskell.SnippetTemplates.CommaSeparated
     Modeliero.Codegens.Haskell.SnippetTemplates.DerivingVia
+    Modeliero.Codegens.Haskell.SnippetTemplates.ForcedProxyAnonymizableInstance
     Modeliero.Codegens.Haskell.SnippetTemplates.NewtypeDeclaration
     Modeliero.Codegens.Haskell.SnippetTemplates.ParensList
     Modeliero.Codegens.Haskell.SnippetTemplates.RefinedTextAnonymizableInstance
