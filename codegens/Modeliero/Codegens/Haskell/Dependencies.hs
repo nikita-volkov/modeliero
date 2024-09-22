@@ -98,3 +98,11 @@ attoparsec =
       minVersion = $$(l "0.12"),
       maxVersion = $$(l "0.15")
     }
+
+vector :: Dependency
+vector =
+  Dependency
+    { name = "vector",
+      minVersion = $$(l "0.13"),
+      maxVersion = $$(l "0.14")
+    }

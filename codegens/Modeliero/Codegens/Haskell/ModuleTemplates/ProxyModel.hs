@@ -16,7 +16,7 @@ import Modeliero.Codegens.Haskell.Dsls.InModule
 import Modeliero.Codegens.Haskell.Imports qualified as Imports
 import Modeliero.Codegens.Haskell.ModuleTemplates.ProxyModel.Templates.DataTypeDeclaration qualified as Templates.DataTypeDeclaration
 import Modeliero.Codegens.Haskell.ModuleTemplates.ProxyModel.Templates.IsomorpicToInstances qualified as Templates.IsomorpicToInstances
-import Modeliero.Codegens.Haskell.Params qualified as Params
+import Modeliero.Codegens.Haskell.ParamsAlgebra qualified as Params
 import Modeliero.Codegens.Haskell.SnippetTemplates qualified as SnippetTemplates
 
 data Params = Params
@@ -52,6 +52,11 @@ compile params = do
                       hashable = True,
                       arbitrary = params.instances.arbitrary,
                       aeson = params.instances.aeson & isJust,
+                      aesonJsonKey =
+                        and
+                          [ params.instances.aeson & isJust,
+                            canBeKey
+                          ],
                       anonymizable = params.instances.anonymizable && not params.forceAnonymization,
                       literal = params.baseType & CompilersOf.IsLiteral.valueType
                     }
@@ -60,7 +65,7 @@ compile params = do
           Templates.IsomorpicToInstances.compile
             Templates.IsomorpicToInstances.Params
               { name = params.name & Slug.toUpperCamelCaseText & to,
-                baseType = baseType
+                baseType = [i|(${baseType})|]
               },
         if params.instances.anonymizable && params.forceAnonymization
           then Just do
@@ -74,3 +79,7 @@ compile params = do
           else Nothing
       ]
   pure (TextBlock.intercalate "\n\n" decls)
+  where
+    canBeKey =
+      params.baseType
+        & Params.valueTypeCanBeKey (const Nothing)

@@ -56,16 +56,16 @@ parse schemaContext input = assocWithInput input do
   value <- do
     nest "value" ParserOf.ReferencedSchema.parse schemaContext valueSchema >>= \case
       ParserOf.ReferencedSchema.ReferenceOutput _ref slug ->
-        pure (LocalPlainType slug)
+        pure (PlainValueType (LocalPlainType slug))
       ParserOf.ReferencedSchema.InlineOutput schema ->
         nest "inline-value" InlineSchemaParser.parse schemaContext schema
-          & fmap (.plainType)
+          & fmap (.valueType)
 
   pure
     Variant
       { name = tagSlug,
         jsonName = tag,
-        type_ = PlainValueType value,
+        type_ = value,
         docs = variantSchema._schemaDescription & fromMaybe mempty,
         anonymizable = schemaContext.anonymizable
       }

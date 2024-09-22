@@ -179,6 +179,7 @@ library codegens
     Modeliero.Codegens.Haskell.ModuleTemplates.SumModel.Templates.ToJsonInstance
     Modeliero.Codegens.Haskell.ModuleTemplates.TextModel
     Modeliero.Codegens.Haskell.Params
+    Modeliero.Codegens.Haskell.ParamsAlgebra
     Modeliero.Codegens.Haskell.Preludes.SnippetTemplate
     Modeliero.Codegens.Haskell.SnippetTemplates
     Modeliero.Codegens.Haskell.SnippetTemplates.CommaSeparated

@@ -40,8 +40,11 @@ components:
           $ref: "#/components/schemas/firstName"
         lastName:
           $ref: "#/components/schemas/lastName"
-        email:
-          $ref: "#/components/schemas/email"
+        emails:
+          type: array
+          items:
+            $ref: "#/components/schemas/email"
+          minItems: 1
         createdAt:
           type: string
           format: date-time

@@ -7,7 +7,7 @@ module Modeliero.Sources.AsyncApi.Preludes.Parser
 where
 
 import Coalmine.ErrorReport (ConvertsToErrorReport (..), ErrorReport)
-import Coalmine.Prelude hiding (label)
+import Coalmine.Prelude hiding (label, parse)
 import Data.OpenApi qualified as OpenApi
 import Modeliero.AesonUtil.Values qualified as Json
 import Modeliero.Codegens.Haskell.Params

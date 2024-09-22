@@ -82,8 +82,12 @@ compileValueType modelsNamespace = \case
   PlainValueType a -> compilePlainType modelsNamespace a
   MaybeValueType a -> do
     basePreludeQfr <- InModule.requestImport Imports.basePreludeRoot
-    compilePlainType modelsNamespace a
-      & fmap ((basePreludeQfr <> "Maybe ") <>)
+    compileValueType modelsNamespace a
+      & fmap (\itemType -> basePreludeQfr <> "Maybe (" <> itemType <> ")")
+  VectorValueType a -> do
+    vectorQfr <- InModule.requestImport Imports.vectorRoot
+    compileValueType modelsNamespace a
+      & fmap (\itemType -> vectorQfr <> "Vector (" <> itemType <> ")")
 
 compilePlainType :: [Text] -> PlainType -> InModule.InModule Text
 compilePlainType modelsNamespace = \case

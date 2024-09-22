@@ -3,6 +3,14 @@ module Modeliero.Codegens.Haskell.Imports where
 import Coalmine.Prelude
 import Modeliero.Codegens.Haskell.Dependencies qualified as Dependencies
 import Modeliero.Codegens.Haskell.Dsls.Code (Import (..))
+import Modeliero.Codegens.Haskell.Dsls.Package (Dependency)
+
+external :: Dependency -> Text -> Import
+external dependency name =
+  Import
+    { dependency = Just dependency,
+      name
+    }
 
 fromQuickCheck :: Text -> Import
 fromQuickCheck name =
@@ -133,3 +141,6 @@ attoparsecText =
     { dependency = Just Dependencies.attoparsec,
       name = "Data.Attoparsec.Text"
     }
+
+vectorRoot :: Import
+vectorRoot = external Dependencies.vector "Data.Vector"

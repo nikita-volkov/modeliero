@@ -1,0 +1,29 @@
+asyncapi: 2.0.0
+info:
+  title: Array over array
+  version: "1.0.0"
+
+components:
+  schemas:
+    as-field:
+      type: object
+      properties:
+        arrays:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+
+    as-proxy:
+      type: array
+      items:
+        type: array
+        items:
+          type: string
+
+    as-ref-in-field:
+      type: object
+      properties:
+        field:
+          $ref: "#/components/schemas/as-proxy"

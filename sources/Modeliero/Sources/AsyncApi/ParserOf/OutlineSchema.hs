@@ -70,8 +70,8 @@ parse schemaContext input = do
                               jsonName = nameInput,
                               docs = propertySchema.docs,
                               type_ =
-                                propertySchema.plainType
-                                  & packPlainType nameInput
+                                propertySchema.valueType
+                                  & packValueType nameInput
                             }
                 )
               & label "properties"
@@ -79,8 +79,10 @@ parse schemaContext input = do
               & fmap Just
             where
               packPlainType fieldName =
+                packValueType fieldName . PlainValueType
+              packValueType fieldName =
                 if elem fieldName input._schemaRequired
-                  then PlainValueType
+                  then id
                   else MaybeValueType
           Input.OpenApiString ->
             case input._schemaFormat of
@@ -109,13 +111,14 @@ parse schemaContext input = do
                   & pure
                   & fmap Just
               _ -> pure Nothing
+          _ -> pure Nothing
+
   definition <-
     label "inline" case directDefinitionIfPossible of
       Just definition -> pure definition
       Nothing ->
         InlineSchemaParser.parse schemaContext input
-          & fmap (.plainType)
-          & fmap PlainValueType
+          & fmap (.valueType)
           & fmap Right
           & fmap
             ( \wrappedType ->

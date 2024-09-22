@@ -10,19 +10,20 @@
 module Modeliero.Sources.AsyncApi.ParserOf.InlineSchema where
 
 import Data.OpenApi qualified as Input
+import Modeliero.Sources.AsyncApi.ParserOf.ReferencedSchema qualified as ReferencedSchema
 import Modeliero.Sources.AsyncApi.Preludes.Parser
 
 type Input = Input.Schema
 
 data Output = Output
   { docs :: Text,
-    plainType :: PlainType
+    valueType :: ValueType
   }
 
 type Error = Json
 
 parse :: SchemaContext -> Input -> Either Error Output
-parse _schemaContext input =
+parse schemaContext input =
   case input._schemaType of
     Nothing ->
       Left "No schema type"
@@ -54,14 +55,31 @@ parse _schemaContext input =
             TextStandardType
               & StandardPlainType
               & fromPlainType
+      Input.OpenApiArray ->
+        case input._schemaItems of
+          Nothing -> Left "Missing \"items\""
+          Just items -> case items of
+            Input.OpenApiItemsObject itemReferencedSchema -> do
+              reference <- ReferencedSchema.parse schemaContext itemReferencedSchema
+              itemValueType <- case reference of
+                ReferencedSchema.InlineOutput itemSchema ->
+                  parse schemaContext itemSchema
+                    & fmap (.valueType)
+                ReferencedSchema.ReferenceOutput _ref slug ->
+                  pure (PlainValueType (LocalPlainType slug))
+              fromValueType (VectorValueType itemValueType)
+            Input.OpenApiItemsArray _ ->
+              Left "Tuple arrays are not supported"
       _ ->
         error "TODO"
   where
-    fromPlainType plainType =
+    fromValueType valueType =
       Right
         Output
           { docs = input._schemaDescription & fromMaybe "",
-            plainType
+            valueType
           }
+
+    fromPlainType = fromValueType . PlainValueType
 
     fromStandardType = fromPlainType . StandardPlainType

@@ -46,9 +46,9 @@ data Field = Field
 
 data ValueType
   = PlainValueType PlainType
-  | MaybeValueType PlainType
-  | VectorValueType PlainType
-  | HashMapValueType PlainType PlainType
+  | MaybeValueType ValueType
+  | VectorValueType ValueType
+  | HashMapValueType ValueType ValueType
   deriving (Eq, Ord, Show, Generic, ToJSON, FromJSON)
 
 data PlainType

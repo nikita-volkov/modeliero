@@ -25,6 +25,7 @@ data Derivings = Derivings
     hashable :: Bool,
     arbitrary :: Bool,
     aeson :: Bool,
+    aesonJsonKey :: Bool,
     literal :: Bool,
     anonymizable :: Bool
   }
@@ -81,8 +82,8 @@ compileNewtypeDerivings params =
     compileDeriving params.derivings.arbitrary "Arbitrary" Imports.quickCheckArbitrary,
     compileDeriving params.derivings.aeson "ToJSON" Imports.aeson,
     compileDeriving params.derivings.aeson "FromJSON" Imports.aeson,
-    compileDeriving params.derivings.aeson "ToJSONKey" Imports.aeson,
-    compileDeriving params.derivings.aeson "FromJSONKey" Imports.aeson,
+    compileDeriving params.derivings.aesonJsonKey "ToJSONKey" Imports.aeson,
+    compileDeriving params.derivings.aesonJsonKey "FromJSONKey" Imports.aeson,
     compileDeriving params.derivings.literal "Literal" Imports.modelieroBaseRoot,
     compileDeriving params.derivings.anonymizable "Anonymizable" Imports.modelieroBaseRoot
   ]

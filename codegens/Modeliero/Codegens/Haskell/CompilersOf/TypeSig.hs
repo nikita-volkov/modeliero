@@ -13,6 +13,13 @@ import Modeliero.Codegens.Haskell.Params qualified as Params
 fromValueType :: [Text] -> Params.ValueType -> InModule Text
 fromValueType modelsNamespace = \case
   Params.PlainValueType plainType -> fromPlainType modelsNamespace plainType
+  Params.VectorValueType itemType -> do
+    vectorQfr <- requestImport Imports.vectorRoot
+    itemSig <- fromValueType modelsNamespace itemType
+    pure
+      [i|
+        ${vectorQfr}Vector (${itemSig})
+      |]
 
 fromPlainType :: [Text] -> Params.PlainType -> InModule Text
 fromPlainType modelsNamespace = \case
@@ -40,3 +47,7 @@ fromStandardType = \case
     requestImport Imports.modelieroBaseRoot <&> (<> "IpV4")
   Params.IpV6StandardType ->
     requestImport Imports.modelieroBaseRoot <&> (<> "IpV6")
+  Params.TextStandardType ->
+    requestImport Imports.textRoot <&> (<> "Text")
+  type_ ->
+    error [i|Unsupported type: ${show type_}|]
