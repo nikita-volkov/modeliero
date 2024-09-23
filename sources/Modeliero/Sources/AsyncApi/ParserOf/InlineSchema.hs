@@ -17,7 +17,10 @@ type Input = Input.Schema
 
 data Output = Output
   { docs :: Text,
-    valueType :: ValueType
+    -- | Type signature.
+    valueType :: ValueType,
+    -- | Declarations of all nested types.
+    typeDeclarations :: [(Slug, Input.Schema)]
   }
 
 type Error = Json
@@ -26,18 +29,17 @@ parse :: SchemaContext -> Input -> Either Error Output
 parse schemaContext input =
   case input._schemaType of
     Nothing ->
-      -- TODO: Define reference type here if it's oneof.
-      case input._schemaOneOf of
-        Nothing -> Left "No schemaType or oneOf specified"
-        Just _ ->
-          Right
-            Output
-              { docs = "",
-                valueType =
-                  schemaContext.contextReference
-                    & LocalPlainType
-                    & PlainValueType
-              }
+      Right
+        Output
+          { docs = "",
+            valueType =
+              schemaContext.contextReference
+                & LocalPlainType
+                & PlainValueType,
+            typeDeclarations =
+              [ (schemaContext.contextReference, input)
+              ]
+          }
     Just schemaType -> case schemaType of
       Input.OpenApiObject ->
         Left "Object schema type is not supported in inline schemas"
@@ -88,7 +90,8 @@ parse schemaContext input =
       Right
         Output
           { docs = input._schemaDescription & fromMaybe "",
-            valueType
+            valueType,
+            typeDeclarations = []
           }
 
     fromPlainType = fromValueType . PlainValueType

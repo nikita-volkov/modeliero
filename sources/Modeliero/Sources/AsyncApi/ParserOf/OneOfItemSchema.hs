@@ -58,7 +58,7 @@ parse schemaContext input = assocWithInput input do
       ParserOf.ReferencedSchema.ReferenceOutput _ref slug ->
         pure (PlainValueType (LocalPlainType slug))
       ParserOf.ReferencedSchema.InlineOutput schema ->
-        nest "inline-value" InlineSchemaParser.parse schemaContext schema
+        appendContextReference tagSlug (nest "inline-value" InlineSchemaParser.parse) schemaContext schema
           & fmap (.valueType)
 
   pure

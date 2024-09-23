@@ -36,18 +36,42 @@ nest ::
   -- | Label.
   Text ->
   -- | Subparser.
-  (SchemaContext -> i -> Either Json o) ->
-  (SchemaContext -> i -> Either Json o)
+  SchemaParser i o ->
+  SchemaParser i o
 nest label subparser schemaContext input =
   subparser schemaContext input
     & first (branchError label (toJSON input))
 
+prependContextReference ::
+  Slug ->
+  SchemaParser i o ->
+  SchemaParser i o
+prependContextReference contextReferenceExtension dive schemaContext =
+  dive deeperSchemaContext
+  where
+    deeperSchemaContext =
+      schemaContext
+        { contextReference = contextReferenceExtension <> schemaContext.contextReference
+        }
+
+appendContextReference ::
+  Slug ->
+  SchemaParser i o ->
+  SchemaParser i o
+appendContextReference contextReferenceExtension dive schemaContext =
+  dive deeperSchemaContext
+  where
+    deeperSchemaContext =
+      schemaContext
+        { contextReference = schemaContext.contextReference <> contextReferenceExtension
+        }
+
 -- | Adapt a parser function with errors modeled in data-types convertible to JSON.
-reportifyErrors ::
+jsonifyErrors ::
   (ToJSON e) =>
   (SchemaContext -> i -> Either e o) ->
   (SchemaContext -> i -> Either Json o)
-reportifyErrors = (fmap . fmap . first) toJSON
+jsonifyErrors = (fmap . fmap . first) toJSON
 
 -- * Result patterns
 

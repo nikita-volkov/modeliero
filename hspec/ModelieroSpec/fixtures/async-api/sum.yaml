@@ -5,8 +5,8 @@ info:
 
 components:
   schemas:
-    zero-variant:
-      oneOf:
+    # zero-variant:
+    #   oneOf:
 
     single-variant:
       oneOf:
@@ -60,3 +60,6 @@ components:
           properties:
             variant1:
               $ref: "#/components/schemas/double-variant"
+
+    # with-referenced-variant:
+    

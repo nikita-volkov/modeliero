@@ -31,7 +31,7 @@ parse schemaContext input = do
           do
             variants <-
               oneOf
-                & nest "one-of" (reportifyErrors OneOfParser.parse) schemaContext
+                & nest "one-of" (jsonifyErrors OneOfParser.parse) schemaContext
             pure (SumTypeDefinition variants)
       Just schemaType ->
         case schemaType of
@@ -63,7 +63,11 @@ parse schemaContext input = do
                             }
                       ReferencedSchemaParser.InlineOutput inlineSchema -> do
                         propertySchema <-
-                          nest "inline-value" InlineSchemaParser.parse schemaContext inlineSchema
+                          appendContextReference
+                            name
+                            (nest "inline-value" InlineSchemaParser.parse)
+                            schemaContext
+                            inlineSchema
                         pure
                           Field
                             { name,
