@@ -1,5 +1,3 @@
-{-# OPTIONS_GHC -Wno-unused-binds -Wno-unused-imports -Wno-name-shadowing -Wno-incomplete-patterns -Wno-unused-matches #-}
-
 module Modeliero.Codegens.Haskell.ModuleTemplates.ProxyModel
   ( Params (..),
     Result,

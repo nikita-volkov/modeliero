@@ -1,0 +1,62 @@
+asyncapi: 2.0.0
+info:
+  title: Sum
+  version: "1.0.0"
+
+components:
+  schemas:
+    zero-variant:
+      oneOf:
+
+    single-variant:
+      oneOf:
+        - type: object
+          required: [variant1]
+          properties:
+            variant1:
+              type: string
+
+    double-variant:
+      oneOf:
+        - type: object
+          required: [variant1]
+          properties:
+            variant1:
+              type: string
+        - type: object
+          required: [variant2]
+          properties:
+            variant2:
+              type: string
+
+    inline-in-product:
+      type: object
+      properties:
+        sum:
+          oneOf:
+            - type: object
+              required: [variant1]
+              properties:
+                variant1:
+                  type: string
+
+    inline-in-sum:
+      oneOf:
+        - type: object
+          required: [variant1]
+          properties:
+            variant1:
+              oneOf:
+                - type: object
+                  required: [variant1]
+                  properties:
+                    variant1:
+                      type: string
+
+    over-refs:
+      oneOf:
+        - type: object
+          required: [variant1]
+          properties:
+            variant1:
+              $ref: "#/components/schemas/double-variant"

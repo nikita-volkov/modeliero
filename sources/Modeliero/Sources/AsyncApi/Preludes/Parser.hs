@@ -15,7 +15,8 @@ import Modeliero.Codegens.Haskell.Params
 data SchemaContext = SchemaContext
   { anonymizable :: Bool,
     dict :: HashMap Text OpenApi.Schema,
-    config :: Config
+    config :: Config,
+    contextReference :: Slug
   }
 
 data Config = Config

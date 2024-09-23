@@ -19,48 +19,44 @@ spec = do
         & runIO
     forM_ fixturePaths \fixturePath -> do
       describe (generalize fixturePath) do
-        runIO
-          ( AsyncApiSource.load
-              AsyncApiSource.defaultConfig
-              (generalize (dirPath <> fixturePath))
-          )
-          >>= \case
-            Left err ->
-              err
-                & renderAsYamlText
-                & toList
-                & expectationFailure
-                & it "Loads fine"
-            Right source -> do
-              describe "To Haskell" do
-                it "Compiles" do
-                  let tempDirPath = tempDirRootPath <> "async-api" <> "haskell" <> fixturePath
-                  Path.removeForcibly tempDirPath
-                  Path.createDirs tempDirPath
-                  HaskellCodegen.write
-                    tempDirPath
-                    HaskellCodegen.Model
-                      { name =
-                          fixturePath
-                            & Path.name
-                            & Cases.spinalize
-                            & to
-                            & fromString,
-                        version = source.version,
-                        types = source.types,
-                        instances =
-                          HaskellCodegen.Instances
-                            { aeson =
-                                Just
-                                  HaskellCodegen.Aeson
-                                    { casing = HaskellCodegen.KebabCasing
-                                    },
-                              arbitrary = True,
-                              anonymizable = True
-                            }
-                      }
-                  runShellCmd [i|cd ${tempDirPath} && cabal build --project-dir=.|]
-                  pure ()
+        it "Compiles to Haskell" do
+          AsyncApiSource.load
+            AsyncApiSource.defaultConfig
+            (generalize (dirPath <> fixturePath))
+            >>= \case
+              Left err ->
+                err
+                  & renderAsYamlText
+                  & toList
+                  & expectationFailure
+              Right source -> do
+                let tempDirPath = tempDirRootPath <> "async-api" <> "haskell" <> fixturePath
+                Path.removeForcibly tempDirPath
+                Path.createDirs tempDirPath
+                HaskellCodegen.write
+                  tempDirPath
+                  HaskellCodegen.Model
+                    { name =
+                        fixturePath
+                          & Path.name
+                          & Cases.spinalize
+                          & to
+                          & fromString,
+                      version = source.version,
+                      types = source.types,
+                      instances =
+                        HaskellCodegen.Instances
+                          { aeson =
+                              Just
+                                HaskellCodegen.Aeson
+                                  { casing = HaskellCodegen.KebabCasing
+                                  },
+                            arbitrary = True,
+                            anonymizable = True
+                          }
+                    }
+                runShellCmd [i|cd ${tempDirPath} && cabal build --project-dir=. -j --ghc-options="-j"|]
+                pure ()
 
 fixturesPath :: Path
 fixturesPath =

@@ -26,7 +26,18 @@ parse :: SchemaContext -> Input -> Either Error Output
 parse schemaContext input =
   case input._schemaType of
     Nothing ->
-      Left "No schema type"
+      -- TODO: Define reference type here if it's oneof.
+      case input._schemaOneOf of
+        Nothing -> Left "No schemaType or oneOf specified"
+        Just _ ->
+          Right
+            Output
+              { docs = "",
+                valueType =
+                  schemaContext.contextReference
+                    & LocalPlainType
+                    & PlainValueType
+              }
     Just schemaType -> case schemaType of
       Input.OpenApiObject ->
         Left "Object schema type is not supported in inline schemas"

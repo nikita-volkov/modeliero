@@ -18,24 +18,25 @@ parse config input = do
       & toList
       & traverse
         ( \(name, schemaInput) -> label name do
-            let schemaContext =
-                  SchemaContext
-                    { anonymizable = schemaInput.anonymizable,
-                      dict = input.schemas & fmap (.base),
-                      config
-                    }
-            nameSlug <-
+            contextReference <-
               name
                 & Cases.spinalize
                 & specialize
                 & first toJSON
                 & label "name"
                 & assocWithInput name
+            let schemaContext =
+                  SchemaContext
+                    { anonymizable = schemaInput.anonymizable,
+                      dict = input.schemas & fmap (.base),
+                      config,
+                      contextReference
+                    }
             schemaOutput <-
               nest "schema" OutlineSchemaParser.parse schemaContext schemaInput.base
             pure
               TypeDeclaration
-                { name = nameSlug,
+                { name = contextReference,
                   docs = schemaOutput.docs,
                   definition = schemaOutput.definition
                 }

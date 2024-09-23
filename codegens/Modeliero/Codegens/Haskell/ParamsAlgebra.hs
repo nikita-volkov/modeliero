@@ -32,8 +32,7 @@ valueTypeCanBeKey derefLocal = \case
 valueTypeCanBeKeyAsVectorElement :: (Slug -> Maybe ValueType) -> ValueType -> Bool
 valueTypeCanBeKeyAsVectorElement derefLocal = \case
   PlainValueType plainType -> plainTypeCanBeKey derefLocal plainType
-  MaybeValueType _ -> False
-  _ -> True
+  _ -> False
 
 plainTypeCanBeKey :: (Slug -> Maybe ValueType) -> PlainType -> Bool
 plainTypeCanBeKey derefLocal = \case
