@@ -5,6 +5,7 @@ info:
 
 components:
   schemas:
+    # FIXME: Doesn't compile
     # zero-variant:
     #   oneOf:
 
@@ -52,6 +53,16 @@ components:
                   properties:
                     variant1:
                       type: string
+    
+    inline-in-array:
+      type: array
+      items:
+        oneOf:
+          - type: object
+            required: [variant1]
+            properties:
+              variant1:
+                type: string
 
     over-refs:
       oneOf:
@@ -61,5 +72,13 @@ components:
             variant1:
               $ref: "#/components/schemas/double-variant"
 
-    # with-referenced-variant:
+    with-referenced-variant:
+      oneOf:
+        - $ref: "#/components/schemas/with-referenced-variant-variant1"
     
+    with-referenced-variant-variant1:
+      type: object
+      required: [variant1]
+      properties:
+        variant1:
+          type: string

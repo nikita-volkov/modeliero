@@ -1,0 +1,81 @@
+asyncapi: 2.0.0
+info:
+  title: Product
+  version: "1.0.0"
+
+components:
+  schemas:
+    no-properties:
+      type: object
+
+    zero-properties:
+      type: object
+      properties:
+    
+    one-property:
+      type: object
+      properties:
+        property1:
+          type: string
+
+    one-required-property:
+      type: object
+      required: [property1]
+      properties:
+        property1:
+          type: string
+
+    two-properties:
+      type: object
+      properties:
+        property1:
+          type: string
+        property2:
+          type: string
+
+    two-properties-with-first-required:
+      type: object
+      required: [property1]
+      properties:
+        property1:
+          type: string
+        property2:
+          type: string
+    
+    in-property:
+      type: object
+      properties:
+        outer-property1:
+          type: object
+          properties:
+            inner-property1:
+              type: string
+
+    in-required-property:
+      type: object
+      required: [outer-property1]
+      properties:
+        outer-property1:
+          type: object
+          properties:
+            inner-property1:
+              type: string
+    
+    in-sum-variant:
+      oneOf:
+        - type: object
+          required: [variant1]
+          properties:
+            variant1:
+              type: object
+              properties:
+                nested-property1:
+                  type: string
+    
+    as-array-item:
+      type: array
+      items:
+        type: object
+        properties:
+          variant1:
+            type: string

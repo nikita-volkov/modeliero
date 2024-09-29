@@ -17,7 +17,9 @@ type Input = Input.Schema
 
 data Output = Output
   { docs :: Text,
-    definition :: TypeDefinition
+    definition :: TypeDefinition,
+    -- | Type declarations for the possible nested types.
+    typeDeclarations :: [TypeDeclaration]
   }
 
 type Error = Json
@@ -29,10 +31,10 @@ parse schemaContext input = do
       Nothing ->
         for input._schemaOneOf \oneOf ->
           do
-            variants <-
+            OneOfParser.Output variants unparsedTypeDeclarations <-
               oneOf
                 & nest "one-of" (jsonifyErrors OneOfParser.parse) schemaContext
-            pure (SumTypeDefinition variants)
+            pure (SumTypeDefinition variants, unparsedTypeDeclarations)
       Just schemaType ->
         case schemaType of
           Input.OpenApiObject -> do
@@ -52,15 +54,17 @@ parse schemaContext input = do
                     case referencedSchemaOutput of
                       ReferencedSchemaParser.ReferenceOutput _ref slug ->
                         pure
-                          Field
-                            { name,
-                              jsonName = nameInput,
-                              docs = "",
-                              type_ =
-                                packPlainType nameInput
-                                  $ LocalPlainType
-                                  $ slug
-                            }
+                          ( Field
+                              { name,
+                                jsonName = nameInput,
+                                docs = "",
+                                type_ =
+                                  packPlainType nameInput
+                                    $ LocalPlainType
+                                    $ slug
+                              },
+                            []
+                          )
                       ReferencedSchemaParser.InlineOutput inlineSchema -> do
                         propertySchema <-
                           appendContextReference
@@ -69,17 +73,25 @@ parse schemaContext input = do
                             schemaContext
                             inlineSchema
                         pure
-                          Field
-                            { name,
-                              jsonName = nameInput,
-                              docs = propertySchema.docs,
-                              type_ =
-                                propertySchema.valueType
-                                  & packValueType nameInput
-                            }
+                          ( Field
+                              { name,
+                                jsonName = nameInput,
+                                docs = propertySchema.docs,
+                                type_ =
+                                  propertySchema.valueType
+                                    & packValueType nameInput
+                              },
+                            propertySchema.typeDeclarations
+                          )
                 )
               & label "properties"
-              & fmap (ProductTypeDefinition schemaContext.anonymizable)
+              & fmap unzip
+              & fmap
+                ( \(fields, typeDeclarations) ->
+                    ( ProductTypeDefinition schemaContext.anonymizable fields,
+                      concat typeDeclarations
+                    )
+                )
               & fmap Just
             where
               packPlainType fieldName =
@@ -112,30 +124,50 @@ parse schemaContext input = do
                           }
                     )
                   & NewtypeTypeDefinition
+                  & (,[])
+                  & Just
                   & pure
-                  & fmap Just
               _ -> pure Nothing
           _ -> pure Nothing
 
-  definition <-
-    label "inline" case directDefinitionIfPossible of
-      Just definition -> pure definition
+  (definition, unparsedTypeDeclarations) <-
+    case directDefinitionIfPossible of
+      Just (definition, unparsedTypeDeclarations) -> pure (definition, unparsedTypeDeclarations)
       Nothing ->
         InlineSchemaParser.parse schemaContext input
-          & fmap (.valueType)
-          & fmap Right
+          & label "inline"
           & fmap
-            ( \wrappedType ->
-                NewtypeDefinition
-                  { wrappedType,
-                    anonymizable = schemaContext.anonymizable
-                  }
+            ( \parsedInlineSchema ->
+                ( NewtypeTypeDefinition
+                    NewtypeDefinition
+                      { wrappedType = Right parsedInlineSchema.valueType,
+                        anonymizable = schemaContext.anonymizable
+                      },
+                  parsedInlineSchema.typeDeclarations
+                )
             )
-          & fmap NewtypeTypeDefinition
+  typeDeclarations <-
+    unparsedTypeDeclarations
+      & traverse
+        ( \(slug, schema) ->
+            appendContextReference slug parse schemaContext schema
+              & label (printCompactAs slug)
+              & fmap
+                ( \parsedOutlineSchema ->
+                    TypeDeclaration
+                      { definition = parsedOutlineSchema.definition,
+                        docs = parsedOutlineSchema.docs,
+                        name = slug
+                      }
+                      : parsedOutlineSchema.typeDeclarations
+                )
+        )
+      & fmap concat
   pure
     Output
       { docs =
           input._schemaDescription
             & fromMaybe mempty,
-        definition
+        definition,
+        typeDeclarations
       }

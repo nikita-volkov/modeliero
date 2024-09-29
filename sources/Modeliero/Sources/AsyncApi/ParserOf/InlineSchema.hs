@@ -42,7 +42,17 @@ parse schemaContext input =
           }
     Just schemaType -> case schemaType of
       Input.OpenApiObject ->
-        Left "Object schema type is not supported in inline schemas"
+        Right
+          Output
+            { docs = "",
+              valueType =
+                schemaContext.contextReference
+                  & LocalPlainType
+                  & PlainValueType,
+              typeDeclarations =
+                [ (schemaContext.contextReference, input)
+                ]
+            }
       Input.OpenApiString ->
         case input._schemaFormat of
           Just format -> case format of
@@ -74,13 +84,23 @@ parse schemaContext input =
           Just items -> case items of
             Input.OpenApiItemsObject itemReferencedSchema -> do
               reference <- ReferencedSchema.parse schemaContext itemReferencedSchema
-              itemValueType <- case reference of
+              (itemValueType, typeDeclarations) <- case reference of
                 ReferencedSchema.InlineOutput itemSchema ->
-                  parse schemaContext itemSchema
-                    & fmap (.valueType)
+                  appendContextReference "item" parse schemaContext itemSchema
+                    & fmap
+                      ( \output ->
+                          ( output.valueType,
+                            output.typeDeclarations
+                          )
+                      )
                 ReferencedSchema.ReferenceOutput _ref slug ->
-                  pure (PlainValueType (LocalPlainType slug))
-              fromValueType (VectorValueType itemValueType)
+                  pure (PlainValueType (LocalPlainType slug), [])
+              Right
+                Output
+                  { docs = input._schemaDescription & fromMaybe "",
+                    valueType = VectorValueType itemValueType,
+                    typeDeclarations
+                  }
             Input.OpenApiItemsArray _ ->
               Left "Tuple arrays are not supported"
       _ ->

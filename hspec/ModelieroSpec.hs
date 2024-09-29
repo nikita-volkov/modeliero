@@ -17,7 +17,7 @@ spec = do
     fixturePaths <-
       Path.listDirectory dirPath
         & runIO
-    forM_ fixturePaths \fixturePath -> do
+    parallel $ forM_ fixturePaths \fixturePath -> do
       describe (generalize fixturePath) do
         it "Compiles to Haskell" do
           AsyncApiSource.load

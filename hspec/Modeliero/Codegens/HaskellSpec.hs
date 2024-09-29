@@ -342,6 +342,7 @@ spec = do
                       import Data.Aeson qualified as Aeson
                       import Data.Aeson.KeyMap qualified as Aeson.KeyMap
                       import Data.Aeson.Types qualified as Aeson.Types
+                      import Data.Hashable qualified as Hashable
                       import ModelieroArtifacts.Iso8601.Types.Day qualified as Local
                       import ModelieroArtifacts.Iso8601.Types.Month qualified as Local
                       import ModelieroArtifacts.Iso8601.Types.Year qualified as Local
@@ -360,6 +361,14 @@ spec = do
                           day :: Local.Day
                         }
                         deriving stock (Show, Read, Eq, Ord)
+
+                      instance Hashable.Hashable Ymd where
+                        hashWithSalt salt value =
+                          salt
+                            & flip Hashable.hashWithSalt value.separated
+                            & flip Hashable.hashWithSalt value.year
+                            & flip Hashable.hashWithSalt value.month
+                            & flip Hashable.hashWithSalt value.day
 
                       instance Aeson.ToJSON Ymd where
                         toJSON value =

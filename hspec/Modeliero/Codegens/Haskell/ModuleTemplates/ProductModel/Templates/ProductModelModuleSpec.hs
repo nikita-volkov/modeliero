@@ -33,7 +33,8 @@ spec = do
                   Subject.Instances
                     { aeson = True,
                       arbitrary = True,
-                      anonymizable = True
+                      anonymizable = True,
+                      hashable = True
                     },
                 anonymizable = False
               }
@@ -49,6 +50,7 @@ spec = do
             import Data.Aeson qualified as Aeson
             import Data.Aeson.KeyMap qualified as Aeson.KeyMap
             import Data.Aeson.Types qualified as Aeson.Types
+            import Data.Hashable qualified
             import ModelieroBase qualified
             import Test.QuickCheck.Arbitrary qualified as QuickCheck.Arbitrary
             
@@ -60,6 +62,12 @@ spec = do
               }
               deriving stock (Show, Read, Eq, Ord)
             
+            instance Data.Hashable.Hashable Artist where
+              hashWithSalt salt value =
+                salt
+                  & flip Data.Hashable.hashWithSalt value.name
+                  & flip Data.Hashable.hashWithSalt value.genreName
+
             instance Aeson.ToJSON Artist where
               toJSON value =
                 (Aeson.Object . Aeson.KeyMap.fromList . catMaybes)

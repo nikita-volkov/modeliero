@@ -52,7 +52,8 @@ compileInstances instances =
   Template.Instances
     { aeson = instances.aeson & isJust,
       arbitrary = instances.arbitrary,
-      anonymizable = instances.anonymizable
+      anonymizable = instances.anonymizable,
+      hashable = True
     }
 
 compileField :: [Text] -> Casing -> Field -> InModule.InModule Template.Field

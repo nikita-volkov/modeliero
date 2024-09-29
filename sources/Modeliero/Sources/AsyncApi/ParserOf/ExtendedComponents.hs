@@ -35,10 +35,13 @@ parse config input = do
             schemaOutput <-
               nest "schema" OutlineSchemaParser.parse schemaContext schemaInput.base
             pure
-              TypeDeclaration
-                { name = contextReference,
-                  docs = schemaOutput.docs,
-                  definition = schemaOutput.definition
-                }
+              ( TypeDeclaration
+                  { name = contextReference,
+                    docs = schemaOutput.docs,
+                    definition = schemaOutput.definition
+                  }
+                  : schemaOutput.typeDeclarations
+              )
         )
+      & fmap concat
   pure typeDeclarations

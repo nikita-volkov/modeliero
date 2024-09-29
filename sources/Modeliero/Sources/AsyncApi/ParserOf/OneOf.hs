@@ -6,7 +6,10 @@ import Modeliero.Sources.AsyncApi.Preludes.Parser
 
 type Input = [Input.Referenced Input.Schema]
 
-type Output = [ParserOf.OneOfItemSchema.Output]
+data Output = Output
+  { variants :: [Variant],
+    typeDeclarations :: [(Slug, Input.Schema)]
+  }
 
 type Error = Json
 
@@ -18,4 +21,16 @@ parse schemaContext input =
       ( \(index, referencedSchemaInput) ->
           ParserOf.OneOfItemSchema.parse schemaContext referencedSchemaInput
             & label (fromString (show index))
+            & fmap
+              ( \x ->
+                  (x.variant, x.typeDeclarations)
+              )
+      )
+    & fmap unzip
+    & fmap
+      ( \(variants, typeDeclarationsList) ->
+          Output
+            { variants,
+              typeDeclarations = typeDeclarationsList & concat
+            }
       )

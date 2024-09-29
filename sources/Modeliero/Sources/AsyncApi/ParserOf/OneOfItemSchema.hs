@@ -1,5 +1,6 @@
 module Modeliero.Sources.AsyncApi.ParserOf.OneOfItemSchema where
 
+import Data.HashMap.Strict qualified as HashMap
 import Data.OpenApi qualified as Input
 import Modeliero.AesonUtil.Values qualified as Json
 import Modeliero.Sources.AsyncApi.ParserOf.InlineSchema qualified as InlineSchemaParser
@@ -8,7 +9,10 @@ import Modeliero.Sources.AsyncApi.Preludes.Parser
 
 type Input = Input.Referenced Input.Schema
 
-type Output = Variant
+data Output = Output
+  { variant :: Variant,
+    typeDeclarations :: [(Slug, Input.Schema)]
+  }
 
 type Error = Json
 
@@ -19,8 +23,10 @@ parse schemaContext input = assocWithInput input do
       & first (Json.tagged "top-reference")
 
   variantSchema <- case topReferenceOutput of
-    ParserOf.ReferencedSchema.ReferenceOutput _ _ ->
-      Left "Reference where tagging object is expected"
+    ParserOf.ReferencedSchema.ReferenceOutput ref _ ->
+      case HashMap.lookup ref schemaContext.dict of
+        Just schema -> Right schema
+        Nothing -> Left $ Json.tagged ref "Schema not found"
     ParserOf.ReferencedSchema.InlineOutput schema ->
       Right schema
 
@@ -53,19 +59,23 @@ parse schemaContext input = assocWithInput input do
     specialize tag
       & first (branchError "tag-slug" (toJSON tag) . toJSON)
 
-  value <- do
+  (type_, typeDeclarations) <- do
     nest "value" ParserOf.ReferencedSchema.parse schemaContext valueSchema >>= \case
       ParserOf.ReferencedSchema.ReferenceOutput _ref slug ->
-        pure (PlainValueType (LocalPlainType slug))
+        pure (PlainValueType (LocalPlainType slug), [])
       ParserOf.ReferencedSchema.InlineOutput schema ->
         appendContextReference tagSlug (nest "inline-value" InlineSchemaParser.parse) schemaContext schema
-          & fmap (.valueType)
+          & fmap (\x -> (x.valueType, x.typeDeclarations))
 
   pure
-    Variant
-      { name = tagSlug,
-        jsonName = tag,
-        type_ = value,
-        docs = variantSchema._schemaDescription & fromMaybe mempty,
-        anonymizable = schemaContext.anonymizable
+    Output
+      { variant =
+          Variant
+            { name = tagSlug,
+              jsonName = tag,
+              type_,
+              docs = variantSchema._schemaDescription & fromMaybe mempty,
+              anonymizable = schemaContext.anonymizable
+            },
+        typeDeclarations
       }

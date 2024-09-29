@@ -30,7 +30,8 @@ data Field = Field
 data Instances = Instances
   { aeson :: Bool,
     arbitrary :: Bool,
-    anonymizable :: Bool
+    anonymizable :: Bool,
+    hashable :: Bool
   }
 
 compile :: Params -> Result
@@ -60,6 +61,20 @@ compile params = do
             }
             & toBroadBuilder
             & pure,
+        if params.instances.hashable
+          then Just do
+            hashableQfr <- to <$> requestImport Imports.hashable
+            SnippetTemplates.HashableInstance
+              { hashableQfr,
+                typeName = params.name & to,
+                fieldAccessors =
+                  params.fields
+                    & fmap (.name)
+                    & fmap to
+              }
+              & toBroadBuilder
+              & pure
+          else Nothing,
         if params.instances.aeson
           then Just do
             aesonQfr <- to <$> requestImport Imports.aeson
