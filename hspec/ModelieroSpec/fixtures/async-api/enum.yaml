@@ -1,0 +1,15 @@
+asyncapi: 2.0.0
+info:
+  title: Enum
+  version: "1.0.0"
+
+components:
+  schemas:
+    outline:
+      enum: [a, b, c]
+
+    in-property:
+      type: object
+      properties:
+        outer-property1:
+          $ref: '#/components/schemas/outline'

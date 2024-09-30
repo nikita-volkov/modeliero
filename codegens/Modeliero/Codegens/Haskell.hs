@@ -10,6 +10,7 @@ import Modeliero.Codegens.Haskell.Dsls.InModule qualified as InModule
 import Modeliero.Codegens.Haskell.Dsls.Package qualified as Package
 import Modeliero.Codegens.Haskell.FileTemplates.CabalProject qualified as FileTemplates.CabalProject
 import Modeliero.Codegens.Haskell.Imports qualified as Imports
+import Modeliero.Codegens.Haskell.ModuleTemplates.EnumModel qualified as Templates.EnumModel
 import Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel qualified as Templates.ProductModelModule
 import Modeliero.Codegens.Haskell.ModuleTemplates.ProxyModel qualified as Templates.ProxyModelModule
 import Modeliero.Codegens.Haskell.ModuleTemplates.Reexports qualified as Templates.ReexportsModule
@@ -125,6 +126,14 @@ compile params =
                                 refinement,
                                 instances = params.instances
                               }
+                    Params.EnumTypeDefinition variants ->
+                      Templates.EnumModel.compile
+                        Templates.EnumModel.Params
+                          { name = type_.name,
+                            docs = type_.docs,
+                            variants,
+                            instances = params.instances
+                          }
           )
     reexportsModule =
       InModule.compileToModule rootNamespace importAliases

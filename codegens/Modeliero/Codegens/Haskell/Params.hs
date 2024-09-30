@@ -24,11 +24,18 @@ data TypeDefinition
   = ProductTypeDefinition Bool [Field]
   | SumTypeDefinition [Variant]
   | NewtypeTypeDefinition NewtypeDefinition
+  | EnumTypeDefinition [EnumVariant]
   deriving (Eq, Ord, Show, Generic, ToJSON, FromJSON)
 
 data NewtypeDefinition = NewtypeDefinition
   { anonymizable :: Bool,
     wrappedType :: Either Refinement ValueType
+  }
+  deriving (Eq, Ord, Show, Generic, ToJSON, FromJSON)
+
+data EnumVariant = EnumVariant
+  { slug :: Slug,
+    json :: Json
   }
   deriving (Eq, Ord, Show, Generic, ToJSON, FromJSON)
 

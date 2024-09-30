@@ -95,6 +95,8 @@ library sources
 
   other-modules:
     Modeliero.Sources.AsyncApi.ParserOf.AsyncApi
+    Modeliero.Sources.AsyncApi.ParserOf.EnumVariant
+    Modeliero.Sources.AsyncApi.ParserOf.EnumVariants
     Modeliero.Sources.AsyncApi.ParserOf.ExtendedComponents
     Modeliero.Sources.AsyncApi.ParserOf.InlineSchema
     Modeliero.Sources.AsyncApi.ParserOf.OneOf
@@ -150,6 +152,7 @@ library codegens
     Modeliero.Codegens.Haskell.Dsls.Package
     Modeliero.Codegens.Haskell.FileTemplates.CabalProject
     Modeliero.Codegens.Haskell.Imports
+    Modeliero.Codegens.Haskell.ModuleTemplates.EnumModel
     Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel
     Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.SnippetTemplates
     Modeliero.Codegens.Haskell.ModuleTemplates.ProductModel.SnippetTemplates.AnonymizableInstance
@@ -184,10 +187,13 @@ library codegens
     Modeliero.Codegens.Haskell.Preludes.SnippetTemplate
     Modeliero.Codegens.Haskell.SnippetTemplates
     Modeliero.Codegens.Haskell.SnippetTemplates.CommaSeparated
+    Modeliero.Codegens.Haskell.SnippetTemplates.DataDeclaration
+    Modeliero.Codegens.Haskell.SnippetTemplates.DataDeclarationVariant
     Modeliero.Codegens.Haskell.SnippetTemplates.DerivingVia
     Modeliero.Codegens.Haskell.SnippetTemplates.ForcedProxyAnonymizableInstance
     Modeliero.Codegens.Haskell.SnippetTemplates.NewtypeDeclaration
     Modeliero.Codegens.Haskell.SnippetTemplates.ParensList
+    Modeliero.Codegens.Haskell.SnippetTemplates.PrefixHaddock
     Modeliero.Codegens.Haskell.SnippetTemplates.RefinedTextAnonymizableInstance
     Modeliero.Codegens.Haskell.SnippetTemplates.RefinedTextArbitraryInstance
     Modeliero.Codegens.Haskell.SnippetTemplates.RefinedTextLiteralInstance

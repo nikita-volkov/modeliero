@@ -7,6 +7,7 @@ import Data.HashMap.Strict.InsOrd qualified as InsOrd
 import Data.HashMap.Strict.InsOrd qualified as InsOrdHashMap
 import Data.OpenApi qualified as Input
 import Modeliero.AesonUtil.Values qualified as Json
+import Modeliero.Sources.AsyncApi.ParserOf.EnumVariants qualified as EnumVariants
 import Modeliero.Sources.AsyncApi.ParserOf.InlineSchema qualified as InlineSchemaParser
 import Modeliero.Sources.AsyncApi.ParserOf.OneOf qualified as OneOfParser
 import Modeliero.Sources.AsyncApi.ParserOf.OneOfItemSchema qualified as OneOfItemSchemaParser
@@ -29,12 +30,19 @@ parse schemaContext input = do
   directDefinitionIfPossible <-
     label "outline" case input._schemaType of
       Nothing ->
-        for input._schemaOneOf \oneOf ->
-          do
-            OneOfParser.Output variants unparsedTypeDeclarations <-
-              oneOf
-                & nest "one-of" (jsonifyErrors OneOfParser.parse) schemaContext
-            pure (SumTypeDefinition variants, unparsedTypeDeclarations)
+        asum
+          [ input._schemaOneOf <&> \oneOf ->
+              do
+                OneOfParser.Output variants unparsedTypeDeclarations <-
+                  oneOf
+                    & nest "one-of" (jsonifyErrors OneOfParser.parse) schemaContext
+                pure (SumTypeDefinition variants, unparsedTypeDeclarations),
+            input._schemaEnum
+              <&> fmap (,[])
+              . fmap EnumTypeDefinition
+              . EnumVariants.parse schemaContext
+          ]
+          & sequence
       Just schemaType ->
         case schemaType of
           Input.OpenApiObject -> do
