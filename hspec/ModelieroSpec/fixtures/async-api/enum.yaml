@@ -13,3 +13,9 @@ components:
       properties:
         outer-property1:
           $ref: '#/components/schemas/outline'
+    
+    inline-in-property:
+      type: object
+      properties:
+        property1:
+          enum: [a, b]
