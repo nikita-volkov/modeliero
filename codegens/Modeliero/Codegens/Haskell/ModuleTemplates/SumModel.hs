@@ -86,6 +86,7 @@ compile params = do
                             Templates.HashableInstance.Variant
                               { name =
                                   variant.name
+                                    & flip mappend params.name
                                     & Slug.toUpperCamelCaseTextBuilder
                                     & to,
                                 memberNames =

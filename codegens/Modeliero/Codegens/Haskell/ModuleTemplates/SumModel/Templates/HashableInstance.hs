@@ -5,8 +5,8 @@ module Modeliero.Codegens.Haskell.ModuleTemplates.SumModel.Templates.HashableIns
   )
 where
 
-import Coalmine.MultilineTextBuilder qualified as TextBlock
 import Coalmine.Prelude
+import Modeliero.Codegens.Haskell.SnippetTemplates qualified as SnippetTemplates
 
 data Params = Params
   { name :: TextBlock,
@@ -21,43 +21,24 @@ data Variant = Variant
 
 compile :: Params -> TextBlock
 compile params =
-  [i|
-    instance ${params.hashableQfr}Hashable ${params.name} where
-      hashWithSalt salt = \case
-        ${matches}
-  |]
+  SnippetTemplates.AdtHashableInstance
+    { name = params.name,
+      hashableQfr = params.hashableQfr,
+      saltPattern = saltVarName,
+      variants =
+        params.variants
+          & zip (enumFrom 0)
+          & fmap
+            ( \(index, variant) ->
+                SnippetTemplates.AdtHashableInstanceConstructor
+                  { name = variant.name,
+                    memberNames = variant.memberNames,
+                    hashableQfr = params.hashableQfr,
+                    saltExp = saltVarName,
+                    index
+                  }
+            )
+    }
+    & toBroadBuilder
   where
-    matches =
-      params.variants
-        & zip (enumFrom 0)
-        & fmap (uncurry compileVariant)
-        & TextBlock.intercalate "\n"
-      where
-        compileVariant index variant =
-          [j|
-            ${variant.name}${params.name}${memberPatterns} ->
-              ${exp}
-          |]
-          where
-            memberPatterns =
-              foldMap (mappend " ") variant.memberNames
-            exp =
-              mconcat
-                [ "salt",
-                  mconcat
-                    [ "(",
-                      toBroadBuilder @Int index,
-                      " :: Int)"
-                    ]
-                    & extend,
-                  variant.memberNames
-                    & foldMap extend
-                ]
-              where
-                extend hashedExp =
-                  mconcat
-                    [ "\n  & flip ",
-                      params.hashableQfr,
-                      "hashWithSalt ",
-                      hashedExp
-                    ]
+    saltVarName = "salt"

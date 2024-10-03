@@ -186,6 +186,8 @@ library codegens
     Modeliero.Codegens.Haskell.ParamsAlgebra
     Modeliero.Codegens.Haskell.Preludes.SnippetTemplate
     Modeliero.Codegens.Haskell.SnippetTemplates
+    Modeliero.Codegens.Haskell.SnippetTemplates.AdtHashableInstance
+    Modeliero.Codegens.Haskell.SnippetTemplates.AdtHashableInstanceConstructor
     Modeliero.Codegens.Haskell.SnippetTemplates.CommaSeparated
     Modeliero.Codegens.Haskell.SnippetTemplates.DataDeclaration
     Modeliero.Codegens.Haskell.SnippetTemplates.DataDeclarationVariant
