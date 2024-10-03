@@ -192,6 +192,8 @@ library codegens
     Modeliero.Codegens.Haskell.SnippetTemplates.DataDeclaration
     Modeliero.Codegens.Haskell.SnippetTemplates.DataDeclarationVariant
     Modeliero.Codegens.Haskell.SnippetTemplates.DerivingVia
+    Modeliero.Codegens.Haskell.SnippetTemplates.EnumArbitraryInstance
+    Modeliero.Codegens.Haskell.SnippetTemplates.EnumLiteralInstance
     Modeliero.Codegens.Haskell.SnippetTemplates.ForcedProxyAnonymizableInstance
     Modeliero.Codegens.Haskell.SnippetTemplates.NewtypeDeclaration
     Modeliero.Codegens.Haskell.SnippetTemplates.ParensList
@@ -200,6 +202,8 @@ library codegens
     Modeliero.Codegens.Haskell.SnippetTemplates.RefinedTextArbitraryInstance
     Modeliero.Codegens.Haskell.SnippetTemplates.RefinedTextLiteralInstance
     Modeliero.Codegens.Haskell.SnippetTemplates.StringLiteral
+    Modeliero.Codegens.Haskell.SnippetTemplates.SumToJsonInstance
+    Modeliero.Codegens.Haskell.SnippetTemplates.SumToJsonInstanceConstructor
     Modeliero.Codegens.Haskell.Snippets
 
   build-tool-depends:

@@ -3,13 +3,15 @@ module Modeliero.Codegens.Haskell.SnippetTemplates.DataDeclaration where
 import Coalmine.MultilineTextBuilder qualified as TextBlock
 import Modeliero.Codegens.Haskell.Preludes.SnippetTemplate
 import Modeliero.Codegens.Haskell.SnippetTemplates.DataDeclarationVariant
+import Modeliero.Codegens.Haskell.SnippetTemplates.DerivingVia
 import Modeliero.Codegens.Haskell.SnippetTemplates.PrefixHaddock
 
 data DataDeclaration = DataDeclaration
   { name :: TextBlock,
     haddock :: Maybe PrefixHaddock,
     variants :: [DataDeclarationVariant],
-    stockDerivings :: [TextBlock]
+    stockDerivings :: [TextBlock],
+    derivingVia :: [DerivingVia]
   }
 
 instance BroadPrinting DataDeclaration where
@@ -37,5 +39,7 @@ instance BroadPrinting DataDeclaration where
                 & indent 2,
         case params.stockDerivings of
           [] -> mempty
-          derivingSplices -> "\n  deriving stock (" <> TextBlock.intercalate ", " derivingSplices <> ")"
+          derivingSplices -> "\n  deriving stock (" <> TextBlock.intercalate ", " derivingSplices <> ")",
+        params.derivingVia
+          & foldMap (indent 2 . mappend "\n" . toBroadBuilder)
       ]

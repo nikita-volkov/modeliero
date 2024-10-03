@@ -22,5 +22,5 @@ content =
     source-repository-package
       type: git
       location: https://github.com/nikita-volkov/modeliero-base
-      tag: f673a61f161b8db45fe604aefabf6c21dceb4b03
+      tag: 6a758107eb363409ae15cc76437eff8516e4c4aa
   |]

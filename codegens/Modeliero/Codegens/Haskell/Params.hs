@@ -35,7 +35,7 @@ data NewtypeDefinition = NewtypeDefinition
 
 data EnumVariant = EnumVariant
   { slug :: Slug,
-    json :: Json
+    jsonName :: Text
   }
   deriving (Eq, Ord, Show, Generic, ToJSON, FromJSON)
 
