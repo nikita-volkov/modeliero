@@ -39,6 +39,10 @@ fromStandardType :: Params.StandardType -> InModule Text
 fromStandardType = \case
   Params.BoolStandardType ->
     requestImport Imports.basePreludeRoot <&> (<> "Bool")
+  Params.IntStandardType ->
+    requestImport Imports.basePreludeRoot <&> (<> "Int")
+  Params.ScientificStandardType ->
+    requestImport Imports.scientific <&> (<> "Scientific")
   Params.EmailStandardType ->
     requestImport Imports.modelieroBaseRoot <&> (<> "Email")
   Params.HostnameStandardType ->
@@ -50,4 +54,5 @@ fromStandardType = \case
   Params.TextStandardType ->
     requestImport Imports.textRoot <&> (<> "Text")
   type_ ->
-    error [i|Unsupported type: ${show type_}|]
+    let typeString = show type_
+     in error [i|Unsupported type: ${typeString}|]

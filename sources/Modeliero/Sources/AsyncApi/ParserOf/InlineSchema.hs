@@ -78,6 +78,18 @@ parse schemaContext input =
             TextStandardType
               & StandardPlainType
               & fromPlainType
+      Input.OpenApiNumber ->
+        ScientificStandardType
+          & StandardPlainType
+          & fromPlainType
+      Input.OpenApiInteger ->
+        IntStandardType
+          & StandardPlainType
+          & fromPlainType
+      Input.OpenApiBoolean ->
+        BoolStandardType
+          & StandardPlainType
+          & fromPlainType
       Input.OpenApiArray ->
         case input._schemaItems of
           Nothing -> Left "Missing \"items\""
@@ -103,7 +115,7 @@ parse schemaContext input =
                   }
             Input.OpenApiItemsArray _ ->
               Left "Tuple arrays are not supported"
-      _ ->
+      Input.OpenApiNull ->
         error "TODO"
   where
     fromValueType valueType =

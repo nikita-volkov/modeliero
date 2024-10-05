@@ -1,0 +1,21 @@
+asyncapi: 2.0.0
+info:
+  title: Integer
+  version: "1.0.0"
+
+components:
+  schemas:
+    in-record:
+      type: object
+      required: [required]
+      properties:
+        required:
+          type: integer
+        unrequired:
+          type: integer
+    as-proxy:
+      type: integer
+    with-extra-settings:
+      type: integer
+      minimum: 0
+      maximum: 100

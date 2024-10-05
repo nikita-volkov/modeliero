@@ -39,5 +39,10 @@ plainTypeCanBeKey derefLocal = \case
   LocalPlainType ref -> case derefLocal ref of
     Just valueType -> valueTypeCanBeKey derefLocal valueType
     Nothing -> False
-  StandardPlainType _standardType -> True
+  StandardPlainType standardType -> standardTypeCanBeKey standardType
   CustomPlainType _ -> True
+
+standardTypeCanBeKey :: StandardType -> Bool
+standardTypeCanBeKey = \case
+  ScientificStandardType -> False
+  _ -> True

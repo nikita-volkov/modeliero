@@ -114,6 +114,9 @@ compileStandardType standardType =
     IntStandardType ->
       InModule.requestImport Imports.basePreludeRoot
         & fmap (<> "Int")
+    ScientificStandardType ->
+      InModule.requestImport Imports.scientific
+        & fmap (<> "Scientific")
     DoubleStandardType ->
       InModule.requestImport Imports.basePreludeRoot
         & fmap (<> "Double")
