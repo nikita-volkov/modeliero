@@ -56,10 +56,10 @@ The project is in a working state: it can read a schema and generate code. It is
 
 ### Generating Haskell Code
 
-In CLI or shell execute:
+From a directory containing a file named `asyncapi.yaml` execute:
 
 ```bash
-modeliero PATH_TO_ASYNC_API_SPEC
+modeliero
 ```
 
 The `modeliero-artifacts` directory will get generated. You'll find the generated code within.

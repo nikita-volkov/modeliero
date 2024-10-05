@@ -7,7 +7,7 @@ import Modeliero.Sources.AsyncApi qualified as AsyncApiSource
 
 main :: IO ()
 main =
-  AsyncApiSource.load AsyncApiSource.defaultConfig "." >>= \case
+  AsyncApiSource.load AsyncApiSource.defaultConfig "asyncapi.yaml" >>= \case
     Left err ->
       err
         & renderAsYamlText
