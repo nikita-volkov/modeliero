@@ -17,7 +17,7 @@ This project is designed to be scalable in two directions:
 
 # Status
 
-The project is in a working state: it can read a schema and generate code. It is well covered with tests, however it is not yet battle-tested in any large production project and it is limited in features
+The project is in a working state: it can read a schema and generate code. It is well covered with tests, however it is not yet battle-tested in any large production project and it is limited in features.
 
 ## Supported spec sources
 
