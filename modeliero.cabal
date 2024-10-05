@@ -87,6 +87,15 @@ common test
     -threaded
     "-with-rtsopts=-N -I0 -qg"
 
+executable modeliero
+  import: executable
+  hs-source-dirs: modeliero
+  main-is: Main.hs
+  build-depends:
+    coalmine,
+    modeliero:codegens,
+    modeliero:sources,
+
 library sources
   import: base
   hs-source-dirs: sources

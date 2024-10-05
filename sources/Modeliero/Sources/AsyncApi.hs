@@ -34,7 +34,8 @@ instance ToJSON Error where
         & ObjectJson
 
 data Result = Result
-  { version :: NonEmpty Word,
+  { name :: Slug,
+    version :: NonEmpty Word,
     types :: [Codegen.TypeDeclaration]
   }
   deriving (Eq, Show, Generic, ToJSON)
