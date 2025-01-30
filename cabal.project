@@ -1,10 +1,12 @@
 packages: .
 
-with-compiler: ghc-9.10
+with-compiler: ghc-9.12
 
 allow-newer:
   , *:base
   , *:template-haskell
+  , *:bytestring
+  , *:time
 
 source-repository-package
   type: git
