@@ -9,12 +9,12 @@ allow-newer:
 source-repository-package
   type: git
   location: https://github.com/nikita-volkov/structure-kit
-  tag: 1a3311ee4c8104fd10d3d19e09feec0ee03c3fb5
+  tag: a2c2df159b2c7a478f3f362a969b5b9a6f725259
 
 source-repository-package
   type: git
   location: https://github.com/nikita-volkov/coalmine
-  tag: ea9b2dfd59a07de83be5f87da875cd306b40e3ad
+  tag: 35cdd0f52aac00e99dde3bd63f2d2ca035a6655d
   subdir:
     coalmine
     qq-extras
