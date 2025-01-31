@@ -56,6 +56,7 @@ parse schemaContext input =
       Input.OpenApiString ->
         case input._schemaFormat of
           Just format -> case format of
+            "decimal" -> fromStandardType ScientificStandardType
             "email" -> fromStandardType EmailStandardType
             "date-time" -> fromStandardType Iso8601DateTimeStandardType
             "uuid" -> fromStandardType UuidStandardType
