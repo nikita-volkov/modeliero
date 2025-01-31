@@ -8,6 +8,10 @@ components:
     outline:
       enum: [a, b, c]
 
+    with-string-type:
+      type: string
+      enum: [a, b, c]
+
     in-property:
       type: object
       properties:
