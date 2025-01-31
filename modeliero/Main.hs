@@ -27,4 +27,4 @@ main =
                 anonymizable = True
               }
         }
-        & HaskellCodegen.write "."
+        & HaskellCodegen.write "modeliero-artifacts"
