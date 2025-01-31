@@ -1,4 +1,4 @@
-{-# OPTIONS_GHC -Wno-unused-binds -Wno-unused-imports -Wno-name-shadowing -Wno-incomplete-patterns -Wno-unused-matches #-}
+{-# OPTIONS_GHC -Wno-unused-binds -Wno-unused-imports -Wno-name-shadowing -Wno-incomplete-patterns -Wno-unused-matches -Wno-missing-methods -Wno-unused-record-wildcards -Wno-redundant-constraints #-}
 
 module Modeliero.Codegens.Haskell.CompilersOf.TypeSig where
 
@@ -39,6 +39,8 @@ fromStandardType :: Params.StandardType -> InModule Text
 fromStandardType = \case
   Params.BoolStandardType ->
     requestImport Imports.basePreludeRoot <&> (<> "Bool")
+  Params.DoubleStandardType ->
+    requestImport Imports.basePreludeRoot <&> (<> "Double")
   Params.IntStandardType ->
     requestImport Imports.basePreludeRoot <&> (<> "Int")
   Params.ScientificStandardType ->
@@ -53,6 +55,7 @@ fromStandardType = \case
     requestImport Imports.modelieroBaseRoot <&> (<> "IpV6")
   Params.TextStandardType ->
     requestImport Imports.textRoot <&> (<> "Text")
-  type_ ->
-    let typeString = show type_
-     in error [i|Unsupported type: ${typeString}|]
+  Params.UuidStandardType ->
+    requestImport Imports.modelieroBaseRoot <&> (<> "Uuid")
+  Params.Iso8601DateTimeStandardType ->
+    requestImport Imports.modelieroBaseRoot <&> (<> "Iso8601DateTime")

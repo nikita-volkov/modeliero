@@ -8,11 +8,9 @@ import Modeliero.Sources.AsyncApi qualified as AsyncApiSource
 main :: IO ()
 main =
   AsyncApiSource.load AsyncApiSource.defaultConfig "asyncapi.yaml" >>= \case
-    Left err ->
-      err
-        & renderAsYamlText
-        & toList
-        & fail
+    Left err -> do
+      putStrLn $ toList $ renderAsYamlText err
+      exitFailure
     Right source ->
       HaskellCodegen.Model
         { name = source.name,
