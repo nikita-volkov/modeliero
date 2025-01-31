@@ -58,6 +58,7 @@ parse schemaContext input =
           Just format -> case format of
             "decimal" -> fromStandardType ScientificStandardType
             "email" -> fromStandardType EmailStandardType
+            "date" -> fromStandardType Iso8601DateStandardType
             "date-time" -> fromStandardType Iso8601DateTimeStandardType
             "uuid" -> fromStandardType UuidStandardType
             "ipv4" -> fromStandardType IpV4StandardType

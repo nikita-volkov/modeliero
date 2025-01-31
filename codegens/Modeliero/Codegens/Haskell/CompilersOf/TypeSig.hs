@@ -57,5 +57,7 @@ fromStandardType = \case
     requestImport Imports.textRoot <&> (<> "Text")
   Params.UuidStandardType ->
     requestImport Imports.modelieroBaseRoot <&> (<> "Uuid")
+  Params.Iso8601DateStandardType ->
+    requestImport Imports.modelieroBaseRoot <&> (<> "Iso8601Date")
   Params.Iso8601DateTimeStandardType ->
     requestImport Imports.modelieroBaseRoot <&> (<> "Iso8601DateTime")

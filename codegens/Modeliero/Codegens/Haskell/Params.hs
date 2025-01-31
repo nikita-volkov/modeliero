@@ -79,6 +79,7 @@ data StandardType
   | HostnameStandardType
   | IpV4StandardType
   | IpV6StandardType
+  | Iso8601DateStandardType
   | Iso8601DateTimeStandardType
   deriving (Eq, Ord, Show, Generic, ToJSON, FromJSON)
 

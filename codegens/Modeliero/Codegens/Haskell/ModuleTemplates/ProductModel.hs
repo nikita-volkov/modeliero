@@ -141,6 +141,9 @@ compileStandardType standardType =
     IpV6StandardType ->
       InModule.requestImport Imports.modelieroBaseRoot
         & fmap (<> "IpV6")
+    Iso8601DateStandardType ->
+      InModule.requestImport Imports.modelieroBaseRoot
+        & fmap (<> "Iso8601Date")
     Iso8601DateTimeStandardType ->
       InModule.requestImport Imports.modelieroBaseRoot
         & fmap (<> "Iso8601DateTime")

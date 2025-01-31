@@ -22,6 +22,7 @@ standardType =
     HostnameStandardType,
     IpV4StandardType,
     IpV6StandardType,
+    Iso8601DateStandardType,
     Iso8601DateTimeStandardType
   ]
     & flip elem
